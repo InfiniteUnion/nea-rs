@@ -1,0 +1,2862 @@
+{
+  "psi": {
+    "code": 0,
+    "data": {
+      "regionMetadata": [
+        {
+          "name": "west",
+          "labelLocation": {
+            "latitude": 1.35735,
+            "longitude": 103.7
+          }
+        },
+        {
+          "name": "central",
+          "labelLocation": {
+            "longitude": 103.82,
+            "latitude": 1.35735
+          }
+        },
+        {
+          "name": "north",
+          "labelLocation": {
+            "latitude": 1.41803,
+            "longitude": 103.82
+          }
+        },
+        {
+          "name": "east",
+          "labelLocation": {
+            "latitude": 1.35735,
+            "longitude": 103.94
+          }
+        },
+        {
+          "name": "south",
+          "labelLocation": {
+            "latitude": 1.29587,
+            "longitude": 103.82
+          }
+        }
+      ],
+      "items": [
+        {
+          "date": "2026-06-03",
+          "updatedTimestamp": "2026-06-03T16:01:09+08:00",
+          "timestamp": "2026-06-03T16:00:00+08:00",
+          "readings": {
+            "o3_sub_index": {
+              "south": 15,
+              "central": 18,
+              "north": 22,
+              "west": 10,
+              "east": 18
+            },
+            "psi_twenty_four_hourly": {
+              "west": 61,
+              "east": 61,
+              "central": 64,
+              "north": 54,
+              "south": 62
+            },
+            "pm10_sub_index": {
+              "west": 31,
+              "north": 22,
+              "south": 33,
+              "central": 32,
+              "east": 36
+            },
+            "no2_one_hour_max": {
+              "south": 10,
+              "east": 17,
+              "west": 14,
+              "north": 12,
+              "central": 12
+            },
+            "pm10_twenty_four_hourly": {
+              "south": 33,
+              "north": 22,
+              "west": 31,
+              "east": 36,
+              "central": 32
+            },
+            "so2_twenty_four_hourly": {
+              "east": 2,
+              "central": 3,
+              "south": 2,
+              "west": 4,
+              "north": 3
+            },
+            "pm25_twenty_four_hourly": {
+              "central": 24,
+              "west": 21,
+              "east": 21,
+              "south": 22,
+              "north": 15
+            },
+            "pm25_sub_index": {
+              "central": 64,
+              "west": 61,
+              "north": 54,
+              "south": 62,
+              "east": 61
+            },
+            "co_sub_index": {
+              "central": 3,
+              "east": 4,
+              "south": 4,
+              "north": 6,
+              "west": 3
+            },
+            "so2_sub_index": {
+              "east": 1,
+              "central": 2,
+              "west": 3,
+              "north": 2,
+              "south": 1
+            },
+            "o3_eight_hour_max": {
+              "west": 24,
+              "south": 34,
+              "central": 42,
+              "north": 52,
+              "east": 43
+            },
+            "co_eight_hour_max": {
+              "south": 0,
+              "central": 0,
+              "east": 0,
+              "north": 1,
+              "west": 0
+            }
+          }
+        }
+      ]
+    },
+    "errorMsg": ""
+  },
+  "pm25": {
+    "code": 0,
+    "data": {
+      "regionMetadata": [
+        {
+          "name": "north",
+          "labelLocation": {
+            "longitude": 103.82,
+            "latitude": 1.41803
+          }
+        },
+        {
+          "name": "west",
+          "labelLocation": {
+            "latitude": 1.35735,
+            "longitude": 103.7
+          }
+        },
+        {
+          "name": "east",
+          "labelLocation": {
+            "longitude": 103.94,
+            "latitude": 1.35735
+          }
+        },
+        {
+          "name": "central",
+          "labelLocation": {
+            "longitude": 103.82,
+            "latitude": 1.35735
+          }
+        },
+        {
+          "name": "south",
+          "labelLocation": {
+            "longitude": 103.82,
+            "latitude": 1.29587
+          }
+        }
+      ],
+      "items": [
+        {
+          "date": "2026-06-03",
+          "updatedTimestamp": "2026-06-03T16:01:08+08:00",
+          "timestamp": "2026-06-03T16:00:00+08:00",
+          "readings": {
+            "pm25_one_hourly": {
+              "west": 18,
+              "east": 19,
+              "central": 16,
+              "south": 17,
+              "north": 16
+            }
+          }
+        }
+      ]
+    },
+    "errorMsg": ""
+  },
+  "air-temperature": {
+    "code": 0,
+    "data": {
+      "stations": [
+        {
+          "id": "S109",
+          "deviceId": "S109",
+          "name": "Ang Mo Kio Avenue 5",
+          "location": {
+            "latitude": 1.3793,
+            "longitude": 103.85
+          }
+        },
+        {
+          "id": "S117",
+          "deviceId": "S117",
+          "name": "Banyan Road",
+          "location": {
+            "longitude": 103.6741,
+            "latitude": 1.2542
+          }
+        },
+        {
+          "id": "S107",
+          "deviceId": "S107",
+          "name": "East Coast Parkway",
+          "location": {
+            "latitude": 1.3133,
+            "longitude": 103.962
+          }
+        },
+        {
+          "id": "S104",
+          "deviceId": "S104",
+          "name": "Woodlands Avenue 9",
+          "location": {
+            "longitude": 103.7854,
+            "latitude": 1.4439
+          }
+        },
+        {
+          "id": "S115",
+          "deviceId": "S115",
+          "name": "Tuas South Avenue 3",
+          "location": {
+            "longitude": 103.6184,
+            "latitude": 1.2938
+          }
+        },
+        {
+          "id": "S116",
+          "deviceId": "S116",
+          "name": "West Coast Highway",
+          "location": {
+            "latitude": 1.2824,
+            "longitude": 103.7545
+          }
+        },
+        {
+          "id": "S102",
+          "deviceId": "S102",
+          "name": "Semakau Island Landfill",
+          "location": {
+            "latitude": 1.1902,
+            "longitude": 103.7657
+          }
+        },
+        {
+          "id": "S60",
+          "deviceId": "S60",
+          "name": "Sentosa",
+          "location": {
+            "latitude": 1.2504,
+            "longitude": 103.8275
+          }
+        },
+        {
+          "id": "S50",
+          "deviceId": "S50",
+          "name": "Clementi Road",
+          "location": {
+            "longitude": 103.7762,
+            "latitude": 1.3318
+          }
+        },
+        {
+          "id": "S44",
+          "deviceId": "S44",
+          "name": "Nanyang Avenue",
+          "location": {
+            "longitude": 103.6817,
+            "latitude": 1.3458
+          }
+        },
+        {
+          "id": "S43",
+          "deviceId": "S43",
+          "name": "Kim Chuan Road",
+          "location": {
+            "longitude": 103.8882,
+            "latitude": 1.3406
+          }
+        },
+        {
+          "id": "S24",
+          "deviceId": "S24",
+          "name": "Upper Changi Road North",
+          "location": {
+            "latitude": 1.3678,
+            "longitude": 103.9823
+          }
+        },
+        {
+          "id": "S23",
+          "deviceId": "S23",
+          "name": "S23",
+          "location": {
+            "longitude": 103.7119,
+            "latitude": 1.3858
+          }
+        },
+        {
+          "id": "S06",
+          "deviceId": "S06",
+          "name": "Paya Lebar Airport",
+          "location": {
+            "latitude": 1.357,
+            "longitude": 103.904
+          }
+        },
+        {
+          "id": "S111",
+          "deviceId": "S111",
+          "name": "Scotts Road",
+          "location": {
+            "longitude": 103.8365,
+            "latitude": 1.3106
+          }
+        }
+      ],
+      "readings": [
+        {
+          "timestamp": "2026-06-03T15:59:00+08:00",
+          "data": [
+            {
+              "stationId": "S109",
+              "value": 31.9
+            },
+            {
+              "stationId": "S117",
+              "value": 30.7
+            },
+            {
+              "stationId": "S107",
+              "value": 31.2
+            },
+            {
+              "stationId": "S104",
+              "value": 31.1
+            },
+            {
+              "stationId": "S115",
+              "value": 30.7
+            },
+            {
+              "stationId": "S116",
+              "value": 31.2
+            },
+            {
+              "stationId": "S102",
+              "value": 30.4
+            },
+            {
+              "stationId": "S60",
+              "value": 31.5
+            },
+            {
+              "stationId": "S50",
+              "value": 31
+            },
+            {
+              "stationId": "S44",
+              "value": 30.4
+            },
+            {
+              "stationId": "S43",
+              "value": 32.4
+            },
+            {
+              "stationId": "S24",
+              "value": 31.6
+            },
+            {
+              "stationId": "S23",
+              "value": 31.3
+            },
+            {
+              "stationId": "S06",
+              "value": 32.2
+            },
+            {
+              "stationId": "S111",
+              "value": 30.5
+            }
+          ]
+        }
+      ],
+      "readingType": "DBT 1M F",
+      "readingUnit": "deg C"
+    },
+    "errorMsg": ""
+  },
+  "relative-humidity": {
+    "code": 0,
+    "data": {
+      "stations": [
+        {
+          "id": "S109",
+          "deviceId": "S109",
+          "name": "Ang Mo Kio Avenue 5",
+          "location": {
+            "longitude": 103.85,
+            "latitude": 1.3793
+          }
+        },
+        {
+          "id": "S117",
+          "deviceId": "S117",
+          "name": "Banyan Road",
+          "location": {
+            "longitude": 103.6741,
+            "latitude": 1.2542
+          }
+        },
+        {
+          "id": "S107",
+          "deviceId": "S107",
+          "name": "East Coast Parkway",
+          "location": {
+            "latitude": 1.3133,
+            "longitude": 103.962
+          }
+        },
+        {
+          "id": "S104",
+          "deviceId": "S104",
+          "name": "Woodlands Avenue 9",
+          "location": {
+            "longitude": 103.7854,
+            "latitude": 1.4439
+          }
+        },
+        {
+          "id": "S115",
+          "deviceId": "S115",
+          "name": "Tuas South Avenue 3",
+          "location": {
+            "longitude": 103.6184,
+            "latitude": 1.2938
+          }
+        },
+        {
+          "id": "S116",
+          "deviceId": "S116",
+          "name": "West Coast Highway",
+          "location": {
+            "longitude": 103.7545,
+            "latitude": 1.2824
+          }
+        },
+        {
+          "id": "S102",
+          "deviceId": "S102",
+          "name": "Semakau Island Landfill",
+          "location": {
+            "latitude": 1.1902,
+            "longitude": 103.7657
+          }
+        },
+        {
+          "id": "S60",
+          "deviceId": "S60",
+          "name": "Sentosa",
+          "location": {
+            "latitude": 1.2504,
+            "longitude": 103.8275
+          }
+        },
+        {
+          "id": "S50",
+          "deviceId": "S50",
+          "name": "Clementi Road",
+          "location": {
+            "latitude": 1.3318,
+            "longitude": 103.7762
+          }
+        },
+        {
+          "id": "S44",
+          "deviceId": "S44",
+          "name": "Nanyang Avenue",
+          "location": {
+            "latitude": 1.3458,
+            "longitude": 103.6817
+          }
+        },
+        {
+          "id": "S43",
+          "deviceId": "S43",
+          "name": "Kim Chuan Road",
+          "location": {
+            "longitude": 103.8882,
+            "latitude": 1.3406
+          }
+        },
+        {
+          "id": "S24",
+          "deviceId": "S24",
+          "name": "Upper Changi Road North",
+          "location": {
+            "latitude": 1.3678,
+            "longitude": 103.9823
+          }
+        },
+        {
+          "id": "S23",
+          "deviceId": "S23",
+          "name": "S23",
+          "location": {
+            "latitude": 1.3858,
+            "longitude": 103.7119
+          }
+        },
+        {
+          "id": "S06",
+          "deviceId": "S06",
+          "name": "Paya Lebar Airport",
+          "location": {
+            "latitude": 1.357,
+            "longitude": 103.904
+          }
+        },
+        {
+          "id": "S111",
+          "deviceId": "S111",
+          "name": "Scotts Road",
+          "location": {
+            "latitude": 1.3106,
+            "longitude": 103.8365
+          }
+        }
+      ],
+      "readings": [
+        {
+          "timestamp": "2026-06-03T15:59:00+08:00",
+          "data": [
+            {
+              "stationId": "S109",
+              "value": 69.4
+            },
+            {
+              "stationId": "S117",
+              "value": 77.4
+            },
+            {
+              "stationId": "S107",
+              "value": 71.1
+            },
+            {
+              "stationId": "S104",
+              "value": 72.6
+            },
+            {
+              "stationId": "S115",
+              "value": 77.6
+            },
+            {
+              "stationId": "S116",
+              "value": 75.4
+            },
+            {
+              "stationId": "S102",
+              "value": 83
+            },
+            {
+              "stationId": "S60",
+              "value": 72.4
+            },
+            {
+              "stationId": "S50",
+              "value": 74.2
+            },
+            {
+              "stationId": "S44",
+              "value": 77.8
+            },
+            {
+              "stationId": "S43",
+              "value": 69.8
+            },
+            {
+              "stationId": "S24",
+              "value": 66.6
+            },
+            {
+              "stationId": "S23",
+              "value": 70.3
+            },
+            {
+              "stationId": "S06",
+              "value": 68.5
+            },
+            {
+              "stationId": "S111",
+              "value": 74.3
+            }
+          ]
+        }
+      ],
+      "readingType": "RH 1M F",
+      "readingUnit": "percentage"
+    },
+    "errorMsg": ""
+  },
+  "wind-speed": {
+    "code": 0,
+    "data": {
+      "stations": [
+        {
+          "id": "S108",
+          "deviceId": "S108",
+          "name": "Marina Gardens Drive",
+          "location": {
+            "latitude": 1.2799,
+            "longitude": 103.8703
+          }
+        },
+        {
+          "id": "S109",
+          "deviceId": "S109",
+          "name": "Ang Mo Kio Avenue 5",
+          "location": {
+            "longitude": 103.85,
+            "latitude": 1.3793
+          }
+        },
+        {
+          "id": "S117",
+          "deviceId": "S117",
+          "name": "Banyan Road",
+          "location": {
+            "latitude": 1.2542,
+            "longitude": 103.6741
+          }
+        },
+        {
+          "id": "S107",
+          "deviceId": "S107",
+          "name": "East Coast Parkway",
+          "location": {
+            "longitude": 103.962,
+            "latitude": 1.3133
+          }
+        },
+        {
+          "id": "S104",
+          "deviceId": "S104",
+          "name": "Woodlands Avenue 9",
+          "location": {
+            "latitude": 1.4439,
+            "longitude": 103.7854
+          }
+        },
+        {
+          "id": "S115",
+          "deviceId": "S115",
+          "name": "Tuas South Avenue 3",
+          "location": {
+            "latitude": 1.2938,
+            "longitude": 103.6184
+          }
+        },
+        {
+          "id": "S116",
+          "deviceId": "S116",
+          "name": "West Coast Highway",
+          "location": {
+            "longitude": 103.7545,
+            "latitude": 1.2824
+          }
+        },
+        {
+          "id": "S102",
+          "deviceId": "S102",
+          "name": "Semakau Island Landfill",
+          "location": {
+            "latitude": 1.1902,
+            "longitude": 103.7657
+          }
+        },
+        {
+          "id": "S60",
+          "deviceId": "S60",
+          "name": "Sentosa",
+          "location": {
+            "latitude": 1.2504,
+            "longitude": 103.8275
+          }
+        },
+        {
+          "id": "S50",
+          "deviceId": "S50",
+          "name": "Clementi Road",
+          "location": {
+            "latitude": 1.3318,
+            "longitude": 103.7762
+          }
+        },
+        {
+          "id": "S44",
+          "deviceId": "S44",
+          "name": "Nanyang Avenue",
+          "location": {
+            "latitude": 1.3458,
+            "longitude": 103.6817
+          }
+        },
+        {
+          "id": "S43",
+          "deviceId": "S43",
+          "name": "Kim Chuan Road",
+          "location": {
+            "latitude": 1.3406,
+            "longitude": 103.8882
+          }
+        },
+        {
+          "id": "S23",
+          "deviceId": "S23",
+          "name": "S23",
+          "location": {
+            "latitude": 1.3858,
+            "longitude": 103.7119
+          }
+        },
+        {
+          "id": "S06",
+          "deviceId": "S06",
+          "name": "Paya Lebar Airport",
+          "location": {
+            "latitude": 1.357,
+            "longitude": 103.904
+          }
+        },
+        {
+          "id": "S111",
+          "deviceId": "S111",
+          "name": "Scotts Road",
+          "location": {
+            "latitude": 1.3106,
+            "longitude": 103.8365
+          }
+        },
+        {
+          "id": "S121",
+          "deviceId": "S121",
+          "name": "Old Choa Chu Kang Road",
+          "location": {
+            "latitude": 1.3738,
+            "longitude": 103.7217
+          }
+        }
+      ],
+      "readings": [
+        {
+          "timestamp": "2026-06-03T15:59:00+08:00",
+          "data": [
+            {
+              "stationId": "S108",
+              "value": 6.5
+            },
+            {
+              "stationId": "S109",
+              "value": 5.6
+            },
+            {
+              "stationId": "S117",
+              "value": 6.2
+            },
+            {
+              "stationId": "S107",
+              "value": 13.5
+            },
+            {
+              "stationId": "S104",
+              "value": 5.9
+            },
+            {
+              "stationId": "S115",
+              "value": 5.5
+            },
+            {
+              "stationId": "S116",
+              "value": 10.2
+            },
+            {
+              "stationId": "S102",
+              "value": 11.2
+            },
+            {
+              "stationId": "S60",
+              "value": 5.2
+            },
+            {
+              "stationId": "S50",
+              "value": 5.4
+            },
+            {
+              "stationId": "S44",
+              "value": 7
+            },
+            {
+              "stationId": "S43",
+              "value": 4.9
+            },
+            {
+              "stationId": "S23",
+              "value": 7
+            },
+            {
+              "stationId": "S06",
+              "value": 13.2
+            },
+            {
+              "stationId": "S111",
+              "value": 9.4
+            },
+            {
+              "stationId": "S121",
+              "value": 4.7
+            }
+          ]
+        }
+      ],
+      "readingType": "Wind Speed AVG(S)10M M1M",
+      "readingUnit": "knots"
+    },
+    "errorMsg": ""
+  },
+  "wind-direction": {
+    "code": 0,
+    "data": {
+      "stations": [
+        {
+          "id": "S108",
+          "deviceId": "S108",
+          "name": "Marina Gardens Drive",
+          "location": {
+            "latitude": 1.2799,
+            "longitude": 103.8703
+          }
+        },
+        {
+          "id": "S109",
+          "deviceId": "S109",
+          "name": "Ang Mo Kio Avenue 5",
+          "location": {
+            "latitude": 1.3793,
+            "longitude": 103.85
+          }
+        },
+        {
+          "id": "S117",
+          "deviceId": "S117",
+          "name": "Banyan Road",
+          "location": {
+            "longitude": 103.6741,
+            "latitude": 1.2542
+          }
+        },
+        {
+          "id": "S107",
+          "deviceId": "S107",
+          "name": "East Coast Parkway",
+          "location": {
+            "latitude": 1.3133,
+            "longitude": 103.962
+          }
+        },
+        {
+          "id": "S104",
+          "deviceId": "S104",
+          "name": "Woodlands Avenue 9",
+          "location": {
+            "latitude": 1.4439,
+            "longitude": 103.7854
+          }
+        },
+        {
+          "id": "S115",
+          "deviceId": "S115",
+          "name": "Tuas South Avenue 3",
+          "location": {
+            "latitude": 1.2938,
+            "longitude": 103.6184
+          }
+        },
+        {
+          "id": "S116",
+          "deviceId": "S116",
+          "name": "West Coast Highway",
+          "location": {
+            "longitude": 103.7545,
+            "latitude": 1.2824
+          }
+        },
+        {
+          "id": "S102",
+          "deviceId": "S102",
+          "name": "Semakau Island Landfill",
+          "location": {
+            "latitude": 1.1902,
+            "longitude": 103.7657
+          }
+        },
+        {
+          "id": "S60",
+          "deviceId": "S60",
+          "name": "Sentosa",
+          "location": {
+            "latitude": 1.2504,
+            "longitude": 103.8275
+          }
+        },
+        {
+          "id": "S50",
+          "deviceId": "S50",
+          "name": "Clementi Road",
+          "location": {
+            "latitude": 1.3318,
+            "longitude": 103.7762
+          }
+        },
+        {
+          "id": "S44",
+          "deviceId": "S44",
+          "name": "Nanyang Avenue",
+          "location": {
+            "latitude": 1.3458,
+            "longitude": 103.6817
+          }
+        },
+        {
+          "id": "S43",
+          "deviceId": "S43",
+          "name": "Kim Chuan Road",
+          "location": {
+            "latitude": 1.3406,
+            "longitude": 103.8882
+          }
+        },
+        {
+          "id": "S23",
+          "deviceId": "S23",
+          "name": "S23",
+          "location": {
+            "latitude": 1.3858,
+            "longitude": 103.7119
+          }
+        },
+        {
+          "id": "S06",
+          "deviceId": "S06",
+          "name": "Paya Lebar Airport",
+          "location": {
+            "longitude": 103.904,
+            "latitude": 1.357
+          }
+        },
+        {
+          "id": "S111",
+          "deviceId": "S111",
+          "name": "Scotts Road",
+          "location": {
+            "latitude": 1.3106,
+            "longitude": 103.8365
+          }
+        },
+        {
+          "id": "S121",
+          "deviceId": "S121",
+          "name": "Old Choa Chu Kang Road",
+          "location": {
+            "longitude": 103.7217,
+            "latitude": 1.3738
+          }
+        }
+      ],
+      "readings": [
+        {
+          "timestamp": "2026-06-03T15:59:00+08:00",
+          "data": [
+            {
+              "stationId": "S108",
+              "value": 173
+            },
+            {
+              "stationId": "S109",
+              "value": 223
+            },
+            {
+              "stationId": "S117",
+              "value": 184
+            },
+            {
+              "stationId": "S107",
+              "value": 193
+            },
+            {
+              "stationId": "S104",
+              "value": 186
+            },
+            {
+              "stationId": "S115",
+              "value": 163
+            },
+            {
+              "stationId": "S116",
+              "value": 195
+            },
+            {
+              "stationId": "S102",
+              "value": 159
+            },
+            {
+              "stationId": "S60",
+              "value": 164
+            },
+            {
+              "stationId": "S50",
+              "value": 180
+            },
+            {
+              "stationId": "S44",
+              "value": 238
+            },
+            {
+              "stationId": "S43",
+              "value": 203
+            },
+            {
+              "stationId": "S23",
+              "value": 179
+            },
+            {
+              "stationId": "S06",
+              "value": 189
+            },
+            {
+              "stationId": "S111",
+              "value": 150
+            },
+            {
+              "stationId": "S121",
+              "value": 179
+            }
+          ]
+        }
+      ],
+      "readingType": "Wind Dir AVG (S) 10M M1M",
+      "readingUnit": "degrees"
+    },
+    "errorMsg": ""
+  },
+  "rainfall": {
+    "code": 0,
+    "data": {
+      "stations": [
+        {
+          "id": "S218",
+          "deviceId": "S218",
+          "name": "Bukit Batok Street 34",
+          "location": {
+            "latitude": 1.36491,
+            "longitude": 103.75065
+          }
+        },
+        {
+          "id": "S219",
+          "deviceId": "S219",
+          "name": "Yio Chu Kang Road",
+          "location": {
+            "longitude": 103.87639,
+            "latitude": 1.37998
+          }
+        },
+        {
+          "id": "S216",
+          "deviceId": "S216",
+          "name": "Ang Mo Kio Avenue 10",
+          "location": {
+            "latitude": 1.36019,
+            "longitude": 103.85335
+          }
+        },
+        {
+          "id": "S217",
+          "deviceId": "S217",
+          "name": "Bishan Street 13",
+          "location": {
+            "latitude": 1.35028,
+            "longitude": 103.855
+          }
+        },
+        {
+          "id": "S214",
+          "deviceId": "S214",
+          "name": "Tanjong Rhu",
+          "location": {
+            "latitude": 1.29911,
+            "longitude": 103.88289
+          }
+        },
+        {
+          "id": "S215",
+          "deviceId": "S215",
+          "name": "Geylang East Central",
+          "location": {
+            "longitude": 103.88194,
+            "latitude": 1.31944
+          }
+        },
+        {
+          "id": "S213",
+          "deviceId": "S213",
+          "name": "Coronation Walk",
+          "location": {
+            "latitude": 1.32427,
+            "longitude": 103.8097
+          }
+        },
+        {
+          "id": "S81",
+          "deviceId": "S81",
+          "name": "Punggol Central",
+          "location": {
+            "longitude": 103.9095,
+            "latitude": 1.4028
+          }
+        },
+        {
+          "id": "S40",
+          "deviceId": "S40",
+          "name": "Mandai Lake Road",
+          "location": {
+            "latitude": 1.4067,
+            "longitude": 103.7832
+          }
+        },
+        {
+          "id": "S84",
+          "deviceId": "S84",
+          "name": "Simei Avenue",
+          "location": {
+            "latitude": 1.3443,
+            "longitude": 103.9441
+          }
+        },
+        {
+          "id": "S180",
+          "deviceId": "S180",
+          "name": "Taman Jurong Green",
+          "location": {
+            "longitude": 103.71828,
+            "latitude": 1.33701
+          }
+        },
+        {
+          "id": "S44",
+          "deviceId": "S44",
+          "name": "Nanyang Avenue",
+          "location": {
+            "latitude": 1.3458,
+            "longitude": 103.6817
+          }
+        },
+        {
+          "id": "S88",
+          "deviceId": "S88",
+          "name": "Toa Payoh North",
+          "location": {
+            "latitude": 1.3417,
+            "longitude": 103.8515
+          }
+        },
+        {
+          "id": "S43",
+          "deviceId": "S43",
+          "name": "Kim Chuan Road",
+          "location": {
+            "latitude": 1.3406,
+            "longitude": 103.8882
+          }
+        },
+        {
+          "id": "S06",
+          "deviceId": "S06",
+          "name": "Paya Lebar Airport",
+          "location": {
+            "longitude": 103.904,
+            "latitude": 1.357
+          }
+        },
+        {
+          "id": "S221",
+          "deviceId": "S221",
+          "name": "Hougang Avenue 1",
+          "location": {
+            "latitude": 1.35691,
+            "longitude": 103.89088
+          }
+        },
+        {
+          "id": "S222",
+          "deviceId": "S222",
+          "name": "Henderson Road",
+          "location": {
+            "latitude": 1.28987,
+            "longitude": 103.82364
+          }
+        },
+        {
+          "id": "S08",
+          "deviceId": "S08",
+          "name": "Upper Thomson Road",
+          "location": {
+            "longitude": 103.8271,
+            "latitude": 1.37
+          }
+        },
+        {
+          "id": "S07",
+          "deviceId": "S07",
+          "name": "Lornie Road",
+          "location": {
+            "latitude": 1.3418,
+            "longitude": 103.8339
+          }
+        },
+        {
+          "id": "S187",
+          "deviceId": "S187",
+          "name": "Coronation Road",
+          "location": {
+            "latitude": 1.32251,
+            "longitude": 103.80139
+          }
+        },
+        {
+          "id": "S220",
+          "deviceId": "S220",
+          "name": "Compassvale Lane",
+          "location": {
+            "longitude": 103.89797,
+            "latitude": 1.38666
+          }
+        },
+        {
+          "id": "S184",
+          "deviceId": "S184",
+          "name": "Sengkang East Avenue",
+          "location": {
+            "longitude": 103.89852,
+            "latitude": 1.38256
+          }
+        },
+        {
+          "id": "S208",
+          "deviceId": "S208",
+          "name": "Changi East Close",
+          "location": {
+            "latitude": 1.31363,
+            "longitude": 104.00317
+          }
+        },
+        {
+          "id": "S203",
+          "deviceId": "S203",
+          "name": "Pasir Panjang",
+          "location": {
+            "latitude": 1.29164,
+            "longitude": 103.7702
+          }
+        },
+        {
+          "id": "S201",
+          "deviceId": "S201",
+          "name": "Clementi Park",
+          "location": {
+            "longitude": 103.76714,
+            "latitude": 1.32319
+          }
+        },
+        {
+          "id": "S90",
+          "deviceId": "S90",
+          "name": "Bukit Timah Road",
+          "location": {
+            "longitude": 103.8193,
+            "latitude": 1.3191
+          }
+        },
+        {
+          "id": "S92",
+          "deviceId": "S92",
+          "name": "South Buona Vista Road",
+          "location": {
+            "longitude": 103.7888,
+            "latitude": 1.2841
+          }
+        },
+        {
+          "id": "S209",
+          "deviceId": "S209",
+          "name": "Yishun Ring Road",
+          "location": {
+            "longitude": 103.84472,
+            "latitude": 1.42111
+          }
+        },
+        {
+          "id": "S50",
+          "deviceId": "S50",
+          "name": "Clementi Road",
+          "location": {
+            "latitude": 1.3318,
+            "longitude": 103.7762
+          }
+        },
+        {
+          "id": "S94",
+          "deviceId": "S94",
+          "name": "Pasir Ris Street 51",
+          "location": {
+            "longitude": 103.9489,
+            "latitude": 1.3679
+          }
+        },
+        {
+          "id": "S210",
+          "deviceId": "S210",
+          "name": "Woodlands Centre",
+          "location": {
+            "latitude": 1.44003,
+            "longitude": 103.76904
+          }
+        },
+        {
+          "id": "S211",
+          "deviceId": "S211",
+          "name": "Kranji Road",
+          "location": {
+            "latitude": 1.42918,
+            "longitude": 103.75711
+          }
+        },
+        {
+          "id": "S119",
+          "deviceId": "S119",
+          "name": "Nicoll Highway",
+          "location": {
+            "latitude": 1.295,
+            "longitude": 103.8622
+          }
+        },
+        {
+          "id": "S117",
+          "deviceId": "S117",
+          "name": "Banyan Road",
+          "location": {
+            "latitude": 1.2542,
+            "longitude": 103.6741
+          }
+        },
+        {
+          "id": "S115",
+          "deviceId": "S115",
+          "name": "Tuas South Avenue 3",
+          "location": {
+            "longitude": 103.6184,
+            "latitude": 1.2938
+          }
+        },
+        {
+          "id": "S116",
+          "deviceId": "S116",
+          "name": "West Coast Highway",
+          "location": {
+            "latitude": 1.2824,
+            "longitude": 103.7545
+          }
+        },
+        {
+          "id": "S113",
+          "deviceId": "S113",
+          "name": "Marine Parade Road",
+          "location": {
+            "latitude": 1.305,
+            "longitude": 103.9112
+          }
+        },
+        {
+          "id": "S60",
+          "deviceId": "S60",
+          "name": "Sentosa",
+          "location": {
+            "latitude": 1.2504,
+            "longitude": 103.8275
+          }
+        },
+        {
+          "id": "S64",
+          "deviceId": "S64",
+          "name": "Bukit Panjang Road",
+          "location": {
+            "longitude": 103.7607,
+            "latitude": 1.3823
+          }
+        },
+        {
+          "id": "S66",
+          "deviceId": "S66",
+          "name": "Kranji Way",
+          "location": {
+            "longitude": 103.736,
+            "latitude": 1.4387
+          }
+        },
+        {
+          "id": "S24",
+          "deviceId": "S24",
+          "name": "Upper Changi Road North",
+          "location": {
+            "latitude": 1.3678,
+            "longitude": 103.9823
+          }
+        },
+        {
+          "id": "S23",
+          "deviceId": "S23",
+          "name": "S23",
+          "location": {
+            "longitude": 103.7119,
+            "latitude": 1.3858
+          }
+        },
+        {
+          "id": "S69",
+          "deviceId": "S69",
+          "name": "Upper Peirce Reservoir Park",
+          "location": {
+            "longitude": 103.8046,
+            "latitude": 1.3704
+          }
+        },
+        {
+          "id": "S123",
+          "deviceId": "S123",
+          "name": "Towner Road",
+          "location": {
+            "latitude": 1.3214,
+            "longitude": 103.8577
+          }
+        },
+        {
+          "id": "S120",
+          "deviceId": "S120",
+          "name": "Holland Road",
+          "location": {
+            "latitude": 1.3087,
+            "longitude": 103.818
+          }
+        },
+        {
+          "id": "S108",
+          "deviceId": "S108",
+          "name": "Marina Gardens Drive",
+          "location": {
+            "latitude": 1.2799,
+            "longitude": 103.8703
+          }
+        },
+        {
+          "id": "S229",
+          "deviceId": "S229",
+          "name": "Jurong West Street 42",
+          "location": {
+            "latitude": 1.35167,
+            "longitude": 103.72195
+          }
+        },
+        {
+          "id": "S900",
+          "deviceId": "S900",
+          "name": "Seletar Aerospace View",
+          "location": {
+            "latitude": 1.4114,
+            "longitude": 103.8627
+          }
+        },
+        {
+          "id": "S109",
+          "deviceId": "S109",
+          "name": "Ang Mo Kio Avenue 5",
+          "location": {
+            "latitude": 1.3793,
+            "longitude": 103.85
+          }
+        },
+        {
+          "id": "S227",
+          "deviceId": "S227",
+          "name": "Woodlands Drive 62",
+          "location": {
+            "latitude": 1.43944,
+            "longitude": 103.80389
+          }
+        },
+        {
+          "id": "S107",
+          "deviceId": "S107",
+          "name": "East Coast Parkway",
+          "location": {
+            "longitude": 103.962,
+            "latitude": 1.3133
+          }
+        },
+        {
+          "id": "S228",
+          "deviceId": "S228",
+          "name": "Jurong West Street 73",
+          "location": {
+            "latitude": 1.34703,
+            "longitude": 103.70073
+          }
+        },
+        {
+          "id": "S104",
+          "deviceId": "S104",
+          "name": "Woodlands Avenue 9",
+          "location": {
+            "latitude": 1.4439,
+            "longitude": 103.7854
+          }
+        },
+        {
+          "id": "S148",
+          "deviceId": "S148",
+          "name": "Pasir Ris Walk",
+          "location": {
+            "latitude": 1.3715,
+            "longitude": 103.9642
+          }
+        },
+        {
+          "id": "S226",
+          "deviceId": "S226",
+          "name": "Malan Road",
+          "location": {
+            "longitude": 103.80389,
+            "latitude": 1.27472
+          }
+        },
+        {
+          "id": "S102",
+          "deviceId": "S102",
+          "name": "Semakau Island Landfill",
+          "location": {
+            "latitude": 1.1902,
+            "longitude": 103.7657
+          }
+        },
+        {
+          "id": "S223",
+          "deviceId": "S223",
+          "name": "Margaret Drive",
+          "location": {
+            "latitude": 1.29984,
+            "longitude": 103.80264
+          }
+        },
+        {
+          "id": "S908",
+          "deviceId": "S908",
+          "name": "S908",
+          "location": {
+            "longitude": 103.87412,
+            "latitude": 1.39027
+          }
+        },
+        {
+          "id": "S909",
+          "deviceId": "S909",
+          "name": "S909",
+          "location": {
+            "latitude": 1.30568,
+            "longitude": 103.90093
+          }
+        },
+        {
+          "id": "S71",
+          "deviceId": "S71",
+          "name": "Kent Ridge Road",
+          "location": {
+            "latitude": 1.2923,
+            "longitude": 103.7815
+          }
+        },
+        {
+          "id": "S904",
+          "deviceId": "S904",
+          "name": "S904",
+          "location": {
+            "latitude": 1.31622,
+            "longitude": 103.7837
+          }
+        },
+        {
+          "id": "S905",
+          "deviceId": "S905",
+          "name": "S905",
+          "location": {
+            "latitude": 1.3308,
+            "longitude": 103.8045
+          }
+        },
+        {
+          "id": "S902",
+          "deviceId": "S902",
+          "name": "S902",
+          "location": {
+            "longitude": 103.83106,
+            "latitude": 1.41457
+          }
+        },
+        {
+          "id": "S903",
+          "deviceId": "S903",
+          "name": "S903",
+          "location": {
+            "latitude": 1.33742,
+            "longitude": 103.76699
+          }
+        },
+        {
+          "id": "S33",
+          "deviceId": "S33",
+          "name": "Jurong Pier Road",
+          "location": {
+            "latitude": 1.3082,
+            "longitude": 103.71
+          }
+        },
+        {
+          "id": "S77",
+          "deviceId": "S77",
+          "name": "Alexandra Road",
+          "location": {
+            "longitude": 103.8127,
+            "latitude": 1.2937
+          }
+        },
+        {
+          "id": "S35",
+          "deviceId": "S35",
+          "name": "Old Toh Tuck Road",
+          "location": {
+            "longitude": 103.755,
+            "latitude": 1.3325
+          }
+        },
+        {
+          "id": "S79",
+          "deviceId": "S79",
+          "name": "Somerset Road",
+          "location": {
+            "latitude": 1.3003,
+            "longitude": 103.8372
+          }
+        },
+        {
+          "id": "S78",
+          "deviceId": "S78",
+          "name": "Poole Road",
+          "location": {
+            "longitude": 103.8907,
+            "latitude": 1.307
+          }
+        },
+        {
+          "id": "S111",
+          "deviceId": "S111",
+          "name": "Scotts Road",
+          "location": {
+            "longitude": 103.8365,
+            "latitude": 1.3106
+          }
+        },
+        {
+          "id": "S112",
+          "deviceId": "S112",
+          "name": "Lim Chu Kang Road",
+          "location": {
+            "longitude": 103.7017,
+            "latitude": 1.4388
+          }
+        },
+        {
+          "id": "S230",
+          "deviceId": "S230",
+          "name": "West Coast Road",
+          "location": {
+            "latitude": 1.30167,
+            "longitude": 103.76444
+          }
+        }
+      ],
+      "readings": [
+        {
+          "timestamp": "2026-06-03T15:55:00+08:00",
+          "data": [
+            {
+              "stationId": "S218",
+              "value": 0
+            },
+            {
+              "stationId": "S219",
+              "value": 0
+            },
+            {
+              "stationId": "S216",
+              "value": 0
+            },
+            {
+              "stationId": "S217",
+              "value": 0
+            },
+            {
+              "stationId": "S214",
+              "value": 0
+            },
+            {
+              "stationId": "S215",
+              "value": 0
+            },
+            {
+              "stationId": "S213",
+              "value": 0
+            },
+            {
+              "stationId": "S81",
+              "value": 0
+            },
+            {
+              "stationId": "S40",
+              "value": 0
+            },
+            {
+              "stationId": "S84",
+              "value": 0
+            },
+            {
+              "stationId": "S180",
+              "value": 0
+            },
+            {
+              "stationId": "S44",
+              "value": 0
+            },
+            {
+              "stationId": "S88",
+              "value": 0
+            },
+            {
+              "stationId": "S43",
+              "value": 0
+            },
+            {
+              "stationId": "S06",
+              "value": 0
+            },
+            {
+              "stationId": "S221",
+              "value": 0
+            },
+            {
+              "stationId": "S222",
+              "value": 0
+            },
+            {
+              "stationId": "S08",
+              "value": 0
+            },
+            {
+              "stationId": "S07",
+              "value": 0
+            },
+            {
+              "stationId": "S187",
+              "value": 0
+            },
+            {
+              "stationId": "S220",
+              "value": 0
+            },
+            {
+              "stationId": "S184",
+              "value": 0
+            },
+            {
+              "stationId": "S208",
+              "value": 0
+            },
+            {
+              "stationId": "S203",
+              "value": 0
+            },
+            {
+              "stationId": "S201",
+              "value": 0
+            },
+            {
+              "stationId": "S90",
+              "value": 0
+            },
+            {
+              "stationId": "S92",
+              "value": 0
+            },
+            {
+              "stationId": "S209",
+              "value": 0
+            },
+            {
+              "stationId": "S50",
+              "value": 0
+            },
+            {
+              "stationId": "S94",
+              "value": 0
+            },
+            {
+              "stationId": "S210",
+              "value": 0
+            },
+            {
+              "stationId": "S211",
+              "value": 0
+            },
+            {
+              "stationId": "S119",
+              "value": 0
+            },
+            {
+              "stationId": "S117",
+              "value": 0
+            },
+            {
+              "stationId": "S115",
+              "value": 0
+            },
+            {
+              "stationId": "S116",
+              "value": 0
+            },
+            {
+              "stationId": "S113",
+              "value": 0
+            },
+            {
+              "stationId": "S60",
+              "value": 0
+            },
+            {
+              "stationId": "S64",
+              "value": 0
+            },
+            {
+              "stationId": "S66",
+              "value": 0
+            },
+            {
+              "stationId": "S24",
+              "value": 0
+            },
+            {
+              "stationId": "S23",
+              "value": 0
+            },
+            {
+              "stationId": "S69",
+              "value": 0
+            },
+            {
+              "stationId": "S123",
+              "value": 0
+            },
+            {
+              "stationId": "S120",
+              "value": 0
+            },
+            {
+              "stationId": "S108",
+              "value": 0
+            },
+            {
+              "stationId": "S229",
+              "value": 0
+            },
+            {
+              "stationId": "S900",
+              "value": 0
+            },
+            {
+              "stationId": "S109",
+              "value": 0
+            },
+            {
+              "stationId": "S227",
+              "value": 0
+            },
+            {
+              "stationId": "S107",
+              "value": 0
+            },
+            {
+              "stationId": "S228",
+              "value": 0
+            },
+            {
+              "stationId": "S104",
+              "value": 0
+            },
+            {
+              "stationId": "S148",
+              "value": 0
+            },
+            {
+              "stationId": "S226",
+              "value": 0
+            },
+            {
+              "stationId": "S102",
+              "value": 0
+            },
+            {
+              "stationId": "S223",
+              "value": 0
+            },
+            {
+              "stationId": "S908",
+              "value": 0
+            },
+            {
+              "stationId": "S909",
+              "value": 0
+            },
+            {
+              "stationId": "S71",
+              "value": 0
+            },
+            {
+              "stationId": "S904",
+              "value": 0
+            },
+            {
+              "stationId": "S905",
+              "value": 0
+            },
+            {
+              "stationId": "S902",
+              "value": 0
+            },
+            {
+              "stationId": "S903",
+              "value": 0
+            },
+            {
+              "stationId": "S33",
+              "value": 0
+            },
+            {
+              "stationId": "S77",
+              "value": 0
+            },
+            {
+              "stationId": "S35",
+              "value": 0
+            },
+            {
+              "stationId": "S79",
+              "value": 0
+            },
+            {
+              "stationId": "S78",
+              "value": 0
+            },
+            {
+              "stationId": "S111",
+              "value": 0
+            },
+            {
+              "stationId": "S112",
+              "value": 0
+            },
+            {
+              "stationId": "S230",
+              "value": 0
+            }
+          ]
+        }
+      ],
+      "readingType": "TB1 Rainfall 5 Minute Total F",
+      "readingUnit": "mm"
+    },
+    "errorMsg": ""
+  },
+  "two-hr-forecast": {
+    "code": 0,
+    "data": {
+      "area_metadata": [
+        {
+          "name": "Ang Mo Kio",
+          "label_location": {
+            "latitude": 1.375,
+            "longitude": 103.839
+          }
+        },
+        {
+          "name": "Bedok",
+          "label_location": {
+            "latitude": 1.321,
+            "longitude": 103.924
+          }
+        },
+        {
+          "name": "Bishan",
+          "label_location": {
+            "longitude": 103.839,
+            "latitude": 1.350772
+          }
+        },
+        {
+          "name": "Boon Lay",
+          "label_location": {
+            "longitude": 103.701,
+            "latitude": 1.304
+          }
+        },
+        {
+          "name": "Bukit Batok",
+          "label_location": {
+            "latitude": 1.353,
+            "longitude": 103.754
+          }
+        },
+        {
+          "name": "Bukit Merah",
+          "label_location": {
+            "latitude": 1.277,
+            "longitude": 103.819
+          }
+        },
+        {
+          "name": "Bukit Panjang",
+          "label_location": {
+            "longitude": 103.77195,
+            "latitude": 1.362
+          }
+        },
+        {
+          "name": "Bukit Timah",
+          "label_location": {
+            "longitude": 103.791,
+            "latitude": 1.325
+          }
+        },
+        {
+          "name": "Central Water Catchment",
+          "label_location": {
+            "longitude": 103.805,
+            "latitude": 1.38
+          }
+        },
+        {
+          "name": "Changi",
+          "label_location": {
+            "longitude": 103.987,
+            "latitude": 1.357
+          }
+        },
+        {
+          "name": "Choa Chu Kang",
+          "label_location": {
+            "latitude": 1.377,
+            "longitude": 103.745
+          }
+        },
+        {
+          "name": "City",
+          "label_location": {
+            "latitude": 1.292,
+            "longitude": 103.844
+          }
+        },
+        {
+          "name": "Clementi",
+          "label_location": {
+            "longitude": 103.76,
+            "latitude": 1.315
+          }
+        },
+        {
+          "name": "Geylang",
+          "label_location": {
+            "latitude": 1.318,
+            "longitude": 103.884
+          }
+        },
+        {
+          "name": "Hougang",
+          "label_location": {
+            "latitude": 1.361218,
+            "longitude": 103.886
+          }
+        },
+        {
+          "name": "Jalan Bahar",
+          "label_location": {
+            "latitude": 1.347,
+            "longitude": 103.67
+          }
+        },
+        {
+          "name": "Jurong East",
+          "label_location": {
+            "longitude": 103.737,
+            "latitude": 1.326
+          }
+        },
+        {
+          "name": "Jurong Island",
+          "label_location": {
+            "latitude": 1.266,
+            "longitude": 103.699
+          }
+        },
+        {
+          "name": "Jurong West",
+          "label_location": {
+            "latitude": 1.34039,
+            "longitude": 103.705
+          }
+        },
+        {
+          "name": "Kallang",
+          "label_location": {
+            "latitude": 1.312,
+            "longitude": 103.862
+          }
+        },
+        {
+          "name": "Lim Chu Kang",
+          "label_location": {
+            "latitude": 1.423,
+            "longitude": 103.717332
+          }
+        },
+        {
+          "name": "Mandai",
+          "label_location": {
+            "longitude": 103.812,
+            "latitude": 1.419
+          }
+        },
+        {
+          "name": "Marine Parade",
+          "label_location": {
+            "longitude": 103.891,
+            "latitude": 1.297
+          }
+        },
+        {
+          "name": "Novena",
+          "label_location": {
+            "longitude": 103.826,
+            "latitude": 1.327
+          }
+        },
+        {
+          "name": "Pasir Ris",
+          "label_location": {
+            "longitude": 103.948,
+            "latitude": 1.37
+          }
+        },
+        {
+          "name": "Paya Lebar",
+          "label_location": {
+            "longitude": 103.914,
+            "latitude": 1.358
+          }
+        },
+        {
+          "name": "Pioneer",
+          "label_location": {
+            "longitude": 103.675,
+            "latitude": 1.315
+          }
+        },
+        {
+          "name": "Pulau Tekong",
+          "label_location": {
+            "longitude": 104.053,
+            "latitude": 1.403
+          }
+        },
+        {
+          "name": "Pulau Ubin",
+          "label_location": {
+            "longitude": 103.96,
+            "latitude": 1.404
+          }
+        },
+        {
+          "name": "Punggol",
+          "label_location": {
+            "longitude": 103.904,
+            "latitude": 1.401
+          }
+        },
+        {
+          "name": "Queenstown",
+          "label_location": {
+            "latitude": 1.291,
+            "longitude": 103.78576
+          }
+        },
+        {
+          "name": "Seletar",
+          "label_location": {
+            "longitude": 103.869,
+            "latitude": 1.404
+          }
+        },
+        {
+          "name": "Sembawang",
+          "label_location": {
+            "longitude": 103.818495,
+            "latitude": 1.445
+          }
+        },
+        {
+          "name": "Sengkang",
+          "label_location": {
+            "longitude": 103.891443,
+            "latitude": 1.384
+          }
+        },
+        {
+          "name": "Sentosa",
+          "label_location": {
+            "latitude": 1.243,
+            "longitude": 103.832
+          }
+        },
+        {
+          "name": "Serangoon",
+          "label_location": {
+            "latitude": 1.357,
+            "longitude": 103.865
+          }
+        },
+        {
+          "name": "Southern Islands",
+          "label_location": {
+            "latitude": 1.208,
+            "longitude": 103.842
+          }
+        },
+        {
+          "name": "Sungei Kadut",
+          "label_location": {
+            "longitude": 103.756,
+            "latitude": 1.413
+          }
+        },
+        {
+          "name": "Tampines",
+          "label_location": {
+            "longitude": 103.944,
+            "latitude": 1.345
+          }
+        },
+        {
+          "name": "Tanglin",
+          "label_location": {
+            "longitude": 103.813,
+            "latitude": 1.308
+          }
+        },
+        {
+          "name": "Tengah",
+          "label_location": {
+            "longitude": 103.715,
+            "latitude": 1.374
+          }
+        },
+        {
+          "name": "Toa Payoh",
+          "label_location": {
+            "longitude": 103.856327,
+            "latitude": 1.334304
+          }
+        },
+        {
+          "name": "Tuas",
+          "label_location": {
+            "latitude": 1.294947,
+            "longitude": 103.635
+          }
+        },
+        {
+          "name": "Western Islands",
+          "label_location": {
+            "longitude": 103.746,
+            "latitude": 1.205926
+          }
+        },
+        {
+          "name": "Western Water Catchment",
+          "label_location": {
+            "latitude": 1.405,
+            "longitude": 103.689
+          }
+        },
+        {
+          "name": "Woodlands",
+          "label_location": {
+            "latitude": 1.432,
+            "longitude": 103.786528
+          }
+        },
+        {
+          "name": "Yishun",
+          "label_location": {
+            "latitude": 1.418,
+            "longitude": 103.839
+          }
+        }
+      ],
+      "items": [
+        {
+          "update_timestamp": "2026-06-03T15:36:34+08:00",
+          "timestamp": "2026-06-03T15:30:00+08:00",
+          "valid_period": {
+            "start": "2026-06-03T15:30:00+08:00",
+            "end": "2026-06-03T17:30:00+08:00",
+            "text": "3.30 pm to 5.30 pm"
+          },
+          "forecasts": [
+            {
+              "area": "Ang Mo Kio",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Bedok",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Bishan",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Boon Lay",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Bukit Batok",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Bukit Merah",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Bukit Panjang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Bukit Timah",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Central Water Catchment",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Changi",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Choa Chu Kang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "City",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Clementi",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Geylang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Hougang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Jalan Bahar",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Jurong East",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Jurong Island",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Jurong West",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Kallang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Lim Chu Kang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Mandai",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Marine Parade",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Novena",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Pasir Ris",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Paya Lebar",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Pioneer",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Pulau Tekong",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Pulau Ubin",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Punggol",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Queenstown",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Seletar",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Sembawang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Sengkang",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Sentosa",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Serangoon",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Southern Islands",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Sungei Kadut",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Tampines",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Tanglin",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Tengah",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Toa Payoh",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Tuas",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Western Islands",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Western Water Catchment",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Woodlands",
+              "forecast": "Cloudy"
+            },
+            {
+              "area": "Yishun",
+              "forecast": "Cloudy"
+            }
+          ]
+        }
+      ]
+    },
+    "errorMsg": ""
+  },
+  "twenty-four-hr-forecast": {
+    "code": 0,
+    "data": {
+      "records": [
+        {
+          "date": "2026-06-03",
+          "updatedTimestamp": "2026-06-03T14:21:02+08:00",
+          "periods": [
+            {
+              "regions": {
+                "east": {
+                  "text": "Cloudy",
+                  "code": "CL"
+                },
+                "central": {
+                  "code": "CL",
+                  "text": "Cloudy"
+                },
+                "west": {
+                  "code": "CL",
+                  "text": "Cloudy"
+                },
+                "south": {
+                  "text": "Cloudy",
+                  "code": "CL"
+                },
+                "north": {
+                  "code": "CL",
+                  "text": "Cloudy"
+                }
+              },
+              "timePeriod": {
+                "start": "2026-06-03T12:00:00+08:00",
+                "text": "Midday to 6 pm 03 Jun",
+                "end": "2026-06-03T18:00:00+08:00"
+              }
+            },
+            {
+              "regions": {
+                "south": {
+                  "text": "Partly Cloudy (Night)",
+                  "code": "PN"
+                },
+                "north": {
+                  "text": "Partly Cloudy (Night)",
+                  "code": "PN"
+                },
+                "west": {
+                  "code": "PN",
+                  "text": "Partly Cloudy (Night)"
+                },
+                "east": {
+                  "text": "Partly Cloudy (Night)",
+                  "code": "PN"
+                },
+                "central": {
+                  "code": "PN",
+                  "text": "Partly Cloudy (Night)"
+                }
+              },
+              "timePeriod": {
+                "text": "6 pm 03 Jun to 6 am 04 Jun",
+                "end": "2026-06-04T06:00:00+08:00",
+                "start": "2026-06-03T18:00:00+08:00"
+              }
+            },
+            {
+              "timePeriod": {
+                "end": "2026-06-04T12:00:00+08:00",
+                "text": "6 am to Midday 04 Jun",
+                "start": "2026-06-04T06:00:00+08:00"
+              },
+              "regions": {
+                "north": {
+                  "text": "Partly Cloudy (Day)",
+                  "code": "PC"
+                },
+                "south": {
+                  "text": "Partly Cloudy (Day)",
+                  "code": "PC"
+                },
+                "east": {
+                  "code": "PC",
+                  "text": "Partly Cloudy (Day)"
+                },
+                "west": {
+                  "text": "Partly Cloudy (Day)",
+                  "code": "PC"
+                },
+                "central": {
+                  "code": "PC",
+                  "text": "Partly Cloudy (Day)"
+                }
+              }
+            }
+          ],
+          "general": {
+            "temperature": {
+              "unit": "Degrees Celsius",
+              "high": 34,
+              "low": 26
+            },
+            "relativeHumidity": {
+              "unit": "Percentage",
+              "high": 95,
+              "low": 55
+            },
+            "wind": {
+              "direction": "SSE",
+              "speed": {
+                "high": 25,
+                "low": 10
+              }
+            },
+            "forecast": {
+              "code": "CL",
+              "text": "Cloudy"
+            },
+            "validPeriod": {
+              "end": "2026-06-04T12:00:00+08:00",
+              "start": "2026-06-03T12:00:00+08:00",
+              "text": "12 PM 3 Jun to 12 PM 4 Jun"
+            }
+          },
+          "timestamp": "2026-06-03T14:11:00+08:00"
+        }
+      ]
+    },
+    "errorMsg": ""
+  },
+  "four-day-outlook": {
+    "code": 0,
+    "data": {
+      "records": [
+        {
+          "date": "2026-06-03",
+          "updatedTimestamp": "2026-06-03T17:41:15+08:00",
+          "forecasts": [
+            {
+              "relativeHumidity": {
+                "unit": "Percentage",
+                "high": 95,
+                "low": 55
+              },
+              "wind": {
+                "speed": {
+                  "high": 25,
+                  "low": 10
+                },
+                "direction": "SSW"
+              },
+              "timestamp": "2026-06-04T00:00:00+08:00",
+              "forecast": {
+                "code": "TL",
+                "summary": "Late morning and early afternoon thundery showers",
+                "text": "Thundery Showers"
+              },
+              "temperature": {
+                "high": 34,
+                "low": 26,
+                "unit": "Degrees Celsius"
+              },
+              "day": "Thursday"
+            },
+            {
+              "relativeHumidity": {
+                "high": 85,
+                "low": 55,
+                "unit": "Percentage"
+              },
+              "forecast": {
+                "text": "Partly Cloudy (Day)",
+                "summary": "Partly cloudy",
+                "code": "PC"
+              },
+              "temperature": {
+                "high": 35,
+                "unit": "Degrees Celsius",
+                "low": 26
+              },
+              "wind": {
+                "direction": "SSE",
+                "speed": {
+                  "low": 10,
+                  "high": 25
+                }
+              },
+              "day": "Friday",
+              "timestamp": "2026-06-05T00:00:00+08:00"
+            },
+            {
+              "temperature": {
+                "low": 25,
+                "unit": "Degrees Celsius",
+                "high": 33
+              },
+              "timestamp": "2026-06-06T00:00:00+08:00",
+              "day": "Saturday",
+              "relativeHumidity": {
+                "low": 60,
+                "high": 95,
+                "unit": "Percentage"
+              },
+              "wind": {
+                "speed": {
+                  "low": 10,
+                  "high": 25
+                },
+                "direction": "S"
+              },
+              "forecast": {
+                "code": "TL",
+                "text": "Thundery Showers",
+                "summary": "Late morning and early afternoon thundery showers"
+              }
+            },
+            {
+              "temperature": {
+                "unit": "Degrees Celsius",
+                "high": 33,
+                "low": 25
+              },
+              "wind": {
+                "direction": "SSE",
+                "speed": {
+                  "low": 10,
+                  "high": 20
+                }
+              },
+              "day": "Sunday",
+              "relativeHumidity": {
+                "high": 95,
+                "low": 60,
+                "unit": "Percentage"
+              },
+              "timestamp": "2026-06-07T00:00:00+08:00",
+              "forecast": {
+                "code": "TL",
+                "text": "Thundery Showers",
+                "summary": "Late morning and early afternoon thundery showers"
+              }
+            }
+          ],
+          "timestamp": "2026-06-03T17:35:00+08:00"
+        }
+      ]
+    },
+    "errorMsg": ""
+  },
+  "uv": {
+    "code": 0,
+    "data": {
+      "records": [
+        {
+          "index": [
+            {
+              "hour": "2026-06-03T15:00:00+08:00",
+              "value": 5
+            },
+            {
+              "value": 5,
+              "hour": "2026-06-03T14:00:00+08:00"
+            },
+            {
+              "hour": "2026-06-03T13:00:00+08:00",
+              "value": 4
+            },
+            {
+              "hour": "2026-06-03T12:00:00+08:00",
+              "value": 5
+            },
+            {
+              "hour": "2026-06-03T11:00:00+08:00",
+              "value": 3
+            },
+            {
+              "hour": "2026-06-03T10:00:00+08:00",
+              "value": 2
+            },
+            {
+              "value": 1,
+              "hour": "2026-06-03T09:00:00+08:00"
+            },
+            {
+              "hour": "2026-06-03T08:00:00+08:00",
+              "value": 0
+            },
+            {
+              "hour": "2026-06-03T07:00:00+08:00",
+              "value": 0
+            }
+          ],
+          "date": "2026-06-03",
+          "updatedTimestamp": "2026-06-03T15:11:09+08:00",
+          "timestamp": "2026-06-03T15:00:00+08:00"
+        }
+      ]
+    },
+    "errorMsg": ""
+  }
+}

@@ -1,0 +1,2119 @@
+openapi: 3.1.0
+info:
+  title: NEA Singapore Real-time APIs
+  description: 'Real-time environmental and weather data from Singapore''s National Environment Agency (NEA), served via data.gov.sg.
+
+
+    Base URL: <https://api-open.data.gov.sg/v2/real-time/api>
+
+
+    Authentication: All endpoints are publicly accessible without an API key for testing. Include the optional `x-api-key`
+    header for higher rate limits (6/12/30 requests per 10s without/dev/prod key). See <https://guide.data.gov.sg/developer-guide/api-overview/api-rate-limits>
+
+
+    Common query parameters:
+
+
+    - `date`: SGT date filter (YYYY-MM-DD). Omit for latest reading.
+
+
+    - `paginationToken`: For paginated historical results when using date filters.
+
+
+    Sources: Official OpenAPI specs from <https://data.gov.sg> NEA dataset pages.'
+  version: 1.0.11
+  contact:
+    email: feedback@data.gov.sg
+servers:
+- url: https://api-open.data.gov.sg/v2/real-time/api
+tags:
+- name: Air Quality
+  description: PSI and PM2.5 readings by region. Updated every 15 minutes.
+- name: Weather Readings
+  description: Station-level weather observations (up to 1-minute intervals).
+- name: Weather Forecast
+  description: Area and regional weather forecasts from NEA MSS.
+- name: Environment
+  description: UV index, lightning, and heat stress (WBGT) data.
+paths:
+  /psi:
+    get:
+      tags:
+      - Air Quality
+      summary: Retrieve the latest PSI information
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/psi>
+
+
+        - Readings are provided for each major region in Singapore
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - The `region_metadata` field in the response provides longitude/latitude information for the regions. You can use
+        that to place the readings on a map.
+
+
+        - Unit of measure for readings is `PSI Value`'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: PSI Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PsiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      operationId: psi
+  /pm25:
+    get:
+      tags:
+      - Air Quality
+      summary: PM 2.5
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/pm25>
+
+
+        - Readings are provided for each major region in Singapore
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - The `region_metadata` field in the response provides longitude/latitude information for the regions. You can use
+        that to place the readings on a map.
+
+
+        - Unit of measure for readings is `µg/m3`.'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: PM 2.5 Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pm25Response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      operationId: pm25
+  /air-temperature:
+    get:
+      summary: Get air temperature readings across Singapore
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/air-temperature>
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - Unit of measure for readings is `°C`'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: Air Temperature Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirTemperatureResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Readings
+      operationId: air_temperature
+  /relative-humidity:
+    get:
+      summary: Get relative humidity readings across Singapore
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - Unit of measure for readings is `%`'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: Relative Humidity Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelativeHumidityResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Readings
+      operationId: relative_humidity
+  /wind-speed:
+    get:
+      summary: Get wind speed readings across Singapore
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/wind-speed>
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - Unit of measure for readings is `Knots`'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: Wind Speed Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WindSpeedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Readings
+      operationId: wind_speed
+  /wind-direction:
+    get:
+      summary: Get wind direction readings across Singapore
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/wind-direction>
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - Unit of measure for readings is `°`'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: Wind Direction Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WindDirectionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Readings
+      operationId: wind_direction
+  /rainfall:
+    get:
+      summary: Get rainfall readings across Singapore
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/rainfall>
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - Unit of measure for readings is `mm`'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: Rainfall Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RainfallResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Readings
+      operationId: rainfall
+  /two-hr-forecast:
+    get:
+      summary: Retrieve the latest two hour weather forecast
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast>
+
+
+        - Forecasts are given for multiple areas in Singapore
+
+
+        - Filter for specific date or date-time by providing `date` in query parameter (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS).
+
+
+        - example: `?date=2024-07-16` or `?date=2024-07-16T23:59:00`
+
+
+        - Forecasts are valid for two hours, for example, the validity period of the forecast at 1pm is 1pm to 3pm
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: 2 Hour Weather Forecast
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwoHrForecastResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Forecast
+      operationId: two_hr_forecast
+  /twenty-four-hr-forecast:
+    get:
+      summary: Retrieve the latest 24 hour weather forecast
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast>
+
+
+        - Updated multiple times throughout the day
+
+
+        - Filter for specific date or date-time by providing `date` in query parameter (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS).
+
+
+        - example: `?date=2024-07-16` or `?date=2024-07-16T23:59:00`
+
+
+        - Forecasts are valid for twenty four hours, for example, the validity period of the forecast at 1st Jan 1pm is from
+        1st Jan 1pm to 2nd Jan 1pm
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: 24 Hour Weather Forecast
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwentyFourHrForecastResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Forecast
+      operationId: twenty_four_hr_forecast
+  /four-day-outlook:
+    get:
+      summary: Retrieve the latest 4 day weather forecast
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/four-day-outlook>
+
+
+        - The forecast is for the next 4 days.
+
+
+        - Filter for specific date or date-time by providing `date` in query parameter (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS).
+
+
+        - example: `?date=2024-07-16` or `?date=2024-07-16T23:59:00`
+
+
+        - Forecasts are valid for four days, for example, the validity period of the forecast at 1st Jan 1pm is from 1st Jan
+        1pm to 5th Jan 1pm
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: 4 Day Weather Forecast
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FourDayOutlookResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Weather Forecast
+      operationId: four_day_outlook
+  /uv:
+    get:
+      summary: Retrieve the latest UV index information
+      description: '<https://api-open.data.gov.sg/v2/real-time/api/uv>
+
+
+        - Updated between 7 AM and 7 PM everyday
+
+
+        - The UV index value is averaged over the preceding hour
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2024-07-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest reading
+
+
+        - Unit of measure for readings is `Ultraviolet Index`'
+      parameters:
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: UV Index Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UvResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Environment
+      operationId: uv
+  /weather:
+    get:
+      summary: Retrieve the latest lightning observation
+      description: 'Unified weather sub-API endpoint.
+
+
+        - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.
+
+
+        - `?api=wbgt` — Wet Bulb Globe Temperature heat stress readings. Updated every 15 minutes.
+
+
+        <https://api-open.data.gov.sg/v2/real-time/api/weather?api=lightning>
+
+
+        - Updated multiple times throughout the day
+
+
+        - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
+
+
+        - example: `?date=2025-01-16`
+
+
+        - If `date` is not provided in query parameter, API will return the latest lightning observation'
+      parameters:
+      - $ref: '#/components/parameters/WeatherApiQuery'
+      - $ref: '#/components/parameters/DateQuery'
+      - $ref: '#/components/parameters/PaginationToken'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      responses:
+        '200':
+          description: Lightning Observations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherSubApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestSubApi'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+      - Environment
+      operationId: weather_sub_api
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Optional API key from <https://data.gov.sg> for higher rate limits.
+  parameters:
+    DateQuery:
+      name: date
+      in: query
+      description: SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
+      schema:
+        $ref: '#/components/schemas/NeaDate'
+    PaginationToken:
+      name: paginationToken
+      in: query
+      description: Pagination token for subsequent pages (only when date filter is used and more pages exist).
+      schema:
+        type: string
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      description: Optional API key for higher rate limits.
+      required: false
+      schema:
+        type: string
+    WeatherApiQuery:
+      name: api
+      in: query
+      description: Sub-API selector (lightning or wbgt). Required.
+      required: true
+      schema:
+        $ref: '#/components/schemas/NeaWeatherSubApi'
+      example: lightning
+  responses:
+    BadRequest:
+      description: Invalid request (bad date format or pagination token)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvalidParamsError'
+    BadRequestSubApi:
+      description: Invalid HTTP request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WeatherSubApiInvalidParamsError'
+    NotFound:
+      description: Weather data not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DataNotFoundError'
+    TooManyRequests:
+      description: Rate limit exceeded (429). Wait and retry, or use an x-api-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RateLimitError'
+    MissingAuth:
+      description: Missing or invalid authentication (403). Some legacy paths require x-api-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MissingAuthResponse'
+  schemas:
+    PsiResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/PsiData'
+      required:
+      - code
+      - data
+      - errorMsg
+    Pm25Response:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/Pm25Data'
+      required:
+      - code
+      - data
+      - errorMsg
+    AirTemperatureResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/AirTemperatureData'
+      required:
+      - code
+      - data
+      - errorMsg
+    RelativeHumidityResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/RelativeHumidityData'
+      required:
+      - code
+      - data
+      - errorMsg
+    WindSpeedResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/WindSpeedData'
+      required:
+      - code
+      - data
+      - errorMsg
+    WindDirectionResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/WindDirectionData'
+      required:
+      - code
+      - data
+      - errorMsg
+    RainfallResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/RainfallData'
+      required:
+      - code
+      - data
+      - errorMsg
+    TwoHrForecastResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/TwoHrForecastData'
+      required:
+      - code
+      - data
+      - errorMsg
+    TwentyFourHrForecastResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/TwentyFourHrForecastData'
+      required:
+      - code
+      - data
+      - errorMsg
+    FourDayOutlookResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/FourDayOutlookData'
+      required:
+      - code
+      - data
+      - errorMsg
+    UvResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/UvData'
+      required:
+      - code
+      - data
+      - errorMsg
+    WeatherSubApiResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaSuccessCode'
+        errorMsg:
+          type: string
+          description: Error message (empty string for success)
+        data:
+          $ref: '#/components/schemas/WeatherSubApiData'
+    InvalidParamsError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 4
+        name:
+          type: string
+          example: ERROR_PARAMS
+        errorMsg:
+          $ref: '#/components/schemas/NeaInvalidParamsErrorMsg'
+    InvalidParamsError22:
+      type: object
+      properties:
+        code:
+          type: number
+        name:
+          type: string
+        errorMsg:
+          type: string
+    DataNotFoundError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 17
+        name:
+          type: string
+          example: REAL_TIME_API_DATA_NOT_FOUND
+        errorMsg:
+          type: string
+          example: Data not found
+    RateLimitError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 24
+        name:
+          type: string
+          example: TOO_MANY_REQUESTS
+        errorMsg:
+          type: string
+          example: Rate limit exceeded
+    MissingAuthResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Missing Authentication Token
+    NeaSuccessCode:
+      type: integer
+      description: Response status code (0 for success)
+      minimum: 0
+      maximum: 0
+      example: 0
+    NeaOffsetDateTime:
+      type: string
+      description: ISO 8601 date or date-time in Singapore Time (SGT)
+      x-satay:
+        parse-as: offset-datetime
+    NeaDate:
+      type: string
+      description: SGT calendar date (YYYY-MM-DD)
+      example: '2024-07-16'
+      x-satay:
+        parse-as: date
+    NeaLatitude:
+      type: number
+      description: WGS84 latitude for Singapore
+      minimum: 1.0
+      maximum: 1.5
+    NeaLongitude:
+      type: number
+      description: WGS84 longitude for Singapore
+      minimum: 103.5
+      maximum: 104.2
+    NeaRegionalReading:
+      type: integer
+      description: Regional air-quality or index reading
+      minimum: 0
+      maximum: 500
+    NeaPm25HourlyReading:
+      type: integer
+      description: Regional PM2.5 one-hour reading (µg/m³)
+      minimum: 0
+      maximum: 500
+    NeaWindDirectionDegrees:
+      type: integer
+      description: Wind direction in degrees
+      minimum: 0
+      maximum: 360
+    NeaUvIndex:
+      type: integer
+      description: UV index for the hour
+      minimum: 0
+      maximum: 16
+    NeaHumidityPercent:
+      type: number
+      description: Relative humidity percentage
+      minimum: 0
+      maximum: 100
+    NeaTemperatureCelsius:
+      type: number
+      description: Air temperature in degrees Celsius
+      minimum: 15
+      maximum: 45
+    NeaWindSpeedKmh:
+      type: number
+      description: Wind speed in km/h
+      minimum: 0
+      maximum: 120
+    NeaForecastCode:
+      type: string
+      description: NEA MSS short weather forecast code
+      enum:
+      - FA
+      - FN
+      - FW
+      - CL
+      - PC
+      - PN
+      - HZ
+      - SH
+      - WI
+      - MS
+      - FG
+      - LR
+      - MR
+      - HR
+      - PS
+      - LS
+      - HS
+      - TS
+      - HT
+      - HG
+      - TL
+      x-satay:
+        enum-variants:
+          FA: FairDay
+          FN: FairNight
+          FW: FairAndWarm
+          CL: Cloudy
+          PC: PartlyCloudyDay
+          PN: PartlyCloudyNight
+          HZ: Hazy
+          SH: SlightlyHazy
+          WI: Windy
+          MS: Mist
+          FG: Fog
+          LR: LightRain
+          MR: ModerateRain
+          HR: HeavyRain
+          PS: PassingShowers
+          LS: LightShowers
+          HS: HeavyShowers
+          TS: ThunderyShowers
+          HT: HeavyThunderyShowers
+          HG: HeavyThunderyShowersWithGustyWinds
+          TL: ThunderyShowersAlt
+    NeaLightningType:
+      type: string
+      description: Lightning event type (C = cloud-to-cloud, G = cloud-to-ground)
+      enum:
+      - C
+      - G
+      x-satay:
+        enum-variants:
+          C: CloudToCloud
+          G: CloudToGround
+    NeaForecastText:
+      type: string
+      description: NEA MSS human-readable weather forecast text
+      enum:
+      - Fair
+      - Fair (Day)
+      - Fair (Night)
+      - Fair and Warm
+      - Partly Cloudy
+      - Partly Cloudy (Day)
+      - Partly Cloudy (Night)
+      - Cloudy
+      - Hazy
+      - Slightly Hazy
+      - Windy
+      - Mist
+      - Fog
+      - Light Rain
+      - Moderate Rain
+      - Heavy Rain
+      - Passing Showers
+      - Light Showers
+      - Showers
+      - Heavy Showers
+      - Thundery Showers
+      - Heavy Thundery Showers
+      - Heavy Thundery Showers with Gusty Winds
+      x-satay:
+        enum-variants:
+          Fair: Fair
+          Fair (Day): FairDay
+          Fair (Night): FairNight
+          Fair and Warm: FairAndWarm
+          Partly Cloudy: PartlyCloudy
+          Partly Cloudy (Day): PartlyCloudyDay
+          Partly Cloudy (Night): PartlyCloudyNight
+          Cloudy: Cloudy
+          Hazy: Hazy
+          Slightly Hazy: SlightlyHazy
+          Windy: Windy
+          Mist: Mist
+          Fog: Fog
+          Light Rain: LightRain
+          Moderate Rain: ModerateRain
+          Heavy Rain: HeavyRain
+          Passing Showers: PassingShowers
+          Light Showers: LightShowers
+          Showers: Showers
+          Heavy Showers: HeavyShowers
+          Thundery Showers: ThunderyShowers
+          Heavy Thundery Showers: HeavyThunderyShowers
+          Heavy Thundery Showers with Gusty Winds: HeavyThunderyShowersWithGustyWinds
+    NeaDayOfWeek:
+      type: string
+      description: Day of week for multi-day outlook forecasts
+      enum:
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      - Sunday
+      x-satay:
+        enum-variants:
+          Monday: Monday
+          Tuesday: Tuesday
+          Wednesday: Wednesday
+          Thursday: Thursday
+          Friday: Friday
+          Saturday: Saturday
+          Sunday: Sunday
+    NeaInvalidParamsErrorMsg:
+      type: string
+      description: Bad-request error message for invalid date or pagination token
+      enum:
+      - Invalid date format. Date format must be YYYY-MM-DD (2024-06-01) or YYYY-MM-DDTHH:mm:ss (2024-06-01T08:30:00).
+      - Invalid pagination token.
+      x-satay:
+        enum-variants:
+          Invalid date format. Date format must be YYYY-MM-DD (2024-06-01) or YYYY-MM-DDTHH:mm:ss (2024-06-01T08:30:00).: InvalidDateFormat
+          Invalid pagination token.: InvalidPaginationToken
+    NeaWeatherSubApi:
+      type: string
+      description: Weather sub-API selector (lightning or wbgt)
+      enum:
+      - lightning
+      - wbgt
+      x-satay:
+        enum-variants:
+          lightning: Lightning
+          wbgt: WetBulbGlobeTemperature
+    NeaStationId:
+      type: string
+      description: NEA weather station identifier (S + 2–3 digits)
+      pattern: ^S[0-9]{2,3}$
+      minLength: 3
+      maxLength: 4
+      example: S109
+    NeaStationLocation:
+      type: object
+      description: WGS84 coordinates for a weather station
+      properties:
+        latitude:
+          $ref: '#/components/schemas/NeaLatitude'
+        longitude:
+          $ref: '#/components/schemas/NeaLongitude'
+      required:
+      - latitude
+      - longitude
+    NeaWindDirection16:
+      type: string
+      description: 16-point compass wind direction for outlook forecasts
+      enum:
+      - N
+      - NNE
+      - NE
+      - ENE
+      - E
+      - ESE
+      - SE
+      - SSE
+      - S
+      - SSW
+      - SW
+      - WSW
+      - W
+      - WNW
+      - NW
+      - NNW
+      example: SSE
+      x-satay:
+        enum-variants:
+          N: N
+          NNE: NNE
+          NE: NE
+          ENE: ENE
+          E: E
+          ESE: ESE
+          SE: SE
+          SSE: SSE
+          S: S
+          SSW: SSW
+          SW: SW
+          WSW: WSW
+          W: W
+          WNW: WNW
+          NW: NW
+          NNW: NNW
+    NeaStringLatitude:
+      type: string
+      description: WGS84 latitude as a decimal string
+      x-satay:
+        parse-as: f64
+    NeaStringLongitude:
+      type: string
+      description: WGS84 longitude as a decimal string
+      x-satay:
+        parse-as: f64
+    NeaWeatherStation:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/NeaStationId'
+        deviceId:
+          $ref: '#/components/schemas/NeaStationId'
+        name:
+          type: string
+          description: Station's name
+          example: Marina Gardens Drive
+        location:
+          $ref: '#/components/schemas/NeaStationLocation'
+      required:
+      - deviceId
+      - id
+      - location
+      - name
+    NeaReadingSnapshot:
+      type: object
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaStationReading'
+      required:
+      - data
+      - timestamp
+    NeaStationReading:
+      type: object
+      properties:
+        stationId:
+          $ref: '#/components/schemas/NeaStationId'
+        value:
+          type: number
+          example: 29
+      required:
+      - stationId
+      - value
+    NeaHumidityRange:
+      type: object
+      description: Unit of measure - Percentage
+      properties:
+        low:
+          $ref: '#/components/schemas/NeaHumidityPercent'
+        high:
+          $ref: '#/components/schemas/NeaHumidityPercent'
+        unit:
+          $ref: '#/components/schemas/NeaMeasurementUnit'
+      required:
+      - high
+      - low
+      - unit
+    NeaTemperatureRange:
+      type: object
+      description: Unit of measure - Degrees Celsius
+      properties:
+        low:
+          $ref: '#/components/schemas/NeaTemperatureCelsius'
+        high:
+          $ref: '#/components/schemas/NeaTemperatureCelsius'
+        unit:
+          $ref: '#/components/schemas/NeaMeasurementUnit'
+      required:
+      - high
+      - low
+      - unit
+    NeaWindSpeedRange:
+      type: object
+      description: Unit of measure - Kilometeres per hour
+      properties:
+        low:
+          $ref: '#/components/schemas/NeaWindSpeedKmh'
+        high:
+          $ref: '#/components/schemas/NeaWindSpeedKmh'
+      required:
+      - high
+      - low
+    NeaOutlookWind:
+      type: object
+      properties:
+        speed:
+          $ref: '#/components/schemas/NeaWindSpeedRange'
+        direction:
+          $ref: '#/components/schemas/NeaWindDirection16'
+      required:
+      - direction
+      - speed
+    NeaMssForecast:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/NeaForecastCode'
+        text:
+          $ref: '#/components/schemas/NeaForecastText'
+      required:
+      - code
+      - text
+    NeaGeoPoint:
+      type: object
+      properties:
+        latitude:
+          $ref: '#/components/schemas/NeaLatitude'
+        longitude:
+          $ref: '#/components/schemas/NeaLongitude'
+      required:
+      - latitude
+      - longitude
+    AirTemperatureData:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaWeatherStation'
+        readings:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaReadingSnapshot'
+        readingType:
+          type: string
+          description: Information about the reading
+          example: DBT 1M F
+        readingUnit:
+          $ref: '#/components/schemas/NeaMeasurementUnit'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - readingType
+      - readingUnit
+      - readings
+      - stations
+    RelativeHumidityData:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaWeatherStation'
+        readings:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaReadingSnapshot'
+        readingType:
+          type: string
+          description: Information about the reading
+          example: RH 1M F
+        readingUnit:
+          $ref: '#/components/schemas/NeaMeasurementUnit'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - readingType
+      - readingUnit
+      - readings
+      - stations
+    WindSpeedData:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaWeatherStation'
+        readings:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaReadingSnapshot'
+        readingType:
+          type: string
+          description: Information about the reading
+          example: Wind Speed AVG(S)10M M1M
+        readingUnit:
+          $ref: '#/components/schemas/NeaMeasurementUnit'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - readingType
+      - readingUnit
+      - readings
+      - stations
+    WindDirectionData:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaWeatherStation'
+        readings:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaReadingSnapshot'
+        readingType:
+          type: string
+          description: Information about the reading
+          example: Wind Dir AVG (S) 10M M1M
+        readingUnit:
+          $ref: '#/components/schemas/NeaMeasurementUnit'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - readingType
+      - readingUnit
+      - readings
+      - stations
+    RainfallData:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaWeatherStation'
+        readings:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaReadingSnapshot'
+        readingType:
+          type: string
+          description: Information about the reading
+          example: TB1 Rainfall 5 Minute Total F
+        readingUnit:
+          $ref: '#/components/schemas/NeaMeasurementUnit'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - readingType
+      - readingUnit
+      - readings
+      - stations
+    FourDayOutlookData:
+      type: object
+      description: Chronologically ordered forecasts for the next 4 days
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/FourDayOutlookDay'
+      required:
+      - records
+    FourDayOutlookDay:
+      type: object
+      properties:
+        date:
+          $ref: '#/components/schemas/NeaDate'
+        updatedTimestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        forecasts:
+          type: array
+          description: Forecast summary for the day
+          items:
+            $ref: '#/components/schemas/FourDayOutlookPeriod'
+      required:
+      - date
+      - forecasts
+      - timestamp
+      - updatedTimestamp
+    FourDayOutlookPeriod:
+      type: object
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        temperature:
+          $ref: '#/components/schemas/NeaTemperatureRange'
+        relativeHumidity:
+          $ref: '#/components/schemas/NeaHumidityRange'
+        forecast:
+          $ref: '#/components/schemas/NeaOutlookForecastDetail'
+        day:
+          $ref: '#/components/schemas/NeaDayOfWeek'
+        wind:
+          $ref: '#/components/schemas/NeaOutlookWind'
+      required:
+      - day
+      - forecast
+      - relativeHumidity
+      - temperature
+      - timestamp
+      - wind
+    NeaOutlookForecastDetail:
+      type: object
+      properties:
+        summary:
+          type: string
+          example: Fair and occasionally windy
+        code:
+          $ref: '#/components/schemas/NeaForecastCode'
+        text:
+          $ref: '#/components/schemas/NeaForecastText'
+      required:
+      - code
+      - summary
+      - text
+    TwentyFourHrForecastData:
+      type: object
+      properties:
+        area_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaForecastArea'
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/TwentyFourHrForecastDay'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - records
+    TwentyFourHrForecastDay:
+      type: object
+      properties:
+        date:
+          $ref: '#/components/schemas/NeaDate'
+        updatedTimestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        general:
+          $ref: '#/components/schemas/TwentyFourHrForecastGeneral'
+        periods:
+          type: array
+          description: Forecasts for various areas in Singapore
+          items:
+            $ref: '#/components/schemas/TwentyFourHrForecastPeriod'
+      required:
+      - date
+      - general
+      - periods
+      - timestamp
+      - updatedTimestamp
+    TwentyFourHrForecastGeneral:
+      type: object
+      description: A general weather forecast for the 24 hour period
+      properties:
+        validPeriod:
+          $ref: '#/components/schemas/NeaValidPeriod'
+        temperature:
+          $ref: '#/components/schemas/NeaTemperatureRange'
+        relativeHumidity:
+          $ref: '#/components/schemas/NeaHumidityRange'
+        forecast:
+          $ref: '#/components/schemas/NeaMssForecast'
+        wind:
+          $ref: '#/components/schemas/NeaOutlookWind'
+      required:
+      - forecast
+      - relativeHumidity
+      - temperature
+      - validPeriod
+      - wind
+    TwentyFourHrForecastPeriod:
+      type: object
+      properties:
+        timePeriod:
+          $ref: '#/components/schemas/NeaValidPeriod'
+        regions:
+          $ref: '#/components/schemas/TwentyFourHrRegionalForecast'
+      required:
+      - regions
+      - timePeriod
+    TwentyFourHrRegionalForecast:
+      type: object
+      properties:
+        west:
+          $ref: '#/components/schemas/NeaMssForecast'
+        east:
+          $ref: '#/components/schemas/NeaMssForecast'
+        central:
+          $ref: '#/components/schemas/NeaMssForecast'
+        north:
+          $ref: '#/components/schemas/NeaMssForecast'
+        south:
+          $ref: '#/components/schemas/NeaMssForecast'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    TwoHrForecastData:
+      type: object
+      properties:
+        area_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaForecastArea'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TwoHrForecastSnapshot'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - area_metadata
+      - items
+    NeaForecastArea:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the area
+          example: Ang Mo Kio
+        label_location:
+          $ref: '#/components/schemas/NeaGeoPoint'
+      required:
+      - label_location
+      - name
+    TwoHrForecastSnapshot:
+      type: object
+      properties:
+        update_timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        valid_period:
+          $ref: '#/components/schemas/NeaValidPeriod'
+        forecasts:
+          type: array
+          description: Forecasts for various areas in Singapore
+          items:
+            $ref: '#/components/schemas/TwoHrAreaForecast'
+      required:
+      - forecasts
+      - timestamp
+      - update_timestamp
+      - valid_period
+    TwoHrAreaForecast:
+      type: object
+      properties:
+        area:
+          type: string
+          example: Ang Mo Kio
+        forecast:
+          $ref: '#/components/schemas/NeaForecastText'
+      required:
+      - area
+      - forecast
+    NeaValidPeriod:
+      type: object
+      description: Period of time the forecast is valid for
+      properties:
+        start:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        end:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        text:
+          type: string
+          example: 12.30 am to 2.30 am
+      required:
+      - end
+      - start
+      - text
+    PsiData:
+      type: object
+      properties:
+        regionMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaRegionMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PsiSnapshot'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - items
+      - regionMetadata
+    PsiSnapshot:
+      type: object
+      properties:
+        date:
+          $ref: '#/components/schemas/NeaDate'
+        updatedTimestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        readings:
+          $ref: '#/components/schemas/PsiReadings'
+      required:
+      - date
+      - readings
+      - timestamp
+      - updatedTimestamp
+    PsiReadings:
+      type: object
+      description: Overall and regional PSI data including pollutant concentrations and sub-indices
+      properties:
+        co_sub_index:
+          $ref: '#/components/schemas/PsiCoSubIndexRegional'
+        so2_twenty_four_hourly:
+          $ref: '#/components/schemas/PsiSo2TwentyFourHourRegional'
+        so2_sub_index:
+          $ref: '#/components/schemas/PsiSo2SubIndexRegional'
+        psi_three_hourly:
+          $ref: '#/components/schemas/PsiThreeHourRegional'
+        co_eight_hour_max:
+          $ref: '#/components/schemas/PsiCoEightHourMaxRegional'
+        no2_one_hour_max:
+          $ref: '#/components/schemas/PsiNo2OneHourMaxRegional'
+        pm10_sub_index:
+          $ref: '#/components/schemas/PsiPm10SubIndexRegional'
+        pm25_sub_index:
+          $ref: '#/components/schemas/PsiPm25SubIndexRegional'
+        o3_eight_hour_max:
+          $ref: '#/components/schemas/PsiO3EightHourMaxRegional'
+        psi_twenty_four_hourly:
+          $ref: '#/components/schemas/PsiTwentyFourHourRegional'
+        o3_sub_index:
+          $ref: '#/components/schemas/PsiO3SubIndexRegional'
+        pm25_twenty_four_hourly:
+          $ref: '#/components/schemas/PsiPm25TwentyFourHourRegional'
+        pm10_twenty_four_hourly:
+          $ref: '#/components/schemas/PsiPm10TwentyFourHourRegional'
+      required:
+      - co_eight_hour_max
+      - co_sub_index
+      - no2_one_hour_max
+      - o3_eight_hour_max
+      - o3_sub_index
+      - pm10_sub_index
+      - pm10_twenty_four_hourly
+      - pm25_sub_index
+      - pm25_twenty_four_hourly
+      - psi_twenty_four_hourly
+      - so2_sub_index
+      - so2_twenty_four_hourly
+    NeaRegionMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Region name
+          example: West
+          enum:
+          - west
+          - east
+          - north
+          - south
+          - central
+          x-satay:
+            enum-variants:
+              west: West
+              east: East
+              north: North
+              south: South
+              central: Central
+        labelLocation:
+          $ref: '#/components/schemas/NeaGeoPoint'
+      required:
+      - labelLocation
+      - name
+    PsiCoEightHourMaxRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiCoSubIndexRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiNo2OneHourMaxRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiO3EightHourMaxRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiO3SubIndexRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiPm10SubIndexRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiPm10TwentyFourHourRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiPm25SubIndexRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiPm25TwentyFourHourRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiThreeHourRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+    PsiTwentyFourHourRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiSo2SubIndexRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    PsiSo2TwentyFourHourRegional:
+      type: object
+      description: Concentration is measured in micrograms per cubic metre
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        west:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        north:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        south:
+          $ref: '#/components/schemas/NeaRegionalReading'
+        central:
+          $ref: '#/components/schemas/NeaRegionalReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    Pm25Data:
+      type: object
+      properties:
+        regionMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeaRegionMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pm25Snapshot'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - items
+      - regionMetadata
+    Pm25Snapshot:
+      type: object
+      properties:
+        date:
+          $ref: '#/components/schemas/NeaDate'
+        updatedTimestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        readings:
+          $ref: '#/components/schemas/Pm25Readings'
+      required:
+      - date
+      - readings
+      - timestamp
+      - updatedTimestamp
+    Pm25Readings:
+      type: object
+      description: Overall and regional PSI data including pollutant concentrations and sub-indices
+      properties:
+        pm25_one_hourly:
+          $ref: '#/components/schemas/Pm25OneHourRegional'
+      required:
+      - pm25_one_hourly
+    Pm25OneHourRegional:
+      type: object
+      properties:
+        east:
+          $ref: '#/components/schemas/NeaPm25HourlyReading'
+        west:
+          $ref: '#/components/schemas/NeaPm25HourlyReading'
+        north:
+          $ref: '#/components/schemas/NeaPm25HourlyReading'
+        south:
+          $ref: '#/components/schemas/NeaPm25HourlyReading'
+        central:
+          $ref: '#/components/schemas/NeaPm25HourlyReading'
+      required:
+      - central
+      - east
+      - north
+      - south
+      - west
+    UvData:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/UvDayRecord'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+      required:
+      - records
+    UvDayRecord:
+      type: object
+      properties:
+        index:
+          type: array
+          items:
+            $ref: '#/components/schemas/UvHourlyIndex'
+        date:
+          $ref: '#/components/schemas/NeaDate'
+        updatedTimestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        timestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+      required:
+      - date
+      - index
+      - timestamp
+      - updatedTimestamp
+    UvHourlyIndex:
+      type: object
+      description: Reverse-chronologically ordered indexes
+      properties:
+        hour:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        value:
+          $ref: '#/components/schemas/NeaUvIndex'
+      required:
+      - hour
+      - value
+    WeatherSubApiData:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/WeatherSubApiDayRecord'
+        paginationToken:
+          type: string
+          description: Token to retrieve next page if exists
+          example: b2Zmc2V0PTEwMA== (you will see this token only if next page exists)
+    WeatherSubApiDayRecord:
+      type: object
+      properties:
+        datetime:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        item:
+          $ref: '#/components/schemas/WeatherSubApiObservation'
+        updatedTimestamp:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+    WeatherSubApiObservation:
+      type: object
+      description: A weather observation for the lightning
+      properties:
+        type:
+          type: string
+          description: Type of the weather information (`observation` or `forecast`). Lightning is always `observation.
+          example: observation
+        isStationData:
+          type: boolean
+          description: Indicates whether the weather information includes station information.
+          example: false
+        readings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WeatherSubApiLightningReading'
+    WeatherSubApiLightningReading:
+      type: object
+      properties:
+        location:
+          $ref: '#/components/schemas/NeaGeoPoint'
+        datetime:
+          $ref: '#/components/schemas/NeaOffsetDateTime'
+        text:
+          type: string
+          description: A textual description of the weather event, which can include types such as "Cloud to Cloud" or "Cloud
+            to Ground."
+          example: Cloud to Cloud
+        type:
+          $ref: '#/components/schemas/NeaLightningType'
+    WeatherSubApiInvalidParamsError:
+      type: object
+      properties:
+        code:
+          type: number
+        name:
+          type: string
+        errorMsg:
+          type: string
+    NeaMeasurementUnit:
+      type: string
+      description: Unit of measure for NEA station readings and outlook ranges
+      enum:
+      - deg C
+      - Degrees Celsius
+      - Percentage
+      - percentage
+      - knots
+      - degrees
+      - mm
+      example: deg C
+      x-satay:
+        enum-variants:
+          deg C: DegC
+          Degrees Celsius: DegreesCelsius
+          Percentage: Percentage
+          percentage: PercentLower
+          knots: Knots
+          degrees: Degrees
+          mm: Millimeters
+x-nea-endpoints:
+- path: /psi
+  updateFrequency: Every 15 minutes
+  datasetId: d_fe37906a0182569d891506e815e819b7
+- path: /pm25
+  updateFrequency: Every 15 minutes
+  datasetId: d_e1058d6974c877257e32048ab128ad83
+- path: /air-temperature
+  updateFrequency: Every 5 minutes
+  datasetId: d_66b77726bbae1b33f218db60ff5861f0
+- path: /relative-humidity
+  updateFrequency: Every 5 minutes
+  datasetId: d_2d3b0c4da128a9a59efca806441e1429
+- path: /wind-speed
+  updateFrequency: Every 5 minutes
+  datasetId: d_7677738484067741bf3b56ab5d69c7e9
+- path: /wind-direction
+  updateFrequency: Every 5 minutes
+  datasetId: d_534cf203023b51f51f879145ccc56ff9
+- path: /rainfall
+  updateFrequency: Every 5 minutes
+  datasetId: d_6580738cdd7db79374ed3152159fbd69
+- path: /two-hr-forecast
+  updateFrequency: Every 30 minutes
+  datasetId: d_3f9e064e25005b0e42969944ccaf2e7a
+- path: /twenty-four-hr-forecast
+  updateFrequency: Every 6 hours
+  datasetId: d_ce2eb1e307bda31993c533285834ef2b
+- path: /four-day-outlook
+  updateFrequency: Every 12 hours
+  datasetId: d_f131f6e343bf8168e4057a04c4326a0a
+- path: /uv
+  updateFrequency: Every 30 minutes
+  datasetId: d_076774d6843cc3369731f5abaef83d30
+- path: /weather?api=lightning
+  updateFrequency: Every 2–3 minutes
+  datasetId: d_08238953fe0f6dd13f10714ebfbcb9f9
+- path: /weather?api=wbgt
+  updateFrequency: Every 15 minutes
+  datasetId: d_5406ce77e1d364f43317cb3e9f3d6725
+jsonSchemaDialect: https://spec.openapis.org/oas/3.1/dialect/base

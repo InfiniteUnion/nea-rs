@@ -1,0 +1,16 @@
+# Rust
+/target
+
+# Python (openapi maintenance scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+.env.*
+
+# Optional local tooling (if you add them later)
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
