@@ -7,11 +7,12 @@ use nea_rs::{
     decode_air_temperature_response, decode_four_day_outlook_response, decode_pm25_response,
     decode_psi_response, decode_rainfall_response, decode_relative_humidity_response,
     decode_twenty_four_hr_forecast_response, decode_two_hr_forecast_response, decode_uv_response,
-    decode_wind_direction_response, decode_wind_speed_response, AirTemperatureOperationResponse,
+    decode_weather_sub_api_response, decode_wind_direction_response, decode_wind_speed_response,
+    AirTemperatureOperationResponse,
     FourDayOutlookOperationResponse, Pm25OperationResponse, PsiOperationResponse,
     RainfallOperationResponse, RelativeHumidityOperationResponse,
     TwentyFourHrForecastOperationResponse, TwoHrForecastOperationResponse, UvOperationResponse,
-    WindDirectionOperationResponse, WindSpeedOperationResponse,
+    WeatherSubApiOperationResponse, WindDirectionOperationResponse, WindSpeedOperationResponse,
 };
 
 fn ok_response(body: &[u8]) -> satay_runtime::ResponseParts<Vec<u8>> {
@@ -85,3 +86,15 @@ sample_deserializes!(
     FourDayOutlookOperationResponse::Ok(_)
 );
 sample_deserializes!(uv, "uv.json", decode_uv_response, UvOperationResponse::Ok(_));
+sample_deserializes!(
+    weather_lightning,
+    "weather-lightning.json",
+    decode_weather_sub_api_response,
+    WeatherSubApiOperationResponse::Ok(_)
+);
+sample_deserializes!(
+    weather_wbgt,
+    "weather-wbgt.json",
+    decode_weather_sub_api_response,
+    WeatherSubApiOperationResponse::Ok(_)
+);

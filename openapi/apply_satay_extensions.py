@@ -245,6 +245,14 @@ WEATHER_SUB_API_VARIANTS = {
     "wbgt": "WetBulbGlobeTemperature",
 }
 
+HEAT_STRESS_ENUM = ["Low", "Moderate", "High"]
+
+HEAT_STRESS_VARIANTS = {
+    "Low": "Low",
+    "Moderate": "Moderate",
+    "High": "High",
+}
+
 SHARED_SCHEMAS = {
     "NeaSuccessCode": {
         "type": "integer",
@@ -302,6 +310,39 @@ SHARED_SCHEMAS = {
             "longitude": {"$ref": "#/components/schemas/NeaLongitude"},
         },
         "required": ["latitude", "longitude"],
+    },
+    "NeaLightningGeoPoint": {
+        "type": "object",
+        "description": "WGS84 coordinates (API returns lat/long as decimal strings)",
+        "properties": {
+            "latitude": {"$ref": "#/components/schemas/NeaStringLatitude"},
+            "longitude": {"$ref": "#/components/schemas/NeaStringLongitude"},
+        },
+        "required": ["latitude", "longitude"],
+    },
+    "NeaWbgtStation": {
+        "type": "object",
+        "description": "WBGT monitoring station metadata",
+        "properties": {
+            "id": {"$ref": "#/components/schemas/NeaStationId"},
+            "name": {"type": "string", "description": "Station name"},
+            "townCenter": {
+                "type": "string",
+                "description": "Town centre or site label for the station",
+            },
+        },
+        "required": ["id", "name", "townCenter"],
+    },
+    "NeaWbgt": {
+        "type": "string",
+        "description": "15-minute average WBGT (°C) as a decimal string",
+        "x-satay": {"parse-as": "f64"},
+    },
+    "NeaHeatStressLevel": {
+        "type": "string",
+        "description": "Heat stress advisory level from WBGT",
+        "enum": HEAT_STRESS_ENUM,
+        "x-satay": {"enum-variants": HEAT_STRESS_VARIANTS},
     },
     "NeaRegionalReading": {
         "type": "integer",
@@ -466,6 +507,8 @@ SCHEMA_DEDUPE: dict[str, tuple[str, ...]] = {
     "NeaGeoPoint": (
         "PsiResponseDataRegionMetadataItemsLabelLocation",
         "TwoHrForecastResponseDataAreaMetadataItemsLabelLocation",
+    ),
+    "NeaLightningGeoPoint": (
         "WeatherSubApiResponseDataRecordsItemsItemReadingsItemsLocation",
     ),
 }
@@ -525,7 +568,7 @@ SCHEMA_RENAMES: dict[str, str] = {
     "WeatherSubApiResponseData": "WeatherSubApiData",
     "WeatherSubApiResponseDataRecordsItems": "WeatherSubApiDayRecord",
     "WeatherSubApiResponseDataRecordsItemsItem": "WeatherSubApiObservation",
-    "WeatherSubApiResponseDataRecordsItemsItemReadingsItems": "WeatherSubApiLightningReading",
+    "WeatherSubApiResponseDataRecordsItemsItemReadingsItems": "WeatherSubApiReading",
     # Errors
     "InvalidParamsError2": "WeatherSubApiInvalidParamsError",
 }
@@ -612,6 +655,26 @@ def ref(name: str) -> dict:
 def is_forecast_text_enum(prop_schema: dict) -> bool:
     values = prop_schema.get("enum")
     return isinstance(values, list) and values == FORECAST_TEXT_ENUM
+
+
+def patch_weather_sub_api_reading(schemas: dict[str, Any]) -> None:
+    """Lightning and WBGT share `item.readings` with different optional fields."""
+    reading = schemas.get("WeatherSubApiReading") or schemas.get(
+        "WeatherSubApiLightningReading"
+    )
+    if not isinstance(reading, dict):
+        return
+    props = reading.setdefault("properties", {})
+    props["location"] = ref("NeaLightningGeoPoint")
+    props["station"] = ref("NeaWbgtStation")
+    props["wbgt"] = ref("NeaWbgt")
+    props["heatStress"] = ref("NeaHeatStressLevel")
+
+    observation = schemas.get("WeatherSubApiObservation")
+    if isinstance(observation, dict):
+        observation["description"] = (
+            "Weather sub-API observation (lightning strikes or WBGT station readings)"
+        )
 
 
 def patch_weather_api_query_parameter(spec: dict) -> None:
@@ -898,6 +961,7 @@ def main() -> None:
         transform_schema(schema_name, schema)
 
     patch_weather_api_query_parameter(spec)
+    patch_weather_sub_api_reading(schemas)
     remove_orphan_station_location_schemas(schemas)
     remove_replaced_unit_schemas(schemas)
 

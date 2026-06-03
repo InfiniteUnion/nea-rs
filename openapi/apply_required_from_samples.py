@@ -26,6 +26,7 @@ OPERATION_SAMPLE_KEY: dict[str, str] = {
     "twenty_four_hr_forecast": "twenty-four-hr-forecast",
     "four_day_outlook": "four-day-outlook",
     "uv": "uv",
+    "weather_sub_api": "weather-lightning",
 }
 
 

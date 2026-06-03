@@ -17,3 +17,8 @@ http = "1"
 default = ["serde", "json"]
 serde = ["dep:serde", "satay-runtime/serde"]
 json = ["serde", "dep:serde_json", "satay-runtime/json"]
+
+[dev-dependencies]
+reqwest = "0.13.3"
+satay-reqwest = { path = "../satay-rs/crates/satay-reqwest" }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
