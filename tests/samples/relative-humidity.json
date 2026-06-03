@@ -1,0 +1,212 @@
+{
+  "code": 0,
+  "data": {
+    "stations": [
+      {
+        "id": "S109",
+        "deviceId": "S109",
+        "name": "Ang Mo Kio Avenue 5",
+        "location": {
+          "longitude": 103.85,
+          "latitude": 1.3793
+        }
+      },
+      {
+        "id": "S117",
+        "deviceId": "S117",
+        "name": "Banyan Road",
+        "location": {
+          "longitude": 103.6741,
+          "latitude": 1.2542
+        }
+      },
+      {
+        "id": "S107",
+        "deviceId": "S107",
+        "name": "East Coast Parkway",
+        "location": {
+          "latitude": 1.3133,
+          "longitude": 103.962
+        }
+      },
+      {
+        "id": "S104",
+        "deviceId": "S104",
+        "name": "Woodlands Avenue 9",
+        "location": {
+          "longitude": 103.7854,
+          "latitude": 1.4439
+        }
+      },
+      {
+        "id": "S115",
+        "deviceId": "S115",
+        "name": "Tuas South Avenue 3",
+        "location": {
+          "longitude": 103.6184,
+          "latitude": 1.2938
+        }
+      },
+      {
+        "id": "S116",
+        "deviceId": "S116",
+        "name": "West Coast Highway",
+        "location": {
+          "longitude": 103.7545,
+          "latitude": 1.2824
+        }
+      },
+      {
+        "id": "S102",
+        "deviceId": "S102",
+        "name": "Semakau Island Landfill",
+        "location": {
+          "latitude": 1.1902,
+          "longitude": 103.7657
+        }
+      },
+      {
+        "id": "S60",
+        "deviceId": "S60",
+        "name": "Sentosa",
+        "location": {
+          "latitude": 1.2504,
+          "longitude": 103.8275
+        }
+      },
+      {
+        "id": "S50",
+        "deviceId": "S50",
+        "name": "Clementi Road",
+        "location": {
+          "latitude": 1.3318,
+          "longitude": 103.7762
+        }
+      },
+      {
+        "id": "S44",
+        "deviceId": "S44",
+        "name": "Nanyang Avenue",
+        "location": {
+          "latitude": 1.3458,
+          "longitude": 103.6817
+        }
+      },
+      {
+        "id": "S43",
+        "deviceId": "S43",
+        "name": "Kim Chuan Road",
+        "location": {
+          "longitude": 103.8882,
+          "latitude": 1.3406
+        }
+      },
+      {
+        "id": "S24",
+        "deviceId": "S24",
+        "name": "Upper Changi Road North",
+        "location": {
+          "latitude": 1.3678,
+          "longitude": 103.9823
+        }
+      },
+      {
+        "id": "S23",
+        "deviceId": "S23",
+        "name": "S23",
+        "location": {
+          "latitude": 1.3858,
+          "longitude": 103.7119
+        }
+      },
+      {
+        "id": "S06",
+        "deviceId": "S06",
+        "name": "Paya Lebar Airport",
+        "location": {
+          "latitude": 1.357,
+          "longitude": 103.904
+        }
+      },
+      {
+        "id": "S111",
+        "deviceId": "S111",
+        "name": "Scotts Road",
+        "location": {
+          "latitude": 1.3106,
+          "longitude": 103.8365
+        }
+      }
+    ],
+    "readings": [
+      {
+        "timestamp": "2026-06-03T15:59:00+08:00",
+        "data": [
+          {
+            "stationId": "S109",
+            "value": 69.4
+          },
+          {
+            "stationId": "S117",
+            "value": 77.4
+          },
+          {
+            "stationId": "S107",
+            "value": 71.1
+          },
+          {
+            "stationId": "S104",
+            "value": 72.6
+          },
+          {
+            "stationId": "S115",
+            "value": 77.6
+          },
+          {
+            "stationId": "S116",
+            "value": 75.4
+          },
+          {
+            "stationId": "S102",
+            "value": 83
+          },
+          {
+            "stationId": "S60",
+            "value": 72.4
+          },
+          {
+            "stationId": "S50",
+            "value": 74.2
+          },
+          {
+            "stationId": "S44",
+            "value": 77.8
+          },
+          {
+            "stationId": "S43",
+            "value": 69.8
+          },
+          {
+            "stationId": "S24",
+            "value": 66.6
+          },
+          {
+            "stationId": "S23",
+            "value": 70.3
+          },
+          {
+            "stationId": "S06",
+            "value": 68.5
+          },
+          {
+            "stationId": "S111",
+            "value": 74.3
+          }
+        ]
+      }
+    ],
+    "readingType": "RH 1M F",
+    "readingUnit": "percentage"
+  },
+  "errorMsg": ""
+}

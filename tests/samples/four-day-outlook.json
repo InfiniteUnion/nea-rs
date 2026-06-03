@@ -1,0 +1,119 @@
+{
+  "code": 0,
+  "data": {
+    "records": [
+      {
+        "date": "2026-06-03",
+        "updatedTimestamp": "2026-06-03T17:41:15+08:00",
+        "forecasts": [
+          {
+            "relativeHumidity": {
+              "unit": "Percentage",
+              "high": 95,
+              "low": 55
+            },
+            "wind": {
+              "speed": {
+                "high": 25,
+                "low": 10
+              },
+              "direction": "SSW"
+            },
+            "timestamp": "2026-06-04T00:00:00+08:00",
+            "forecast": {
+              "code": "TL",
+              "summary": "Late morning and early afternoon thundery showers",
+              "text": "Thundery Showers"
+            },
+            "temperature": {
+              "high": 34,
+              "low": 26,
+              "unit": "Degrees Celsius"
+            },
+            "day": "Thursday"
+          },
+          {
+            "relativeHumidity": {
+              "high": 85,
+              "low": 55,
+              "unit": "Percentage"
+            },
+            "forecast": {
+              "text": "Partly Cloudy (Day)",
+              "summary": "Partly cloudy",
+              "code": "PC"
+            },
+            "temperature": {
+              "high": 35,
+              "unit": "Degrees Celsius",
+              "low": 26
+            },
+            "wind": {
+              "direction": "SSE",
+              "speed": {
+                "low": 10,
+                "high": 25
+              }
+            },
+            "day": "Friday",
+            "timestamp": "2026-06-05T00:00:00+08:00"
+          },
+          {
+            "temperature": {
+              "low": 25,
+              "unit": "Degrees Celsius",
+              "high": 33
+            },
+            "timestamp": "2026-06-06T00:00:00+08:00",
+            "day": "Saturday",
+            "relativeHumidity": {
+              "low": 60,
+              "high": 95,
+              "unit": "Percentage"
+            },
+            "wind": {
+              "speed": {
+                "low": 10,
+                "high": 25
+              },
+              "direction": "S"
+            },
+            "forecast": {
+              "code": "TL",
+              "text": "Thundery Showers",
+              "summary": "Late morning and early afternoon thundery showers"
+            }
+          },
+          {
+            "temperature": {
+              "unit": "Degrees Celsius",
+              "high": 33,
+              "low": 25
+            },
+            "wind": {
+              "direction": "SSE",
+              "speed": {
+                "low": 10,
+                "high": 20
+              }
+            },
+            "day": "Sunday",
+            "relativeHumidity": {
+              "high": 95,
+              "low": 60,
+              "unit": "Percentage"
+            },
+            "timestamp": "2026-06-07T00:00:00+08:00",
+            "forecast": {
+              "code": "TL",
+              "text": "Thundery Showers",
+              "summary": "Late morning and early afternoon thundery showers"
+            }
+          }
+        ],
+        "timestamp": "2026-06-03T17:35:00+08:00"
+      }
+    ]
+  },
+  "errorMsg": ""
+}

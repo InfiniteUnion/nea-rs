@@ -1,0 +1,130 @@
+{
+  "code": 0,
+  "data": {
+    "records": [
+      {
+        "date": "2026-06-03",
+        "updatedTimestamp": "2026-06-03T14:21:02+08:00",
+        "periods": [
+          {
+            "regions": {
+              "east": {
+                "text": "Cloudy",
+                "code": "CL"
+              },
+              "central": {
+                "code": "CL",
+                "text": "Cloudy"
+              },
+              "west": {
+                "code": "CL",
+                "text": "Cloudy"
+              },
+              "south": {
+                "text": "Cloudy",
+                "code": "CL"
+              },
+              "north": {
+                "code": "CL",
+                "text": "Cloudy"
+              }
+            },
+            "timePeriod": {
+              "start": "2026-06-03T12:00:00+08:00",
+              "text": "Midday to 6 pm 03 Jun",
+              "end": "2026-06-03T18:00:00+08:00"
+            }
+          },
+          {
+            "regions": {
+              "south": {
+                "text": "Partly Cloudy (Night)",
+                "code": "PN"
+              },
+              "north": {
+                "text": "Partly Cloudy (Night)",
+                "code": "PN"
+              },
+              "west": {
+                "code": "PN",
+                "text": "Partly Cloudy (Night)"
+              },
+              "east": {
+                "text": "Partly Cloudy (Night)",
+                "code": "PN"
+              },
+              "central": {
+                "code": "PN",
+                "text": "Partly Cloudy (Night)"
+              }
+            },
+            "timePeriod": {
+              "text": "6 pm 03 Jun to 6 am 04 Jun",
+              "end": "2026-06-04T06:00:00+08:00",
+              "start": "2026-06-03T18:00:00+08:00"
+            }
+          },
+          {
+            "timePeriod": {
+              "end": "2026-06-04T12:00:00+08:00",
+              "text": "6 am to Midday 04 Jun",
+              "start": "2026-06-04T06:00:00+08:00"
+            },
+            "regions": {
+              "north": {
+                "text": "Partly Cloudy (Day)",
+                "code": "PC"
+              },
+              "south": {
+                "text": "Partly Cloudy (Day)",
+                "code": "PC"
+              },
+              "east": {
+                "code": "PC",
+                "text": "Partly Cloudy (Day)"
+              },
+              "west": {
+                "text": "Partly Cloudy (Day)",
+                "code": "PC"
+              },
+              "central": {
+                "code": "PC",
+                "text": "Partly Cloudy (Day)"
+              }
+            }
+          }
+        ],
+        "general": {
+          "temperature": {
+            "unit": "Degrees Celsius",
+            "high": 34,
+            "low": 26
+          },
+          "relativeHumidity": {
+            "unit": "Percentage",
+            "high": 95,
+            "low": 55
+          },
+          "wind": {
+            "direction": "SSE",
+            "speed": {
+              "high": 25,
+              "low": 10
+            }
+          },
+          "forecast": {
+            "code": "CL",
+            "text": "Cloudy"
+          },
+          "validPeriod": {
+            "end": "2026-06-04T12:00:00+08:00",
+            "start": "2026-06-03T12:00:00+08:00",
+            "text": "12 PM 3 Jun to 12 PM 4 Jun"
+          }
+        },
+        "timestamp": "2026-06-03T14:11:00+08:00"
+      }
+    ]
+  },
+  "errorMsg": ""
+}
