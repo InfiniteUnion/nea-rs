@@ -1580,7 +1580,7 @@ pub struct WeatherSubApiDayRecord {
         )
     )]
     pub datetime: Option<satay_runtime::OffsetDateTime>,
-    /// A weather observation for the lightning
+    /// Weather sub-API observation (lightning strikes or WBGT station readings)
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
@@ -1598,7 +1598,7 @@ pub struct WeatherSubApiDayRecord {
     )]
     pub updated_timestamp: Option<satay_runtime::OffsetDateTime>,
 }
-/// A weather observation for the lightning
+/// Weather sub-API observation (lightning strikes or WBGT station readings)
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WeatherSubApiObservation {
@@ -1627,11 +1627,12 @@ pub struct WeatherSubApiObservation {
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WeatherSubApiLightningReading {
+    /// WGS84 coordinates (API returns lat/long as decimal strings)
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub location: Option<NeaGeoPoint>,
+    pub location: Option<NeaLightningGeoPoint>,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
@@ -1654,6 +1655,32 @@ pub struct WeatherSubApiLightningReading {
         serde(rename = "type", default, skip_serializing_if = "Option::is_none")
     )]
     pub type_: Option<NeaLightningType>,
+    /// WBGT monitoring station metadata
+    #[cfg_attr(
+        feature = "serde",
+        serde(default, skip_serializing_if = "Option::is_none")
+    )]
+    pub station: Option<NeaWbgtStation>,
+    /// 15-minute average WBGT (°C) as a decimal string
+    #[cfg_attr(
+        feature = "serde",
+        serde(
+            with = "satay_runtime::serde_string::as_f64::option",
+            default,
+            skip_serializing_if = "Option::is_none"
+        )
+    )]
+    pub wbgt: Option<f64>,
+    /// Heat stress advisory level from WBGT
+    #[cfg_attr(
+        feature = "serde",
+        serde(
+            rename = "heatStress",
+            default,
+            skip_serializing_if = "Option::is_none"
+        )
+    )]
+    pub heat_stress: Option<NeaHeatStressLevel>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1715,6 +1742,62 @@ impl AsRef<str> for NeaMeasurementUnit {
     }
 }
 impl fmt::Display for NeaMeasurementUnit {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+/// WGS84 coordinates (API returns lat/long as decimal strings)
+#[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NeaLightningGeoPoint {
+    /// WGS84 latitude as a decimal string
+    #[cfg_attr(feature = "serde", serde(with = "satay_runtime::serde_string::as_f64"))]
+    pub latitude: f64,
+    /// WGS84 longitude as a decimal string
+    #[cfg_attr(feature = "serde", serde(with = "satay_runtime::serde_string::as_f64"))]
+    pub longitude: f64,
+}
+/// WBGT monitoring station metadata
+#[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NeaWbgtStation {
+    /// NEA weather station identifier (S + 2–3 digits)
+    pub id: NeaStationId,
+    /// Station name
+    pub name: String,
+    /// Town centre or site label for the station
+    #[cfg_attr(feature = "serde", serde(rename = "townCenter"))]
+    pub town_center: String,
+}
+/// 15-minute average WBGT (°C) as a decimal string
+pub type NeaWbgt = f64;
+/// Heat stress advisory level from WBGT
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum NeaHeatStressLevel {
+    Low,
+    Moderate,
+    High,
+    #[default]
+    #[cfg_attr(feature = "serde", serde(other))]
+    Unknown,
+}
+impl NeaHeatStressLevel {
+    pub const fn as_str(&self) -> &'static str {
+        match self {
+            Self::Low => "Low",
+            Self::Moderate => "Moderate",
+            Self::High => "High",
+            Self::Unknown => "",
+        }
+    }
+}
+impl AsRef<str> for NeaHeatStressLevel {
+    fn as_ref(&self) -> &str {
+        self.as_str()
+    }
+}
+impl fmt::Display for NeaHeatStressLevel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }

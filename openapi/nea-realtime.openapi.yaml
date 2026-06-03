@@ -2018,7 +2018,7 @@ components:
           $ref: '#/components/schemas/NeaOffsetDateTime'
     WeatherSubApiObservation:
       type: object
-      description: A weather observation for the lightning
+      description: Weather sub-API observation (lightning strikes or WBGT station readings)
       properties:
         type:
           type: string
@@ -2036,7 +2036,7 @@ components:
       type: object
       properties:
         location:
-          $ref: '#/components/schemas/NeaGeoPoint'
+          $ref: '#/components/schemas/NeaLightningGeoPoint'
         datetime:
           $ref: '#/components/schemas/NeaOffsetDateTime'
         text:
@@ -2046,6 +2046,12 @@ components:
           example: Cloud to Cloud
         type:
           $ref: '#/components/schemas/NeaLightningType'
+        station:
+          $ref: '#/components/schemas/NeaWbgtStation'
+        wbgt:
+          $ref: '#/components/schemas/NeaWbgt'
+        heatStress:
+          $ref: '#/components/schemas/NeaHeatStressLevel'
     WeatherSubApiInvalidParamsError:
       type: object
       properties:
@@ -2076,6 +2082,50 @@ components:
           knots: Knots
           degrees: Degrees
           mm: Millimeters
+    NeaLightningGeoPoint:
+      type: object
+      description: WGS84 coordinates (API returns lat/long as decimal strings)
+      properties:
+        latitude:
+          $ref: '#/components/schemas/NeaStringLatitude'
+        longitude:
+          $ref: '#/components/schemas/NeaStringLongitude'
+      required:
+      - latitude
+      - longitude
+    NeaWbgtStation:
+      type: object
+      description: WBGT monitoring station metadata
+      properties:
+        id:
+          $ref: '#/components/schemas/NeaStationId'
+        name:
+          type: string
+          description: Station name
+        townCenter:
+          type: string
+          description: Town centre or site label for the station
+      required:
+      - id
+      - name
+      - townCenter
+    NeaWbgt:
+      type: string
+      description: 15-minute average WBGT (°C) as a decimal string
+      x-satay:
+        parse-as: f64
+    NeaHeatStressLevel:
+      type: string
+      description: Heat stress advisory level from WBGT
+      enum:
+      - Low
+      - Moderate
+      - High
+      x-satay:
+        enum-variants:
+          Low: Low
+          Moderate: Moderate
+          High: High
 x-nea-endpoints:
 - path: /psi
   updateFrequency: Every 15 minutes
