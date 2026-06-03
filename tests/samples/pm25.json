@@ -1,0 +1,59 @@
+{
+  "code": 0,
+  "data": {
+    "regionMetadata": [
+      {
+        "name": "north",
+        "labelLocation": {
+          "longitude": 103.82,
+          "latitude": 1.41803
+        }
+      },
+      {
+        "name": "west",
+        "labelLocation": {
+          "latitude": 1.35735,
+          "longitude": 103.7
+        }
+      },
+      {
+        "name": "east",
+        "labelLocation": {
+          "longitude": 103.94,
+          "latitude": 1.35735
+        }
+      },
+      {
+        "name": "central",
+        "labelLocation": {
+          "longitude": 103.82,
+          "latitude": 1.35735
+        }
+      },
+      {
+        "name": "south",
+        "labelLocation": {
+          "longitude": 103.82,
+          "latitude": 1.29587
+        }
+      }
+    ],
+    "items": [
+      {
+        "date": "2026-06-03",
+        "updatedTimestamp": "2026-06-03T16:01:08+08:00",
+        "timestamp": "2026-06-03T16:00:00+08:00",
+        "readings": {
+          "pm25_one_hourly": {
+            "west": 18,
+            "east": 19,
+            "central": 16,
+            "south": 17,
+            "north": 16
+          }
+        }
+      }
+    ]
+  },
+  "errorMsg": ""
+}
