@@ -9,14 +9,14 @@
 
 A type-safe, sans-IO Rust client for Singapore NEA real-time weather & environmental APIs.
 
-> [!INFO]
+> [!NOTE]
 > This is generated from the OpenAPI spec in [openapi](./openapi/) using [satay-rs](https://github.com/zeon256/satay-rs)
 
 <p align="center">
   <img src="logo.png" alt="nea-rs logo" width="300">
 </p>
 
-## Install
+## Installation
 
 ```bash
 cargo add nea-rs
