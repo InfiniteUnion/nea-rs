@@ -1,22 +1,27 @@
-# nea-rs
-
-[![Crates.io](https://img.shields.io/crates/v/nea-rs)](https://crates.io/crates/nea-rs)
-[![Crates.io Downloads](https://img.shields.io/crates/d/nea-rs)](https://crates.io/crates/nea-rs)
-[![Docs.rs](https://img.shields.io/docsrs/nea-rs)](https://docs.rs/nea-rs)
-[![License](https://img.shields.io/badge/license-Apache--2.0%2FMIT-blue)](#license)
-[![MSRV](https://img.shields.io/badge/MSRV-1.85.1-orange)](https://blog.rust-lang.org/2025/02/20/Rust-1.85.0/)
-[![Rust Edition](https://img.shields.io/badge/Rust-2024-blue)](https://doc.rust-lang.org/edition-guide/rust-2024/)
-
-A type-safe, sans-IO Rust client for Singapore NEA real-time weather & environmental APIs.
-
-> [!NOTE]
-> This is generated from the OpenAPI spec in [openapi](./openapi/) using [satay-rs](https://github.com/zeon256/satay-rs)
-
 <p align="center">
   <img src="logo.png" alt="nea-rs logo" width="300">
 </p>
 
-## Installation
+<h1 align="center">nea-rs</h1>
+
+<p align="center">
+  <a href="https://crates.io/crates/nea-rs"><img src="https://img.shields.io/crates/v/nea-rs" alt="Crates.io"></a>
+  <a href="https://crates.io/crates/nea-rs"><img src="https://img.shields.io/crates/d/nea-rs" alt="Crates.io Downloads"></a>
+  <a href="https://docs.rs/nea-rs"><img src="https://img.shields.io/docsrs/nea-rs" alt="Docs.rs"></a>
+  <a href="#license"><img src="https://img.shields.io/badge/license-Apache--2.0%2FMIT-blue" alt="License"></a>
+  <a href="https://blog.rust-lang.org/2025/02/20/Rust-1.85.0/"><img src="https://img.shields.io/badge/MSRV-1.85.1-orange" alt="MSRV"></a>
+  <a href="https://doc.rust-lang.org/edition-guide/rust-2024/"><img src="https://img.shields.io/badge/Rust-2024-blue" alt="Rust Edition"></a>
+</p>
+
+<p align="center">
+  A type-safe, sans-IO Rust client for Singapore NEA real-time weather &amp; environmental APIs.
+</p>
+
+<p align="center">
+  Generated from the OpenAPI spec in <a href="./openapi/">openapi</a> using <a href="https://github.com/zeon256/satay-rs">satay-rs</a>.
+</p>
+
+## Install
 
 ```bash
 cargo add nea-rs
@@ -29,12 +34,15 @@ Fetch the latest air temperature readings with [reqwest](https://crates.io/crate
 ```rust
 use nea_rs::Api;
 use satay_reqwest::ReqwestActionExt;
+use satay_reqwest::reqwest::Client;
+use std::env;
+use std::error::Error;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = satay_reqwest::reqwest::Client::new();
+async fn main() -> Result<(), Box<dyn Error>> {
+    let client = Client::new();
     let mut api = Api::new();
-    if let Ok(key) = std::env::var("X_API_KEY") {
+    if let Ok(key) = env::var("X_API_KEY") {
         api = api.x_api_key(key);
     }
     let response = api.air_temperature().send_with(&client).await?;
@@ -50,6 +58,114 @@ cargo run --example air_temperature
 ```
 
 Optional: set `X_API_KEY` to your [data.gov.sg](https://data.gov.sg/) API key. More runnable examples live under [`examples/`](./examples/).
+
+## Using other client backends
+
+`nea-rs` is [sans-IO](https://fasterthanli.me/articles/the-case-for-sans-io): generated actions build `http::Request<Vec<u8>>` values and decode responses without performing IO. Pick the HTTP client that fits your application, or use the same boundary directly in tests, WASM, or custom transports.
+
+See [satay-rs](https://github.com/zeon256/satay-rs) for more details
+
+
+### ureq
+
+```toml
+[dependencies]
+nea-rs = "0.1"
+satay-ureq = "0.1"
+ureq = "3"
+```
+
+```rust
+use nea_rs::Api;
+use satay_ureq::UreqActionExt;
+use satay_ureq::ureq;
+use std::env;
+use std::error::Error;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let mut api = Api::new();
+    if let Ok(key) = env::var("X_API_KEY") {
+        api = api.x_api_key(key);
+    }
+
+    let agent: ureq::Agent = ureq::Agent::config_builder()
+        .http_status_as_error(false)
+        .build()
+        .into();
+
+    let response = api.air_temperature().send_with(&agent)?;
+    println!("{response:#?}");
+    Ok(())
+}
+```
+
+Configure the agent with `http_status_as_error(false)` so Satay can decode typed non-2xx responses instead of ureq treating them as transport errors.
+
+### reqwest (blocking)
+
+Enable the `blocking` feature on both crates when you want a synchronous reqwest client:
+
+```toml
+[dependencies]
+nea-rs = "0.1"
+satay-reqwest = { version = "0.1", features = ["blocking"] }
+reqwest = { version = "0.13.3", features = ["blocking"] }
+```
+
+```rust
+use nea_rs::Api;
+use satay_reqwest::ReqwestBlockingActionExt;
+use satay_reqwest::reqwest::blocking;
+use std::env;
+use std::error::Error;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let mut api = Api::new();
+    if let Ok(key) = env::var("X_API_KEY") {
+        api = api.x_api_key(key);
+    }
+    let response = api
+        .air_temperature()
+        .send_with(&blocking::Client::new())?;
+    println!("{response:#?}");
+    Ok(())
+}
+```
+
+### Manual transport
+
+Adapter crates are optional. You can call `action.request()`, send the request with any HTTP client, build `satay_runtime::ResponseParts`, and decode with the generated action type:
+
+```rust
+use nea_rs::{AirTemperatureAction, Api};
+use std::env;
+use std::error::Error;
+use std::mem;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let mut api = Api::new();
+    if let Ok(key) = env::var("X_API_KEY") {
+        api = api.x_api_key(key);
+    }
+
+    let action = api.air_temperature();
+    let request: reqwest::Request = action.request()?.try_into()?;
+    let mut response = reqwest::Client::new().execute(request).await?;
+
+    let response = satay_runtime::ResponseParts {
+        status: response.status(),
+        headers: mem::take(response.headers_mut()),
+        body: response.bytes().await?,
+    };
+
+    let decoded = AirTemperatureAction::decode(response)?;
+    println!("{decoded:#?}");
+    Ok(())
+}
+```
+
+For more transport patterns (including WebSocket and custom adapters), see the [Satay transport docs](https://github.com/zeon256/satay-rs/blob/main/docs/transports.md) and the examples under [`satay-rs/examples/`](https://github.com/zeon256/satay-rs/tree/main/examples).
 
 ## Security
 
