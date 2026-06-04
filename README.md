@@ -23,9 +23,24 @@
 
 ## Install
 
+Add `nea-rs` and the [satay-reqwest](https://crates.io/crates/satay-reqwest) adapter (plus `reqwest` and `tokio` for the async example below):
+
 ```bash
-cargo add nea-rs
+cargo add nea-rs satay-reqwest reqwest
+cargo add tokio --features macros,rt-multi-thread
 ```
+
+Or add the same dependencies to `Cargo.toml`:
+
+```toml
+[dependencies]
+nea-rs = "0.1"
+satay-reqwest = "0.1"
+reqwest = "0.13.3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+```
+
+Reqwest 0.13 uses rustls by default, so HTTPS works without an extra TLS feature. If your app needs blocking clients, proxies, or other transport options, keep a direct `reqwest` dependency and enable features there. See [Using other client backends](#using-other-client-backends) and the [Satay transport docs](https://github.com/zeon256/satay-rs/blob/main/docs/transports.md).
 
 ## Example
 
