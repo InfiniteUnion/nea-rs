@@ -94,7 +94,7 @@ pub fn four_day_outlook_parts(
             &mut uri,
             &mut first_query,
             "date",
-            &satay_runtime::format_date(&value),
+            &satay_runtime::format_date(value),
         );
     }
     if let Some(value) = &input.pagination_token {

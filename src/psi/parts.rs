@@ -96,7 +96,7 @@ pub fn psi_parts(input: PsiInput) -> Result<satay_runtime::RequestParts<()>, sat
             &mut uri,
             &mut first_query,
             "date",
-            &satay_runtime::format_date(&value),
+            &satay_runtime::format_date(value),
         );
     }
     if let Some(value) = &input.pagination_token {

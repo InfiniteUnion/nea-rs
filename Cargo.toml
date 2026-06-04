@@ -6,7 +6,7 @@ edition = "2024"
 [lib]
 
 [dependencies]
-satay-runtime = { version = "0.1.1", default-features = false }
+satay-runtime = { path = "../satay-rs/crates/satay-runtime", default-features = false }
 nutype = { version = "0.7", features = ["serde", "regex"] }
 regex = "1"
 serde = { version = "1", features = ["derive"], optional = true }
