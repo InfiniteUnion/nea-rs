@@ -1,0 +1,11 @@
+[workspace]
+# Update the changelog with conventional commits.
+changelog_update = true
+# Path to the changelog file.
+changelog_path = "CHANGELOG.md"
+# Publish to crates.io and create a GitHub release.
+git_release_enable = true
+# Create a git tag on release.
+git_tag_enable = true
+# Single-crate tag format (see https://release-plz.dev/docs/config).
+git_tag_name = "v{{ version }}"
