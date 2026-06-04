@@ -6,7 +6,7 @@ edition = "2024"
 [lib]
 
 [dependencies]
-satay-runtime = { path = "../satay-rs/crates/satay-runtime", default-features = false }
+satay-runtime = { version = "0.1.2", default-features = false }
 nutype = { version = "0.7", features = ["serde", "regex"] }
 regex = "1"
 serde = { version = "1", features = ["derive"], optional = true }
@@ -20,5 +20,10 @@ json = ["serde", "dep:serde_json", "satay-runtime/json"]
 
 [dev-dependencies]
 reqwest = "0.13.3"
-satay-reqwest = { path = "../satay-rs/crates/satay-reqwest" }
+satay-reqwest = { version = "0.1.2" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+[workspace.metadata.dylint]
+libraries = [
+    { git = "https://github.com/zeon256/style-rust-aku", branch = "main" }
+]

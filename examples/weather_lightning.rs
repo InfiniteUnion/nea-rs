@@ -7,11 +7,12 @@
 mod common;
 
 use nea_rs::NeaWeatherSubApi;
-use satay_reqwest::ReqwestActionExt;
+use satay_reqwest::{ReqwestActionExt, reqwest};
+use std::error::Error;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = satay_reqwest::reqwest::Client::new();
+async fn main() -> Result<(), Box<dyn Error>> {
+    let client = reqwest::Client::new();
     let api = common::api_from_env();
     let response = api
         .weather_sub_api(NeaWeatherSubApi::Lightning)
