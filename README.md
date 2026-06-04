@@ -149,6 +149,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 For more transport patterns (including WebSocket and custom adapters), see the [Satay transport docs](https://github.com/zeon256/satay-rs/blob/main/docs/transports.md) and the examples under [`satay-rs/examples/`](https://github.com/zeon256/satay-rs/tree/main/examples).
 
+## More examples
+
+If you would like to see more examples, take a look at the [examples](./examples/) folder
+
 ## Security
 
 Please see [SECURITY.md](SECURITY.md) for vulnerability reporting.

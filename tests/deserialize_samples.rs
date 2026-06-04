@@ -1,6 +1,8 @@
 //! Deserialize captured NEA API success bodies from `tests/samples/*.json`.
 //!
 //! Failures are intentional signal — fix the generated types or refresh samples later.
+//!
+//! When failures happen you should open an issue with the captured response body and the expected response body.
 
 use http::{HeaderMap, StatusCode};
 use nea_rs::{
