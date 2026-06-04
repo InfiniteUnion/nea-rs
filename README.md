@@ -132,39 +132,6 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 ```
 
-### Manual transport
-
-Adapter crates are optional. You can call `action.request()`, send the request with any HTTP client, build `satay_runtime::ResponseParts`, and decode with the generated action type:
-
-```rust
-use nea_rs::{AirTemperatureAction, Api};
-use std::env;
-use std::error::Error;
-use std::mem;
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let mut api = Api::new();
-    if let Ok(key) = env::var("X_API_KEY") {
-        api = api.x_api_key(key);
-    }
-
-    let action = api.air_temperature();
-    let request: reqwest::Request = action.request()?.try_into()?;
-    let mut response = reqwest::Client::new().execute(request).await?;
-
-    let response = satay_runtime::ResponseParts {
-        status: response.status(),
-        headers: mem::take(response.headers_mut()),
-        body: response.bytes().await?,
-    };
-
-    let decoded = AirTemperatureAction::decode(response)?;
-    println!("{decoded:#?}");
-    Ok(())
-}
-```
-
 For more transport patterns (including WebSocket and custom adapters), see the [Satay transport docs](https://github.com/zeon256/satay-rs/blob/main/docs/transports.md) and the examples under [`satay-rs/examples/`](https://github.com/zeon256/satay-rs/tree/main/examples).
 
 ## Security
