@@ -314,7 +314,7 @@ pub struct NeaTemperatureCelsius(f64);
 )]
 pub struct NeaWindSpeedKmh(f64);
 /// NEA MSS short weather forecast code
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaForecastCode {
     #[cfg_attr(feature = "serde", serde(rename = "FA"))]
@@ -359,9 +359,6 @@ pub enum NeaForecastCode {
     HeavyThunderyShowersWithGustyWinds,
     #[cfg_attr(feature = "serde", serde(rename = "TL"))]
     ThunderyShowersAlt,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaForecastCode {
     pub const fn as_str(&self) -> &'static str {
@@ -387,7 +384,6 @@ impl NeaForecastCode {
             Self::HeavyThunderyShowers => "HT",
             Self::HeavyThunderyShowersWithGustyWinds => "HG",
             Self::ThunderyShowersAlt => "TL",
-            Self::Unknown => "",
         }
     }
 }
@@ -402,23 +398,19 @@ impl fmt::Display for NeaForecastCode {
     }
 }
 /// Lightning event type (C = cloud-to-cloud, G = cloud-to-ground)
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaLightningType {
     #[cfg_attr(feature = "serde", serde(rename = "C"))]
     CloudToCloud,
     #[cfg_attr(feature = "serde", serde(rename = "G"))]
     CloudToGround,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaLightningType {
     pub const fn as_str(&self) -> &'static str {
         match self {
             Self::CloudToCloud => "C",
             Self::CloudToGround => "G",
-            Self::Unknown => "",
         }
     }
 }
@@ -433,7 +425,7 @@ impl fmt::Display for NeaLightningType {
     }
 }
 /// NEA MSS human-readable weather forecast text
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaForecastText {
     Fair,
@@ -478,9 +470,6 @@ pub enum NeaForecastText {
         serde(rename = "Heavy Thundery Showers with Gusty Winds")
     )]
     HeavyThunderyShowersWithGustyWinds,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaForecastText {
     pub const fn as_str(&self) -> &'static str {
@@ -508,7 +497,6 @@ impl NeaForecastText {
             Self::ThunderyShowers => "Thundery Showers",
             Self::HeavyThunderyShowers => "Heavy Thundery Showers",
             Self::HeavyThunderyShowersWithGustyWinds => "Heavy Thundery Showers with Gusty Winds",
-            Self::Unknown => "",
         }
     }
 }
@@ -523,7 +511,7 @@ impl fmt::Display for NeaForecastText {
     }
 }
 /// Day of week for multi-day outlook forecasts
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaDayOfWeek {
     Monday,
@@ -533,9 +521,6 @@ pub enum NeaDayOfWeek {
     Friday,
     Saturday,
     Sunday,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaDayOfWeek {
     pub const fn as_str(&self) -> &'static str {
@@ -547,7 +532,6 @@ impl NeaDayOfWeek {
             Self::Friday => "Friday",
             Self::Saturday => "Saturday",
             Self::Sunday => "Sunday",
-            Self::Unknown => "",
         }
     }
 }
@@ -562,7 +546,7 @@ impl fmt::Display for NeaDayOfWeek {
     }
 }
 /// Bad-request error message for invalid date or pagination token
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaInvalidParamsErrorMsg {
     #[cfg_attr(
@@ -574,9 +558,6 @@ pub enum NeaInvalidParamsErrorMsg {
     InvalidDateFormat,
     #[cfg_attr(feature = "serde", serde(rename = "Invalid pagination token."))]
     InvalidPaginationToken,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaInvalidParamsErrorMsg {
     pub const fn as_str(&self) -> &'static str {
@@ -585,7 +566,6 @@ impl NeaInvalidParamsErrorMsg {
                 "Invalid date format. Date format must be YYYY-MM-DD (2024-06-01) or YYYY-MM-DDTHH:mm:ss (2024-06-01T08:30:00)."
             }
             Self::InvalidPaginationToken => "Invalid pagination token.",
-            Self::Unknown => "",
         }
     }
 }
@@ -600,23 +580,19 @@ impl fmt::Display for NeaInvalidParamsErrorMsg {
     }
 }
 /// Weather sub-API selector (lightning or wbgt)
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaWeatherSubApi {
     #[cfg_attr(feature = "serde", serde(rename = "lightning"))]
     Lightning,
     #[cfg_attr(feature = "serde", serde(rename = "wbgt"))]
     WetBulbGlobeTemperature,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaWeatherSubApi {
     pub const fn as_str(&self) -> &'static str {
         match self {
             Self::Lightning => "lightning",
             Self::WetBulbGlobeTemperature => "wbgt",
-            Self::Unknown => "",
         }
     }
 }
@@ -649,7 +625,7 @@ pub struct NeaStationLocation {
     pub longitude: NeaLongitude,
 }
 /// 16-point compass wind direction for outlook forecasts
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaWindDirection16 {
     N,
@@ -680,9 +656,6 @@ pub enum NeaWindDirection16 {
     Nw,
     #[cfg_attr(feature = "serde", serde(rename = "NNW"))]
     Nnw,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaWindDirection16 {
     pub const fn as_str(&self) -> &'static str {
@@ -703,7 +676,6 @@ impl NeaWindDirection16 {
             Self::Wnw => "WNW",
             Self::Nw => "NW",
             Self::Nnw => "NNW",
-            Self::Unknown => "",
         }
     }
 }
@@ -1605,9 +1577,9 @@ pub struct WeatherSubApiObservation {
     /// Type of the weather information (`observation` or `forecast`). Lightning is always `observation.
     #[cfg_attr(
         feature = "serde",
-        serde(rename = "type", default, skip_serializing_if = "Option::is_none")
+        serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub type_: Option<String>,
+    pub r#type: Option<String>,
     /// Indicates whether the weather information includes station information.
     #[cfg_attr(
         feature = "serde",
@@ -1652,9 +1624,9 @@ pub struct WeatherSubApiLightningReading {
     /// Lightning event type (C = cloud-to-cloud, G = cloud-to-ground)
     #[cfg_attr(
         feature = "serde",
-        serde(rename = "type", default, skip_serializing_if = "Option::is_none")
+        serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub type_: Option<NeaLightningType>,
+    pub r#type: Option<NeaLightningType>,
     /// WBGT monitoring station metadata
     #[cfg_attr(
         feature = "serde",
@@ -1702,7 +1674,7 @@ pub struct WeatherSubApiInvalidParamsError {
     pub error_msg: Option<String>,
 }
 /// Unit of measure for NEA station readings and outlook ranges
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaMeasurementUnit {
     #[cfg_attr(feature = "serde", serde(rename = "deg C"))]
@@ -1718,9 +1690,6 @@ pub enum NeaMeasurementUnit {
     Degrees,
     #[cfg_attr(feature = "serde", serde(rename = "mm"))]
     Millimeters,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaMeasurementUnit {
     pub const fn as_str(&self) -> &'static str {
@@ -1732,7 +1701,6 @@ impl NeaMeasurementUnit {
             Self::Knots => "knots",
             Self::Degrees => "degrees",
             Self::Millimeters => "mm",
-            Self::Unknown => "",
         }
     }
 }
@@ -1772,15 +1740,12 @@ pub struct NeaWbgtStation {
 /// 15-minute average WBGT (°C) as a decimal string
 pub type NeaWbgt = f64;
 /// Heat stress advisory level from WBGT
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaHeatStressLevel {
     Low,
     Moderate,
     High,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaHeatStressLevel {
     pub const fn as_str(&self) -> &'static str {
@@ -1788,7 +1753,6 @@ impl NeaHeatStressLevel {
             Self::Low => "Low",
             Self::Moderate => "Moderate",
             Self::High => "High",
-            Self::Unknown => "",
         }
     }
 }
@@ -1803,7 +1767,7 @@ impl fmt::Display for NeaHeatStressLevel {
     }
 }
 /// Region name
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaRegionMetadataName {
     #[cfg_attr(feature = "serde", serde(rename = "west"))]
@@ -1816,9 +1780,6 @@ pub enum NeaRegionMetadataName {
     South,
     #[cfg_attr(feature = "serde", serde(rename = "central"))]
     Central,
-    #[default]
-    #[cfg_attr(feature = "serde", serde(other))]
-    Unknown,
 }
 impl NeaRegionMetadataName {
     pub const fn as_str(&self) -> &'static str {
@@ -1828,7 +1789,6 @@ impl NeaRegionMetadataName {
             Self::North => "north",
             Self::South => "south",
             Self::Central => "central",
-            Self::Unknown => "",
         }
     }
 }

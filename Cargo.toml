@@ -12,7 +12,7 @@ repository = "https://github.com/InfiniteUnion/nea-rs"
 [lib]
 
 [dependencies]
-satay-runtime = { version = "0.1.2", default-features = false }
+satay-runtime = { version = "0.4.0", default-features = false }
 nutype = { version = "0.7", features = ["serde", "regex"] }
 regex = "1"
 serde = { version = "1", features = ["derive"], optional = true }
@@ -26,7 +26,7 @@ json = ["serde", "dep:serde_json", "satay-runtime/json"]
 
 [dev-dependencies]
 reqwest = "0.13.3"
-satay-reqwest = { version = "0.1.2" }
+satay-reqwest = { version = "0.4.0" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 
 [workspace.metadata.dylint]
