@@ -32,7 +32,7 @@ jobs:
       - name: Setup Rust
         uses: ./.github/actions/setup-rust
       - name: Clippy
-        run: cargo clippy -- -D warnings
+        run: cargo clippy --all-targets --all-features -- -D warnings -D clippy::pedantic -D clippy::perf
 
   dylint:
     name: Dylint

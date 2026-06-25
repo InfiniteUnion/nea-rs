@@ -30,17 +30,7 @@ cargo add nea-rs satay-reqwest reqwest
 cargo add tokio --features macros,rt-multi-thread
 ```
 
-Or add the same dependencies to `Cargo.toml`:
-
-```toml
-[dependencies]
-nea-rs = "0.1"
-satay-reqwest = "0.1"
-reqwest = "0.13.3"
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
-```
-
-Reqwest 0.13 uses rustls by default, so HTTPS works without an extra TLS feature. If your app needs blocking clients, proxies, or other transport options, keep a direct `reqwest` dependency and enable features there. See [Using other client backends](#using-other-client-backends) and the [Satay transport docs](https://github.com/zeon256/satay-rs/blob/main/docs/transports.md).
+These commands write the latest compatible versions into `Cargo.toml` for you. Recent `reqwest` releases use rustls by default, so HTTPS works without an extra TLS feature. If your app needs blocking clients, proxies, or other transport options, keep a direct `reqwest` dependency and enable features there. See [Using other client backends](#using-other-client-backends) and the [Satay transport docs](https://github.com/zeon256/satay-rs/blob/main/docs/transports.md).
 
 ## Example
 
@@ -83,11 +73,8 @@ See [satay-rs](https://github.com/zeon256/satay-rs) for more details
 
 ### ureq
 
-```toml
-[dependencies]
-nea-rs = "0.1"
-satay-ureq = "0.1"
-ureq = "3"
+```bash
+cargo add nea-rs satay-ureq ureq
 ```
 
 ```rust
@@ -120,11 +107,10 @@ Configure the agent with `http_status_as_error(false)` so Satay can decode typed
 
 Enable the `blocking` feature on both crates when you want a synchronous reqwest client:
 
-```toml
-[dependencies]
-nea-rs = "0.1"
-satay-reqwest = { version = "0.1", features = ["blocking"] }
-reqwest = { version = "0.13.3", features = ["blocking"] }
+```bash
+cargo add nea-rs
+cargo add satay-reqwest --features blocking
+cargo add reqwest --features blocking
 ```
 
 ```rust
