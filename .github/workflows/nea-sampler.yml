@@ -1,0 +1,71 @@
+name: NEA API Sampler
+
+on:
+  schedule:
+    - cron: "17 1,13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: nea-api-sampler
+  cancel-in-progress: true
+
+jobs:
+  sample:
+    name: Sample upstream API
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Restore compiled sampler binary
+        id: sampler-binary-cache
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: target/release/examples/upstream_sampler
+          key: nea-sampler-bin-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('Cargo.lock', 'Cargo.toml', 'src/**/*.rs', 'examples/upstream_sampler.rs') }}
+      - name: Install Rust toolchain
+        if: ${{ steps.sampler-binary-cache.outputs.cache-hit != 'true' }}
+        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
+        with:
+          toolchain: stable
+      - name: Restore Cargo dependency cache
+        if: ${{ steps.sampler-binary-cache.outputs.cache-hit != 'true' }}
+        uses: swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
+        with:
+          key: nea-sampler
+      - name: Build upstream sampler
+        if: ${{ steps.sampler-binary-cache.outputs.cache-hit != 'true' }}
+        run: cargo build --release --example upstream_sampler
+      - name: Save compiled sampler binary
+        if: ${{ steps.sampler-binary-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: target/release/examples/upstream_sampler
+          key: ${{ steps.sampler-binary-cache.outputs.cache-primary-key }}
+      - name: Ensure sampler is executable
+        run: chmod +x target/release/examples/upstream_sampler
+      - name: Run upstream sampler
+        id: sample
+        continue-on-error: true
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+        run: target/release/examples/upstream_sampler
+      - name: Open or update decode-failure issue
+        if: ${{ steps.sample.outcome == 'failure' && hashFiles('target/nea-upstream-sampler-issue.md') != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_TITLE: NEA upstream API sample decode failure
+        run: |
+          set -euo pipefail
+          existing="$(gh issue list --state open --search "$ISSUE_TITLE in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file target/nea-upstream-sampler-issue.md
+          else
+            gh issue create --title "$ISSUE_TITLE" --body-file target/nea-upstream-sampler-issue.md
+          fi
+      - name: Fail workflow on sampler failure
+        if: ${{ steps.sample.outcome == 'failure' }}
+        run: exit 1
