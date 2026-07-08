@@ -864,7 +864,6 @@ components:
       - PN
       - HZ
       - SH
-      - WI
       - MS
       - FG
       - LR
@@ -873,10 +872,10 @@ components:
       - PS
       - LS
       - HS
-      - TS
       - HT
       - HG
       - TL
+      - WD
       x-satay:
         enum-variants:
           FA: FairDay
@@ -887,7 +886,7 @@ components:
           PN: PartlyCloudyNight
           HZ: Hazy
           SH: SlightlyHazy
-          WI: Windy
+          WD: Windy
           MS: Mist
           FG: Fog
           LR: LightRain
@@ -896,10 +895,9 @@ components:
           PS: PassingShowers
           LS: LightShowers
           HS: HeavyShowers
-          TS: ThunderyShowers
           HT: HeavyThunderyShowers
           HG: HeavyThunderyShowersWithGustyWinds
-          TL: ThunderyShowersAlt
+          TL: ThunderyShowers
     NeaLightningType:
       type: string
       description: Lightning event type (C = cloud-to-cloud, G = cloud-to-ground)

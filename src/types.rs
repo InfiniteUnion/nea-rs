@@ -341,8 +341,6 @@ pub enum NeaForecastCode {
     Hazy,
     #[cfg_attr(feature = "serde", serde(rename = "SH"))]
     SlightlyHazy,
-    #[cfg_attr(feature = "serde", serde(rename = "WI"))]
-    Windy,
     #[cfg_attr(feature = "serde", serde(rename = "MS"))]
     Mist,
     #[cfg_attr(feature = "serde", serde(rename = "FG"))]
@@ -359,14 +357,14 @@ pub enum NeaForecastCode {
     LightShowers,
     #[cfg_attr(feature = "serde", serde(rename = "HS"))]
     HeavyShowers,
-    #[cfg_attr(feature = "serde", serde(rename = "TS"))]
-    ThunderyShowers,
     #[cfg_attr(feature = "serde", serde(rename = "HT"))]
     HeavyThunderyShowers,
     #[cfg_attr(feature = "serde", serde(rename = "HG"))]
     HeavyThunderyShowersWithGustyWinds,
     #[cfg_attr(feature = "serde", serde(rename = "TL"))]
-    ThunderyShowersAlt,
+    ThunderyShowers,
+    #[cfg_attr(feature = "serde", serde(rename = "WD"))]
+    Windy,
 }
 impl NeaForecastCode {
     pub const fn as_str(&self) -> &'static str {
@@ -379,7 +377,6 @@ impl NeaForecastCode {
             Self::PartlyCloudyNight => "PN",
             Self::Hazy => "HZ",
             Self::SlightlyHazy => "SH",
-            Self::Windy => "WI",
             Self::Mist => "MS",
             Self::Fog => "FG",
             Self::LightRain => "LR",
@@ -388,10 +385,10 @@ impl NeaForecastCode {
             Self::PassingShowers => "PS",
             Self::LightShowers => "LS",
             Self::HeavyShowers => "HS",
-            Self::ThunderyShowers => "TS",
             Self::HeavyThunderyShowers => "HT",
             Self::HeavyThunderyShowersWithGustyWinds => "HG",
-            Self::ThunderyShowersAlt => "TL",
+            Self::ThunderyShowers => "TL",
+            Self::Windy => "WD",
         }
     }
 }
