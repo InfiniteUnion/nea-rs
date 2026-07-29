@@ -1638,17 +1638,18 @@ pub struct WeatherSubApiLightningReading {
         serde(default, skip_serializing_if = "Option::is_none")
     )]
     pub station: Option<NeaWbgtStation>,
-    /// 15-minute average WBGT (°C) as a decimal string
+    /// 15-minute average WBGT (°C), or `NA` when unavailable
     #[cfg_attr(
         feature = "serde",
         serde(
-            with = "satay_runtime::serde_string::as_f64::option",
+            deserialize_with = "WeatherSubApiLightningReading::__satay_deserialize_wbgt_none_if",
+            serialize_with = "WeatherSubApiLightningReading::__satay_serialize_wbgt_none_if",
             default,
             skip_serializing_if = "Option::is_none"
         )
     )]
     pub wbgt: Option<f64>,
-    /// Heat stress advisory level from WBGT
+    /// Heat stress advisory level from WBGT (`NA` when unavailable)
     #[cfg_attr(
         feature = "serde",
         serde(
@@ -1658,6 +1659,25 @@ pub struct WeatherSubApiLightningReading {
         )
     )]
     pub heat_stress: Option<NeaHeatStressLevel>,
+}
+#[cfg(feature = "serde")]
+impl WeatherSubApiLightningReading {
+    fn __satay_deserialize_wbgt_none_if<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        satay_runtime::serde_string::as_f64::option::deserialize_none_if(deserializer, &["NA"])
+    }
+    #[allow(clippy::ref_option)]
+    fn __satay_serialize_wbgt_none_if<S>(
+        value: &Option<f64>,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        satay_runtime::serde_string::as_f64::serialize_none_if(value, "NA", serializer)
+    }
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1742,15 +1762,15 @@ pub struct NeaWbgtStation {
     #[cfg_attr(feature = "serde", serde(rename = "townCenter"))]
     pub town_center: String,
 }
-/// 15-minute average WBGT (°C) as a decimal string
-pub type NeaWbgt = f64;
-/// Heat stress advisory level from WBGT
+/// Heat stress advisory level from WBGT (`NA` when unavailable)
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NeaHeatStressLevel {
     Low,
     Moderate,
     High,
+    #[cfg_attr(feature = "serde", serde(rename = "NA"))]
+    NotAvailable,
 }
 impl NeaHeatStressLevel {
     pub const fn as_str(&self) -> &'static str {
@@ -1758,6 +1778,7 @@ impl NeaHeatStressLevel {
             Self::Low => "Low",
             Self::Moderate => "Moderate",
             Self::High => "High",
+            Self::NotAvailable => "NA",
         }
     }
 }

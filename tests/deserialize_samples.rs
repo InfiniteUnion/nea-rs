@@ -6,12 +6,13 @@
 
 use http::{HeaderMap, StatusCode};
 use nea_rs::{
-    AirTemperatureOperationResponse, FourDayOutlookOperationResponse, Pm25OperationResponse,
-    PsiOperationResponse, RainfallOperationResponse, RelativeHumidityOperationResponse,
-    TwentyFourHrForecastOperationResponse, TwoHrForecastOperationResponse, UvOperationResponse,
-    WeatherSubApiOperationResponse, WindDirectionOperationResponse, WindSpeedOperationResponse,
-    decode_air_temperature_response, decode_four_day_outlook_response, decode_pm25_response,
-    decode_psi_response, decode_rainfall_response, decode_relative_humidity_response,
+    AirTemperatureOperationResponse, FourDayOutlookOperationResponse, NeaHeatStressLevel,
+    Pm25OperationResponse, PsiOperationResponse, RainfallOperationResponse,
+    RelativeHumidityOperationResponse, TwentyFourHrForecastOperationResponse,
+    TwoHrForecastOperationResponse, UvOperationResponse, WeatherSubApiOperationResponse,
+    WindDirectionOperationResponse, WindSpeedOperationResponse, decode_air_temperature_response,
+    decode_four_day_outlook_response, decode_pm25_response, decode_psi_response,
+    decode_rainfall_response, decode_relative_humidity_response,
     decode_twenty_four_hr_forecast_response, decode_two_hr_forecast_response, decode_uv_response,
     decode_weather_sub_api_response, decode_wind_direction_response, decode_wind_speed_response,
 };
@@ -114,3 +115,41 @@ sample_deserializes!(
     decode_weather_sub_api_response,
     WeatherSubApiOperationResponse::Ok(_)
 );
+
+#[test]
+fn weather_wbgt_not_available_sentinels_deserialize() {
+    let body = br#"{
+        "code": 0,
+        "data": {
+            "records": [{
+                "item": {
+                    "readings": [
+                        {"wbgt": "NA", "heatStress": "NA"},
+                        {"wbgt": "28.7", "heatStress": "Low"}
+                    ]
+                }
+            }]
+        }
+    }"#;
+
+    let decoded = decode_weather_sub_api_response(ok_response(body))
+        .expect("WBGT response with NA sentinels should decode");
+    let WeatherSubApiOperationResponse::Ok(response) = decoded else {
+        panic!("expected Ok variant");
+    };
+    let readings = response
+        .data
+        .and_then(|data| data.records)
+        .and_then(|records| records.into_iter().next())
+        .and_then(|record| record.item)
+        .and_then(|item| item.readings)
+        .expect("expected WBGT readings");
+
+    assert_eq!(readings[0].wbgt, None);
+    assert_eq!(
+        readings[0].heat_stress,
+        Some(NeaHeatStressLevel::NotAvailable)
+    );
+    assert_eq!(readings[1].wbgt, Some(28.7));
+    assert_eq!(readings[1].heat_stress, Some(NeaHeatStressLevel::Low));
+}
