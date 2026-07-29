@@ -2047,7 +2047,12 @@ components:
         station:
           $ref: '#/components/schemas/NeaWbgtStation'
         wbgt:
-          $ref: '#/components/schemas/NeaWbgt'
+          type: string
+          description: 15-minute average WBGT (°C), or `NA` when unavailable
+          x-satay:
+            parse-as: f64
+            none-if:
+            - NA
         heatStress:
           $ref: '#/components/schemas/NeaHeatStressLevel'
     WeatherSubApiInvalidParamsError:
@@ -2107,23 +2112,20 @@ components:
       - id
       - name
       - townCenter
-    NeaWbgt:
-      type: string
-      description: 15-minute average WBGT (°C) as a decimal string
-      x-satay:
-        parse-as: f64
     NeaHeatStressLevel:
       type: string
-      description: Heat stress advisory level from WBGT
+      description: Heat stress advisory level from WBGT (`NA` when unavailable)
       enum:
       - Low
       - Moderate
       - High
+      - NA
       x-satay:
         enum-variants:
           Low: Low
           Moderate: Moderate
           High: High
+          NA: NotAvailable
 x-nea-endpoints:
 - path: /psi
   updateFrequency: Every 15 minutes

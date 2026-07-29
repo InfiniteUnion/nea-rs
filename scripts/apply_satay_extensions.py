@@ -245,12 +245,13 @@ WEATHER_SUB_API_VARIANTS = {
     "wbgt": "WetBulbGlobeTemperature",
 }
 
-HEAT_STRESS_ENUM = ["Low", "Moderate", "High"]
+HEAT_STRESS_ENUM = ["Low", "Moderate", "High", "NA"]
 
 HEAT_STRESS_VARIANTS = {
     "Low": "Low",
     "Moderate": "Moderate",
     "High": "High",
+    "NA": "NotAvailable",
 }
 
 SHARED_SCHEMAS = {
@@ -333,14 +334,9 @@ SHARED_SCHEMAS = {
         },
         "required": ["id", "name", "townCenter"],
     },
-    "NeaWbgt": {
-        "type": "string",
-        "description": "15-minute average WBGT (°C) as a decimal string",
-        "x-satay": {"parse-as": "f64"},
-    },
     "NeaHeatStressLevel": {
         "type": "string",
-        "description": "Heat stress advisory level from WBGT",
+        "description": "Heat stress advisory level from WBGT (`NA` when unavailable)",
         "enum": HEAT_STRESS_ENUM,
         "x-satay": {"enum-variants": HEAT_STRESS_VARIANTS},
     },
@@ -667,8 +663,13 @@ def patch_weather_sub_api_reading(schemas: dict[str, Any]) -> None:
     props = reading.setdefault("properties", {})
     props["location"] = ref("NeaLightningGeoPoint")
     props["station"] = ref("NeaWbgtStation")
-    props["wbgt"] = ref("NeaWbgt")
+    props["wbgt"] = {
+        "type": "string",
+        "description": "15-minute average WBGT (°C), or `NA` when unavailable",
+        "x-satay": {"parse-as": "f64", "none-if": ["NA"]},
+    }
     props["heatStress"] = ref("NeaHeatStressLevel")
+    schemas.pop("NeaWbgt", None)
 
     observation = schemas.get("WeatherSubApiObservation")
     if isinstance(observation, dict):
