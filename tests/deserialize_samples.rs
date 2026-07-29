@@ -1,8 +1,12 @@
 //! Deserialize captured NEA API success bodies from `tests/samples/*.json`.
 //!
-//! Failures are intentional signal — fix the generated types or refresh samples later.
-//!
-//! When failures happen you should open an issue with the captured response body and the expected response body.
+//! Failures are intentional signal — fix the generated types before merging a newly captured sample.
+//! The scheduled upstream sampler opens draft pull requests with numbered regression fixtures.
+
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 use http::{HeaderMap, StatusCode};
 use nea_rs::{
@@ -25,93 +29,160 @@ fn ok_response(body: &[u8]) -> satay_runtime::ResponseParts<Vec<u8>> {
     }
 }
 
+fn numbered_samples(prefix: &str) -> Vec<PathBuf> {
+    let samples_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/samples");
+    let file_prefix = format!("{prefix}-");
+    let mut samples = fs::read_dir(&samples_dir)
+        .unwrap_or_else(|error| panic!("failed to read {}: {error}", samples_dir.display()))
+        .filter_map(|entry| {
+            let entry = entry.unwrap_or_else(|error| {
+                panic!(
+                    "failed to read an entry in {}: {error}",
+                    samples_dir.display()
+                )
+            });
+
+            let file_type = entry.file_type().unwrap_or_else(|error| {
+                panic!("failed to inspect {}: {error}", entry.path().display())
+            });
+
+            if !file_type.is_file() {
+                return None;
+            }
+
+            let file_name = entry.file_name();
+            let file_name = file_name.to_str().unwrap_or_else(|| {
+                panic!("sample filename is not UTF-8: {}", entry.path().display())
+            });
+
+            let number = file_name
+                .strip_prefix(&file_prefix)?
+                .strip_suffix(".json")?
+                .parse::<u64>()
+                .unwrap_or_else(|error| {
+                    panic!(
+                        "sample filename must match {prefix}-<positive-number>.json: \
+                         {file_name}: {error}"
+                    )
+                });
+            assert!(
+                number > 0,
+                "sample number must be positive: {}",
+                entry.path().display()
+            );
+
+            Some((number, entry.path()))
+        })
+        .collect::<Vec<_>>();
+
+    samples.sort_by_key(|(number, _)| *number);
+
+    for duplicate in samples.windows(2) {
+        assert_ne!(
+            duplicate[0].0,
+            duplicate[1].0,
+            "duplicate sample number {} for {} and {}",
+            duplicate[0].0,
+            duplicate[0].1.display(),
+            duplicate[1].1.display()
+        );
+    }
+
+    assert!(
+        !samples.is_empty(),
+        "no numbered samples found for {prefix} in {}",
+        samples_dir.display()
+    );
+
+    samples.into_iter().map(|(_, path)| path).collect()
+}
+
 macro_rules! sample_deserializes {
-    ($test_name:ident, $file:literal, $decode:path, $ok:pat) => {
+    ($test_name:ident, $prefix:literal, $decode:path, $ok:pat) => {
         #[test]
         fn $test_name() {
-            let body = include_str!(concat!("samples/", $file));
-            let decoded = $decode(ok_response(body.as_bytes()))
-                .unwrap_or_else(|e| panic!("decode {} failed: {e}", $file));
-            assert!(matches!(decoded, $ok), "expected Ok variant for {}", $file);
+            for path in numbered_samples($prefix) {
+                let body = fs::read(&path)
+                    .unwrap_or_else(|error| panic!("failed to read {}: {error}", path.display()));
+
+                let decoded = $decode(ok_response(&body))
+                    .unwrap_or_else(|error| panic!("decode {} failed: {error}", path.display()));
+
+                assert!(
+                    matches!(decoded, $ok),
+                    "expected Ok variant for {}",
+                    path.display()
+                );
+            }
         }
     };
 }
 
-sample_deserializes!(
-    psi,
-    "psi.json",
-    decode_psi_response,
-    PsiOperationResponse::Ok(_)
-);
+sample_deserializes!(psi, "psi", decode_psi_response, PsiOperationResponse::Ok(_));
 sample_deserializes!(
     pm25,
-    "pm25.json",
+    "pm25",
     decode_pm25_response,
     Pm25OperationResponse::Ok(_)
 );
 sample_deserializes!(
     air_temperature,
-    "air-temperature.json",
+    "air-temperature",
     decode_air_temperature_response,
     AirTemperatureOperationResponse::Ok(_)
 );
 sample_deserializes!(
     relative_humidity,
-    "relative-humidity.json",
+    "relative-humidity",
     decode_relative_humidity_response,
     RelativeHumidityOperationResponse::Ok(_)
 );
 sample_deserializes!(
     wind_speed,
-    "wind-speed.json",
+    "wind-speed",
     decode_wind_speed_response,
     WindSpeedOperationResponse::Ok(_)
 );
 sample_deserializes!(
     wind_direction,
-    "wind-direction.json",
+    "wind-direction",
     decode_wind_direction_response,
     WindDirectionOperationResponse::Ok(_)
 );
 sample_deserializes!(
     rainfall,
-    "rainfall.json",
+    "rainfall",
     decode_rainfall_response,
     RainfallOperationResponse::Ok(_)
 );
 sample_deserializes!(
     two_hr_forecast,
-    "two-hr-forecast.json",
+    "two-hr-forecast",
     decode_two_hr_forecast_response,
     TwoHrForecastOperationResponse::Ok(_)
 );
 sample_deserializes!(
     twenty_four_hr_forecast,
-    "twenty-four-hr-forecast.json",
+    "twenty-four-hr-forecast",
     decode_twenty_four_hr_forecast_response,
     TwentyFourHrForecastOperationResponse::Ok(_)
 );
 sample_deserializes!(
     four_day_outlook,
-    "four-day-outlook.json",
+    "four-day-outlook",
     decode_four_day_outlook_response,
     FourDayOutlookOperationResponse::Ok(_)
 );
-sample_deserializes!(
-    uv,
-    "uv.json",
-    decode_uv_response,
-    UvOperationResponse::Ok(_)
-);
+sample_deserializes!(uv, "uv", decode_uv_response, UvOperationResponse::Ok(_));
 sample_deserializes!(
     weather_lightning,
-    "weather-lightning.json",
+    "weather-lightning",
     decode_weather_sub_api_response,
     WeatherSubApiOperationResponse::Ok(_)
 );
 sample_deserializes!(
     weather_wbgt,
-    "weather-wbgt.json",
+    "weather-wbgt",
     decode_weather_sub_api_response,
     WeatherSubApiOperationResponse::Ok(_)
 );

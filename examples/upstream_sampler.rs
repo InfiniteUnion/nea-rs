@@ -3,6 +3,7 @@
 use std::any::Any;
 use std::fmt::Debug;
 use std::io::{self, ErrorKind};
+use std::path::Path;
 use std::process::ExitCode;
 use std::time::Duration;
 use std::{env, fs, mem, panic};
@@ -15,6 +16,7 @@ use satay_runtime::{Action, ResponseParts};
 use tokio::{task::JoinSet, time::sleep};
 
 const ISSUE_REPORT_PATH: &str = "target/nea-upstream-sampler-issue.md";
+const FAILURE_SAMPLES_DIR: &str = "target/nea-upstream-samples";
 const RESPONSE_BODY_LIMIT: usize = 4_000;
 const PROBE_STAGGER: Duration = Duration::from_secs(3);
 
@@ -77,8 +79,8 @@ async fn main() -> ExitCode {
 }
 
 async fn run_sampler() -> ExitCode {
-    if let Err(error) = remove_stale_issue_report() {
-        eprintln!("failed to remove stale sampler issue report: {error}");
+    if let Err(error) = remove_stale_artifacts() {
+        eprintln!("failed to remove stale sampler artifacts: {error}");
         return ExitCode::from(1);
     }
 
@@ -198,19 +200,34 @@ fn finish_run(results: Vec<ProbeTaskResult>) -> ExitCode {
         return ExitCode::from(1);
     }
 
+    let sample_count = match write_failure_samples(&client_failures) {
+        Ok(sample_count) => sample_count,
+        Err(error) => {
+            eprintln!("failed to write sampler regression samples: {error}");
+            return ExitCode::from(1);
+        }
+    };
+
     println!(
-        "wrote sampler issue report to {ISSUE_REPORT_PATH} for {} generated-client failure(s)",
-        client_failures.len()
+        "wrote sampler issue report to {ISSUE_REPORT_PATH} for {} generated-client failure(s) \
+         and {sample_count} regression sample candidate(s)",
+        client_failures.len(),
     );
     ExitCode::from(2)
 }
 
-fn remove_stale_issue_report() -> io::Result<()> {
+fn remove_stale_artifacts() -> io::Result<()> {
     match fs::remove_file(ISSUE_REPORT_PATH) {
-        Ok(()) => Ok(()),
-        Err(error) if error.kind() == ErrorKind::NotFound => Ok(()),
-        Err(error) => Err(error),
+        Ok(()) => {}
+        Err(error) if error.kind() == ErrorKind::NotFound => {}
+        Err(error) => return Err(error),
     }
+    match fs::remove_dir_all(FAILURE_SAMPLES_DIR) {
+        Ok(()) => {}
+        Err(error) if error.kind() == ErrorKind::NotFound => {}
+        Err(error) => return Err(error),
+    }
+    Ok(())
 }
 
 fn write_issue_report(
@@ -222,6 +239,31 @@ fn write_issue_report(
         ISSUE_REPORT_PATH,
         render_issue_report(failures, transport_failures),
     )
+}
+
+fn write_failure_samples(failures: &[ProbeFailure]) -> io::Result<usize> {
+    let candidates = failures
+        .iter()
+        .filter(|failure| is_failure_sample_candidate(failure))
+        .collect::<Vec<_>>();
+    if candidates.is_empty() {
+        return Ok(0);
+    }
+
+    fs::create_dir_all(FAILURE_SAMPLES_DIR)?;
+    for failure in &candidates {
+        let file_name = format!("{}.json", failure.endpoint.replace('_', "-"));
+        fs::write(
+            Path::new(FAILURE_SAMPLES_DIR).join(file_name),
+            &failure.body,
+        )?;
+    }
+    Ok(candidates.len())
+}
+
+fn is_failure_sample_candidate(failure: &ProbeFailure) -> bool {
+    failure.status == StatusCode::OK
+        && serde_json::from_slice::<serde_json::Value>(&failure.body).is_ok()
 }
 
 fn api_from_env() -> Api {
@@ -493,6 +535,28 @@ mod tests {
         };
         let report = render_issue_report(&[failure], &[]);
         assert!(report.contains("truncated from 4001 bytes to 4000 bytes"));
+    }
+
+    #[test]
+    fn regression_samples_require_successful_json_responses() {
+        let mut failure = ProbeFailure {
+            endpoint: "air_temperature",
+            method: "GET".to_owned(),
+            uri: "https://api-open.data.gov.sg/v2/real-time/api/air-temperature".to_owned(),
+            status: StatusCode::OK,
+            failure_kind: "decode error",
+            error: "JSON error: missing field data".to_owned(),
+            body: br#"{"unexpected":true}"#.to_vec(),
+        };
+
+        assert!(is_failure_sample_candidate(&failure));
+
+        failure.status = StatusCode::BAD_GATEWAY;
+        assert!(!is_failure_sample_candidate(&failure));
+
+        failure.status = StatusCode::OK;
+        failure.body = b"upstream maintenance".to_vec();
+        assert!(!is_failure_sample_candidate(&failure));
     }
 
     #[test]
