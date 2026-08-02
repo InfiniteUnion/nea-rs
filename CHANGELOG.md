@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1](https://github.com/InfiniteUnion/nea-rs/compare/v0.4.0...v0.4.1) - 2026-08-02
+
+### Other
+
+- *(deps)* bump quinn-proto to 0.11.16 (RUSTSEC-2026-0185)
+- add better process for sampler
+
 ## [0.4.0](https://github.com/InfiniteUnion/nea-rs/compare/v0.3.0...v0.4.0) - 2026-07-29
 
 ### Added
