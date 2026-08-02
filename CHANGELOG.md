@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Other
+
+- add pull request and weekly Cargo security audits
+
 ## [0.4.1](https://github.com/InfiniteUnion/nea-rs/compare/v0.4.0...v0.4.1) - 2026-08-02
 
 ### Other
