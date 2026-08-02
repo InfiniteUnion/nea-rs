@@ -704,7 +704,7 @@ dependencies = [
 
 [[package]]
 name = "nea-rs"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "http",
  "nutype",
