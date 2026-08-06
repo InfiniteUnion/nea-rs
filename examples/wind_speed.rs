@@ -13,7 +13,11 @@ use std::error::Error;
 async fn main() -> Result<(), Box<dyn Error>> {
     let client = reqwest::Client::new();
     let api = common::api_from_env();
-    let response = api.wind_speed().send_with(&client).await?;
+    let response = api
+        .weather_readings()
+        .wind_speed()
+        .send_with(&client)
+        .await?;
     println!("{response:#?}");
     Ok(())
 }

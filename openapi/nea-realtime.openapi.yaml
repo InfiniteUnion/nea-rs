@@ -915,7 +915,7 @@ components:
       - Fair
       - Fair (Day)
       - Fair (Night)
-      - Fair and Warm
+      - Fair & Warm
       - Partly Cloudy
       - Partly Cloudy (Day)
       - Partly Cloudy (Night)
@@ -940,7 +940,7 @@ components:
           Fair: Fair
           Fair (Day): FairDay
           Fair (Night): FairNight
-          Fair and Warm: FairAndWarm
+          Fair & Warm: FairAndWarm
           Partly Cloudy: PartlyCloudy
           Partly Cloudy (Day): PartlyCloudyDay
           Partly Cloudy (Night): PartlyCloudyNight

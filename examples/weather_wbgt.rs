@@ -15,6 +15,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let client = reqwest::Client::new();
     let api = common::api_from_env();
     let response = api
+        .environment()
         .weather_sub_api(NeaWeatherSubApi::WetBulbGlobeTemperature)
         .send_with(&client)
         .await?;

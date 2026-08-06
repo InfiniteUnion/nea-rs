@@ -1088,9 +1088,9 @@ dependencies = [
 
 [[package]]
 name = "satay-reqwest"
-version = "0.9.0"
+version = "0.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "84af178f6e4ea774a0cf2efe5205e867ab59c7f41eb3560c8689a0cc02a57b3b"
+checksum = "0333217f4b1097210de65dafaf5adb24610d0db7c241c88dd7de70e377dbbcd9"
 dependencies = [
  "reqwest",
  "satay-runtime",
@@ -1099,9 +1099,9 @@ dependencies = [
 
 [[package]]
 name = "satay-runtime"
-version = "0.9.0"
+version = "0.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "112dd7895efa78b3da0578f0e24743a9a082aa0d17b49308c694c963250c0488"
+checksum = "91005a66d1815fb2e99410239b656e3d8734463c057d17ec9d78482cde13392c"
 dependencies = [
  "fast-float2",
  "http",
