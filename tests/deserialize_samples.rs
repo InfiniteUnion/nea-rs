@@ -14,11 +14,17 @@ use nea_rs::{
     Pm25OperationResponse, PsiOperationResponse, RainfallOperationResponse,
     RelativeHumidityOperationResponse, TwentyFourHrForecastOperationResponse,
     TwoHrForecastOperationResponse, UvOperationResponse, WeatherSubApiOperationResponse,
-    WindDirectionOperationResponse, WindSpeedOperationResponse, decode_air_temperature_response,
-    decode_four_day_outlook_response, decode_pm25_response, decode_psi_response,
-    decode_rainfall_response, decode_relative_humidity_response,
-    decode_twenty_four_hr_forecast_response, decode_two_hr_forecast_response, decode_uv_response,
-    decode_weather_sub_api_response, decode_wind_direction_response, decode_wind_speed_response,
+    WindDirectionOperationResponse, WindSpeedOperationResponse,
+    operations::{
+        air_temperature::decode_air_temperature_response,
+        four_day_outlook::decode_four_day_outlook_response, pm25::decode_pm25_response,
+        psi::decode_psi_response, rainfall::decode_rainfall_response,
+        relative_humidity::decode_relative_humidity_response,
+        twenty_four_hr_forecast::decode_twenty_four_hr_forecast_response,
+        two_hr_forecast::decode_two_hr_forecast_response, uv::decode_uv_response,
+        weather_sub_api::decode_weather_sub_api_response,
+        wind_direction::decode_wind_direction_response, wind_speed::decode_wind_speed_response,
+    },
 };
 
 fn ok_response(body: &[u8]) -> satay_runtime::ResponseParts<Vec<u8>> {

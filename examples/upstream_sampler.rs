@@ -95,50 +95,80 @@ async fn run_sampler() -> ExitCode {
 
     let mut tasks = JoinSet::new();
     spawn_probe::<0, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("psi", api.psi(), &client).await
+        probe_action("psi", api.air_quality().psi(), &client).await
     });
     spawn_probe::<1, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("pm25", api.pm25(), &client).await
+        probe_action("pm25", api.air_quality().pm25(), &client).await
     });
     spawn_probe::<2, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("air_temperature", api.air_temperature(), &client).await
+        probe_action(
+            "air_temperature",
+            api.weather_readings().air_temperature(),
+            &client,
+        )
+        .await
     });
     spawn_probe::<3, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("relative_humidity", api.relative_humidity(), &client).await
+        probe_action(
+            "relative_humidity",
+            api.weather_readings().relative_humidity(),
+            &client,
+        )
+        .await
     });
     spawn_probe::<4, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("wind_speed", api.wind_speed(), &client).await
+        probe_action("wind_speed", api.weather_readings().wind_speed(), &client).await
     });
     spawn_probe::<5, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("wind_direction", api.wind_direction(), &client).await
+        probe_action(
+            "wind_direction",
+            api.weather_readings().wind_direction(),
+            &client,
+        )
+        .await
     });
     spawn_probe::<6, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("rainfall", api.rainfall(), &client).await
+        probe_action("rainfall", api.weather_readings().rainfall(), &client).await
     });
     spawn_probe::<7, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("two_hr_forecast", api.two_hr_forecast(), &client).await
+        probe_action(
+            "two_hr_forecast",
+            api.weather_forecast().two_hr_forecast(),
+            &client,
+        )
+        .await
     });
     spawn_probe::<8, _, _>(&mut tasks, &api, &client, |api, client| async move {
         probe_action(
             "twenty_four_hr_forecast",
-            api.twenty_four_hr_forecast(),
+            api.weather_forecast().twenty_four_hr_forecast(),
             &client,
         )
         .await
     });
     spawn_probe::<9, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("four_day_outlook", api.four_day_outlook(), &client).await
+        probe_action(
+            "four_day_outlook",
+            api.weather_forecast().four_day_outlook(),
+            &client,
+        )
+        .await
     });
     spawn_probe::<10, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("uv", api.uv(), &client).await
+        probe_action("uv", api.environment().uv(), &client).await
     });
     spawn_probe::<11, _, _>(&mut tasks, &api, &client, |api, client| async move {
-        probe_action("weather_lightning", api.weather_sub_api(Lightning), &client).await
+        probe_action(
+            "weather_lightning",
+            api.environment().weather_sub_api(Lightning),
+            &client,
+        )
+        .await
     });
     spawn_probe::<12, _, _>(&mut tasks, &api, &client, |api, client| async move {
         probe_action(
             "weather_wbgt",
-            api.weather_sub_api(WetBulbGlobeTemperature),
+            api.environment().weather_sub_api(WetBulbGlobeTemperature),
             &client,
         )
         .await
