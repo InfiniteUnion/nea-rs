@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0](https://github.com/InfiniteUnion/nea-rs/compare/v0.4.1...v0.5.0) - 2026-08-06
+
+### Fixed
+
+- ensure that `Fair & Warm` is correct
+
+### Other
+
+- capture NEA upstream decode failure
+- add cargo audit
+
 ### Other
 
 - add pull request and weekly Cargo security audits
