@@ -33,7 +33,7 @@ jobs:
         uses: ./.github/actions/setup-rust
 
       - name: Run release-plz release
-        uses: release-plz/action@49c995b2442b0f60dd4aab07a164cc00643471fc # v0.5.128
+        uses: release-plz/action@2eb1d8bcb770b4c48ccfaad919734b38b51958c9 # v0.5.131
         with:
           command: release
           version: "0.3.157"
@@ -60,7 +60,7 @@ jobs:
         uses: ./.github/actions/setup-rust
 
       - name: Run release-plz PR
-        uses: release-plz/action@49c995b2442b0f60dd4aab07a164cc00643471fc # v0.5.128
+        uses: release-plz/action@2eb1d8bcb770b4c48ccfaad919734b38b51958c9 # v0.5.131
         with:
           command: release-pr
           version: "0.3.157"
