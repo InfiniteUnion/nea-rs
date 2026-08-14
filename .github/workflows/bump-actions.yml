@@ -1,0 +1,19 @@
+name: Bump Action SHAs
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"  # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: InfiniteUnion/actions-sha-bump@331700268f48a07477f752f8a4c93b8745a76fcf # v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
