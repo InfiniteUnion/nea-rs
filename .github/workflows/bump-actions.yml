@@ -14,6 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: InfiniteUnion/actions-sha-bump@331700268f48a07477f752f8a4c93b8745a76fcf # v1.1.0
+      - uses: InfiniteUnion/actions-sha-bump@2643aa9344654ec623b65b2bc18831de257ccbe1 # v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
