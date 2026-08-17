@@ -16,7 +16,7 @@ cargo +"$rust_version" doc --all-features --no-deps
 printf '%s\n' \
   '<!doctype html>' \
   '<meta charset="utf-8">' \
-  '<meta http-equiv="refresh" content="0; url=lta/index.html">' \
-  '<link rel="canonical" href="lta/index.html">' \
-  '<title>lta documentation</title>' \
+  '<meta http-equiv="refresh" content="0; url=nea-rs/index.html">' \
+  '<link rel="canonical" href="nea-rs/index.html">' \
+  '<title>nea-rs documentation</title>' \
   > target/doc/index.html
