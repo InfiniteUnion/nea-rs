@@ -1050,7 +1050,7 @@ dependencies = [
  "security-framework",
  "security-framework-sys",
  "webpki-root-certs",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1088,9 +1088,9 @@ dependencies = [
 
 [[package]]
 name = "satay-reqwest"
-version = "0.12.2"
+version = "0.16.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0333217f4b1097210de65dafaf5adb24610d0db7c241c88dd7de70e377dbbcd9"
+checksum = "70f0655e46b54da98c263f69b5d94ab39515f4dea7cc4da452d8be72af337fd5"
 dependencies = [
  "reqwest",
  "satay-runtime",
@@ -1099,9 +1099,9 @@ dependencies = [
 
 [[package]]
 name = "satay-runtime"
-version = "0.12.2"
+version = "0.16.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91005a66d1815fb2e99410239b656e3d8734463c057d17ec9d78482cde13392c"
+checksum = "e1b1b284a4cad511a645521d9c12673fb02fcf505d23977aa63104fbe3a3378d"
 dependencies = [
  "fast-float2",
  "http",
@@ -1234,7 +1234,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "52d1cfed4120b4d927bf7c0f86d2087a4a7d6027c906d9f9d525a80573b9be51"
 dependencies = [
  "libc",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1674,7 +1674,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
