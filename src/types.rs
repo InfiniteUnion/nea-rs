@@ -8,6 +8,12 @@
     clippy::single_match_else
 )]
 
+#[cfg(feature = "serde")]
+use satay_runtime::serde_string;
+#[cfg(feature = "serde")]
+use satay_runtime::serde_string::as_f64;
+#[cfg(feature = "serde")]
+use satay_runtime::serde_string::as_f64::option as as_f64_option;
 use std::fmt;
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -715,10 +721,7 @@ pub struct NeaWeatherStation {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaReadingSnapshot {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     pub data: Vec<NeaStationReading>,
 }
@@ -905,25 +908,16 @@ pub struct FourDayOutlookData {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FourDayOutlookDay {
     /// SGT calendar date (YYYY-MM-DD)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_date")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_date"))]
     pub date: satay_runtime::Date,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
-        serde(
-            rename = "updatedTimestamp",
-            with = "satay_runtime::serde_string::as_offset_datetime"
-        )
+        serde(rename = "updatedTimestamp", with = "serde_string::as_offset_datetime")
     )]
     pub updated_timestamp: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// Forecast summary for the day
     pub forecasts: Vec<FourDayOutlookPeriod>,
@@ -932,10 +926,7 @@ pub struct FourDayOutlookDay {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FourDayOutlookPeriod {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// Unit of measure - Degrees Celsius
     pub temperature: NeaTemperatureRange,
@@ -980,25 +971,16 @@ pub struct TwentyFourHrForecastData {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TwentyFourHrForecastDay {
     /// SGT calendar date (YYYY-MM-DD)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_date")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_date"))]
     pub date: satay_runtime::Date,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
-        serde(
-            rename = "updatedTimestamp",
-            with = "satay_runtime::serde_string::as_offset_datetime"
-        )
+        serde(rename = "updatedTimestamp", with = "serde_string::as_offset_datetime")
     )]
     pub updated_timestamp: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// A general weather forecast for the 24 hour period
     pub general: TwentyFourHrForecastGeneral,
@@ -1064,16 +1046,10 @@ pub struct NeaForecastArea {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TwoHrForecastSnapshot {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub update_timestamp: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// Period of time the forecast is valid for
     pub valid_period: NeaValidPeriod,
@@ -1092,16 +1068,10 @@ pub struct TwoHrAreaForecast {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaValidPeriod {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub start: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub end: satay_runtime::OffsetDateTime,
     pub text: String,
 }
@@ -1126,25 +1096,16 @@ pub struct PsiData {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PsiSnapshot {
     /// SGT calendar date (YYYY-MM-DD)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_date")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_date"))]
     pub date: satay_runtime::Date,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
-        serde(
-            rename = "updatedTimestamp",
-            with = "satay_runtime::serde_string::as_offset_datetime"
-        )
+        serde(rename = "updatedTimestamp", with = "serde_string::as_offset_datetime")
     )]
     pub updated_timestamp: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// Overall and regional PSI data including pollutant concentrations and sub-indices
     pub readings: PsiReadings,
@@ -1428,25 +1389,16 @@ pub struct Pm25Data {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Pm25Snapshot {
     /// SGT calendar date (YYYY-MM-DD)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_date")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_date"))]
     pub date: satay_runtime::Date,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
-        serde(
-            rename = "updatedTimestamp",
-            with = "satay_runtime::serde_string::as_offset_datetime"
-        )
+        serde(rename = "updatedTimestamp", with = "serde_string::as_offset_datetime")
     )]
     pub updated_timestamp: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// Overall and regional PSI data including pollutant concentrations and sub-indices
     pub readings: Pm25Readings,
@@ -1491,25 +1443,16 @@ pub struct UvData {
 pub struct UvDayRecord {
     pub index: Vec<UvHourlyIndex>,
     /// SGT calendar date (YYYY-MM-DD)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_date")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_date"))]
     pub date: satay_runtime::Date,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
-        serde(
-            rename = "updatedTimestamp",
-            with = "satay_runtime::serde_string::as_offset_datetime"
-        )
+        serde(rename = "updatedTimestamp", with = "serde_string::as_offset_datetime")
     )]
     pub updated_timestamp: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
 }
 /// Reverse-chronologically ordered indexes
@@ -1517,10 +1460,7 @@ pub struct UvDayRecord {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UvHourlyIndex {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
-    #[cfg_attr(
-        feature = "serde",
-        serde(with = "satay_runtime::serde_string::as_offset_datetime")
-    )]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub hour: satay_runtime::OffsetDateTime,
     /// UV index for the hour
     pub value: NeaUvIndex,
@@ -1551,7 +1491,7 @@ pub struct WeatherSubApiDayRecord {
     #[cfg_attr(
         feature = "serde",
         serde(
-            with = "satay_runtime::serde_string::as_offset_datetime::option",
+            with = "serde_string::as_offset_datetime::option",
             default,
             skip_serializing_if = "Option::is_none"
         )
@@ -1568,7 +1508,7 @@ pub struct WeatherSubApiDayRecord {
         feature = "serde",
         serde(
             rename = "updatedTimestamp",
-            with = "satay_runtime::serde_string::as_offset_datetime::option",
+            with = "serde_string::as_offset_datetime::option",
             default,
             skip_serializing_if = "Option::is_none"
         )
@@ -1614,7 +1554,7 @@ pub struct WeatherSubApiLightningReading {
     #[cfg_attr(
         feature = "serde",
         serde(
-            with = "satay_runtime::serde_string::as_offset_datetime::option",
+            with = "serde_string::as_offset_datetime::option",
             default,
             skip_serializing_if = "Option::is_none"
         )
@@ -1666,9 +1606,13 @@ impl WeatherSubApiLightningReading {
     where
         D: serde::Deserializer<'de>,
     {
-        satay_runtime::serde_string::as_f64::option::deserialize_none_if(deserializer, &["NA"])
+        as_f64_option::deserialize_none_if(deserializer, &["NA"])
     }
-    #[allow(clippy::ref_option)]
+    #[allow(
+        clippy::ref_option,
+        clippy::trivially_copy_pass_by_ref,
+        reason = "Serde `serialize_with` receives a reference to the field type"
+    )]
     fn __satay_serialize_wbgt_none_if<S>(
         value: &Option<f64>,
         serializer: S,
@@ -1676,7 +1620,7 @@ impl WeatherSubApiLightningReading {
     where
         S: serde::Serializer,
     {
-        satay_runtime::serde_string::as_f64::serialize_none_if(value, "NA", serializer)
+        as_f64::serialize_none_if(value, "NA", serializer)
     }
 }
 #[derive(Debug, Clone, PartialEq)]
@@ -1744,10 +1688,10 @@ impl fmt::Display for NeaMeasurementUnit {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaLightningGeoPoint {
     /// WGS84 latitude as a decimal string
-    #[cfg_attr(feature = "serde", serde(with = "satay_runtime::serde_string::as_f64"))]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_f64"))]
     pub latitude: f64,
     /// WGS84 longitude as a decimal string
-    #[cfg_attr(feature = "serde", serde(with = "satay_runtime::serde_string::as_f64"))]
+    #[cfg_attr(feature = "serde", serde(with = "serde_string::as_f64"))]
     pub longitude: f64,
 }
 /// WBGT monitoring station metadata
