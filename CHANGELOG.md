@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1](https://github.com/InfiniteUnion/nea-rs/compare/v0.5.0...v0.5.1) - 2026-08-22
+
+### Added
+
+- update satay internals
+
+### Fixed
+
+- remediate cargo audit findings
+
+### Other
+
+- update lta in the URL
+- add permission to build-rustdoc.sh
+- add missing script for rustdoc
+- remove rustdoc ci and connect via cloudflare
+- deploy rustdoc
+- bump pinned action SHAs
+- update bump-actions secret
+- bump pinned action SHAs
+- update bump-actions secret
+- update bump-actions
+- add bump-actions
+
 ## [0.5.0](https://github.com/InfiniteUnion/nea-rs/compare/v0.4.1...v0.5.0) - 2026-08-06
 
 ### Fixed
