@@ -38,19 +38,23 @@ Fetch the latest air temperature readings with [reqwest](https://crates.io/crate
 
 ```rust
 use nea_rs::Api;
-use satay_reqwest::ReqwestActionExt;
-use satay_reqwest::reqwest::Client;
-use std::env;
-use std::error::Error;
+use satay_reqwest::{reqwest::Client, ReqwestActionExt};
+use std::{env, error::Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let client = Client::new();
+    let client = reqwest::Client::new();
     let mut api = Api::new();
+
     if let Ok(key) = env::var("X_API_KEY") {
         api = api.x_api_key(key);
     }
-    let response = api.air_temperature().send_with(&client).await?;
+
+    let response = api
+        .weather_readings()
+        .air_temperature()
+        .send_with(&client)
+        .await?;
     println!("{response:#?}");
     Ok(())
 }
@@ -95,7 +99,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         .build()
         .into();
 
-    let response = api.air_temperature().send_with(&agent)?;
+    let response = api
+        .weather_readings()
+        .air_temperature()
+        .send_with(&agent)?;
+
     println!("{response:#?}");
     Ok(())
 }
@@ -122,12 +130,16 @@ use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut api = Api::new();
+
     if let Ok(key) = env::var("X_API_KEY") {
         api = api.x_api_key(key);
     }
+
     let response = api
+        .weather_readings()
         .air_temperature()
         .send_with(&blocking::Client::new())?;
+
     println!("{response:#?}");
     Ok(())
 }
