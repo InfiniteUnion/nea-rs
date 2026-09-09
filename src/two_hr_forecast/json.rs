@@ -12,6 +12,7 @@ use super::super::types::{
     DataNotFoundError, InvalidParamsError, RateLimitError, TwoHrForecastResponse,
 };
 use super::parts::{TwoHrForecastInput, TwoHrForecastOperationResponse, two_hr_forecast_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast>
 ///
 /// - Forecasts are given for multiple areas in Singapore
@@ -23,42 +24,46 @@ use super::parts::{TwoHrForecastInput, TwoHrForecastOperationResponse, two_hr_fo
 /// - Forecasts are valid for two hours, for example, the validity period of the forecast at 1pm is 1pm to 3pm
 ///
 /// - If `date` is not provided in query parameter, API will return the latest reading
-pub fn encode_two_hr_forecast(
-    input: TwoHrForecastInput,
+pub fn encode_two_hr_forecast<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    input: TwoHrForecastInput<S>,
 ) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = two_hr_forecast_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_two_hr_forecast_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<TwoHrForecastOperationResponse, satay_runtime::Error> {
+pub fn decode_two_hr_forecast_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<TwoHrForecastOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<TwoHrForecastResponse>(body.as_ref())?;
-            Ok(TwoHrForecastOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<TwoHrForecastResponse<S>>(body)?;
+            Ok(TwoHrForecastOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(TwoHrForecastOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(TwoHrForecastOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(TwoHrForecastOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(TwoHrForecastOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(TwoHrForecastOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(TwoHrForecastOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(TwoHrForecastOperationResponse::UnexpectedStatus(
+            Ok(TwoHrForecastOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

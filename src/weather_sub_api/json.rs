@@ -12,6 +12,7 @@ use super::super::types::{
     DataNotFoundError, RateLimitError, WeatherSubApiInvalidParamsError, WeatherSubApiResponse,
 };
 use super::parts::{WeatherSubApiInput, WeatherSubApiOperationResponse, weather_sub_api_parts};
+use serde::de;
 /// Unified weather sub-API endpoint.
 ///
 /// - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.
@@ -27,43 +28,46 @@ use super::parts::{WeatherSubApiInput, WeatherSubApiOperationResponse, weather_s
 /// - example: `?date=2025-01-16`
 ///
 /// - If `date` is not provided in query parameter, API will return the latest lightning observation
-pub fn encode_weather_sub_api(
-    input: WeatherSubApiInput,
+pub fn encode_weather_sub_api<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    input: WeatherSubApiInput<S>,
 ) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = weather_sub_api_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_weather_sub_api_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<WeatherSubApiOperationResponse, satay_runtime::Error> {
+pub fn decode_weather_sub_api_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<WeatherSubApiOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<WeatherSubApiResponse>(body.as_ref())?;
-            Ok(WeatherSubApiOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<WeatherSubApiResponse<S>>(body)?;
+            Ok(WeatherSubApiOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value =
-                satay_runtime::from_json_slice::<WeatherSubApiInvalidParamsError>(body.as_ref())?;
-            Ok(WeatherSubApiOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<WeatherSubApiInvalidParamsError<S>>(body)?;
+            Ok(WeatherSubApiOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(WeatherSubApiOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(WeatherSubApiOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(WeatherSubApiOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(WeatherSubApiOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(WeatherSubApiOperationResponse::UnexpectedStatus(
+            Ok(WeatherSubApiOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

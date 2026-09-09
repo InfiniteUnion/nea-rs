@@ -44,7 +44,7 @@ jobs:
         with:
           dylint-components: rustfmt
       - name: Dylint
-        run: cargo dylint --all
+        run: cargo dylint --all --no-deps -- --all-targets --all-features
 
   test:
     name: Test

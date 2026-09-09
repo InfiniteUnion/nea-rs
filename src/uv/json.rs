@@ -10,6 +10,7 @@
 
 use super::super::types::{DataNotFoundError, InvalidParamsError, RateLimitError, UvResponse};
 use super::parts::{UvInput, UvOperationResponse, uv_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/uv>
 ///
 /// - Updated between 7 AM and 7 PM everyday
@@ -23,40 +24,44 @@ use super::parts::{UvInput, UvOperationResponse, uv_parts};
 /// - If `date` is not provided in query parameter, API will return the latest reading
 ///
 /// - Unit of measure for readings is `Ultraviolet Index`
-pub fn encode_uv(input: UvInput) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
+pub fn encode_uv<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>(
+    input: UvInput<S>,
+) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = uv_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_uv_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<UvOperationResponse, satay_runtime::Error> {
+pub fn decode_uv_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<UvOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<UvResponse>(body.as_ref())?;
-            Ok(UvOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<UvResponse<S>>(body)?;
+            Ok(UvOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(UvOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(UvOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(UvOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(UvOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(UvOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(UvOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(UvOperationResponse::UnexpectedStatus(
+            Ok(UvOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

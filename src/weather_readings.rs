@@ -12,12 +12,13 @@ use super::{
     AirTemperatureAction, Api as RootApi, RainfallAction, RelativeHumidityAction,
     WindDirectionAction, WindSpeedAction,
 };
+use serde::de;
 /// Station-level weather observations (up to 1-minute intervals).
 #[derive(Debug, Clone, Copy)]
-pub struct Api<'a> {
-    pub(crate) api: &'a RootApi,
+pub struct Api<'a, S: satay_runtime::StringStorage = String> {
+    pub(crate) api: &'a RootApi<S>,
 }
-impl<'a> Api<'a> {
+impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned> Api<'a, S> {
     /// <https://api-open.data.gov.sg/v2/real-time/api/air-temperature>
     ///
     /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -43,8 +44,8 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn air_temperature(&self) -> AirTemperatureAction<'a> {
-        AirTemperatureAction::new(self.api)
+    pub fn air_temperature(&self) -> AirTemperatureAction<'a, S> {
+        AirTemperatureAction::<S>::new(self.api)
     }
     /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
     ///
@@ -71,8 +72,8 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn relative_humidity(&self) -> RelativeHumidityAction<'a> {
-        RelativeHumidityAction::new(self.api)
+    pub fn relative_humidity(&self) -> RelativeHumidityAction<'a, S> {
+        RelativeHumidityAction::<S>::new(self.api)
     }
     /// <https://api-open.data.gov.sg/v2/real-time/api/wind-speed>
     ///
@@ -99,8 +100,8 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn wind_speed(&self) -> WindSpeedAction<'a> {
-        WindSpeedAction::new(self.api)
+    pub fn wind_speed(&self) -> WindSpeedAction<'a, S> {
+        WindSpeedAction::<S>::new(self.api)
     }
     /// <https://api-open.data.gov.sg/v2/real-time/api/wind-direction>
     ///
@@ -127,8 +128,8 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn wind_direction(&self) -> WindDirectionAction<'a> {
-        WindDirectionAction::new(self.api)
+    pub fn wind_direction(&self) -> WindDirectionAction<'a, S> {
+        WindDirectionAction::<S>::new(self.api)
     }
     /// <https://api-open.data.gov.sg/v2/real-time/api/rainfall>
     ///
@@ -155,7 +156,7 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn rainfall(&self) -> RainfallAction<'a> {
-        RainfallAction::new(self.api)
+    pub fn rainfall(&self) -> RainfallAction<'a, S> {
+        RainfallAction::<S>::new(self.api)
     }
 }

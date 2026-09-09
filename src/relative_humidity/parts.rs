@@ -21,15 +21,15 @@ use super::super::types::{
 ///
 /// - Unit of measure for readings is `%`
 #[derive(Debug, Clone, PartialEq)]
-pub struct RelativeHumidityInput {
+pub struct RelativeHumidityInput<S: satay_runtime::StringStorage = String> {
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     pub date: Option<satay_runtime::Date>,
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
     /// Optional API key for higher rate limits.
-    pub x_api_key: Option<String>,
+    pub x_api_key: Option<S>,
 }
-impl RelativeHumidityInput {
+impl<S: satay_runtime::StringStorage> RelativeHumidityInput<S> {
     pub fn new() -> Self {
         Self {
             date: None,
@@ -41,16 +41,16 @@ impl RelativeHumidityInput {
         self.date = Some(date);
         self
     }
-    pub fn pagination_token(mut self, pagination_token: impl Into<String>) -> Self {
+    pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.pagination_token = Some(pagination_token.into());
         self
     }
-    pub fn x_api_key(mut self, x_api_key: impl Into<String>) -> Self {
+    pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.x_api_key = Some(x_api_key.into());
         self
     }
 }
-impl Default for RelativeHumidityInput {
+impl<S: satay_runtime::StringStorage> Default for RelativeHumidityInput<S> {
     fn default() -> Self {
         Self::new()
     }
@@ -65,15 +65,15 @@ impl Default for RelativeHumidityInput {
 ///
 /// - Unit of measure for readings is `%`
 #[derive(Debug, Clone, PartialEq)]
-pub enum RelativeHumidityOperationResponse {
+pub enum RelativeHumidityOperationResponse<S: satay_runtime::StringStorage = String> {
     /// Relative Humidity Information
-    Ok(RelativeHumidityResponse),
+    Ok(RelativeHumidityResponse<S>),
     /// Invalid request (bad date format or pagination token)
-    BadRequest(InvalidParamsError),
+    BadRequest(InvalidParamsError<S>),
     /// Weather data not found
-    NotFound(DataNotFoundError),
+    NotFound(DataNotFoundError<S>),
     /// Rate limit exceeded (429). Wait and retry, or use an x-api-key.
-    Status429(RateLimitError),
+    Status429(RateLimitError<S>),
     UnexpectedStatus(http::StatusCode, Vec<u8>),
 }
 /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
@@ -85,8 +85,8 @@ pub enum RelativeHumidityOperationResponse {
 /// - If `date` is not provided in query parameter, API will return the latest reading
 ///
 /// - Unit of measure for readings is `%`
-pub fn relative_humidity_parts(
-    input: RelativeHumidityInput,
+pub fn relative_humidity_parts<S: satay_runtime::StringStorage>(
+    input: RelativeHumidityInput<S>,
 ) -> Result<satay_runtime::RequestParts<()>, satay_runtime::Error> {
     let mut uri = String::with_capacity(18);
     uri.push_str("/relative-humidity");
@@ -104,12 +104,12 @@ pub fn relative_humidity_parts(
             &mut uri,
             &mut first_query,
             "paginationToken",
-            value.as_str(),
+            AsRef::<str>::as_ref(&value),
         );
     }
     let mut headers = http::HeaderMap::new();
     if let Some(value) = &input.x_api_key {
-        satay_runtime::insert_header(&mut headers, "x-api-key", value.as_str())?;
+        satay_runtime::insert_header(&mut headers, "x-api-key", AsRef::<str>::as_ref(&value))?;
     }
     Ok(satay_runtime::RequestParts {
         method: http::Method::GET,

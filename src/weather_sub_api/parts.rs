@@ -28,17 +28,17 @@ use super::super::types::{
 ///
 /// - If `date` is not provided in query parameter, API will return the latest lightning observation
 #[derive(Debug, Clone, PartialEq)]
-pub struct WeatherSubApiInput {
+pub struct WeatherSubApiInput<S: satay_runtime::StringStorage = String> {
     /// Sub-API selector (lightning or wbgt). Required.
     pub api: NeaWeatherSubApi,
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     pub date: Option<satay_runtime::Date>,
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
     /// Optional API key for higher rate limits.
-    pub x_api_key: Option<String>,
+    pub x_api_key: Option<S>,
 }
-impl WeatherSubApiInput {
+impl<S: satay_runtime::StringStorage> WeatherSubApiInput<S> {
     pub fn new(api: NeaWeatherSubApi) -> Self {
         Self {
             api,
@@ -51,11 +51,11 @@ impl WeatherSubApiInput {
         self.date = Some(date);
         self
     }
-    pub fn pagination_token(mut self, pagination_token: impl Into<String>) -> Self {
+    pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.pagination_token = Some(pagination_token.into());
         self
     }
-    pub fn x_api_key(mut self, x_api_key: impl Into<String>) -> Self {
+    pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.x_api_key = Some(x_api_key.into());
         self
     }
@@ -76,15 +76,15 @@ impl WeatherSubApiInput {
 ///
 /// - If `date` is not provided in query parameter, API will return the latest lightning observation
 #[derive(Debug, Clone, PartialEq)]
-pub enum WeatherSubApiOperationResponse {
+pub enum WeatherSubApiOperationResponse<S: satay_runtime::StringStorage = String> {
     /// Lightning Observations
-    Ok(WeatherSubApiResponse),
+    Ok(WeatherSubApiResponse<S>),
     /// Invalid HTTP request body
-    BadRequest(WeatherSubApiInvalidParamsError),
+    BadRequest(WeatherSubApiInvalidParamsError<S>),
     /// Weather data not found
-    NotFound(DataNotFoundError),
+    NotFound(DataNotFoundError<S>),
     /// Rate limit exceeded (429). Wait and retry, or use an x-api-key.
-    Status429(RateLimitError),
+    Status429(RateLimitError<S>),
     UnexpectedStatus(http::StatusCode, Vec<u8>),
 }
 /// Unified weather sub-API endpoint.
@@ -102,8 +102,8 @@ pub enum WeatherSubApiOperationResponse {
 /// - example: `?date=2025-01-16`
 ///
 /// - If `date` is not provided in query parameter, API will return the latest lightning observation
-pub fn weather_sub_api_parts(
-    input: WeatherSubApiInput,
+pub fn weather_sub_api_parts<S: satay_runtime::StringStorage>(
+    input: WeatherSubApiInput<S>,
 ) -> Result<satay_runtime::RequestParts<()>, satay_runtime::Error> {
     let mut uri = String::with_capacity(8);
     uri.push_str("/weather");
@@ -122,12 +122,12 @@ pub fn weather_sub_api_parts(
             &mut uri,
             &mut first_query,
             "paginationToken",
-            value.as_str(),
+            AsRef::<str>::as_ref(&value),
         );
     }
     let mut headers = http::HeaderMap::new();
     if let Some(value) = &input.x_api_key {
-        satay_runtime::insert_header(&mut headers, "x-api-key", value.as_str())?;
+        satay_runtime::insert_header(&mut headers, "x-api-key", AsRef::<str>::as_ref(&value))?;
     }
     Ok(satay_runtime::RequestParts {
         method: http::Method::GET,

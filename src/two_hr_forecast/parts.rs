@@ -23,15 +23,15 @@ use super::super::types::{
 ///
 /// - If `date` is not provided in query parameter, API will return the latest reading
 #[derive(Debug, Clone, PartialEq)]
-pub struct TwoHrForecastInput {
+pub struct TwoHrForecastInput<S: satay_runtime::StringStorage = String> {
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     pub date: Option<satay_runtime::Date>,
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
     /// Optional API key for higher rate limits.
-    pub x_api_key: Option<String>,
+    pub x_api_key: Option<S>,
 }
-impl TwoHrForecastInput {
+impl<S: satay_runtime::StringStorage> TwoHrForecastInput<S> {
     pub fn new() -> Self {
         Self {
             date: None,
@@ -43,16 +43,16 @@ impl TwoHrForecastInput {
         self.date = Some(date);
         self
     }
-    pub fn pagination_token(mut self, pagination_token: impl Into<String>) -> Self {
+    pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.pagination_token = Some(pagination_token.into());
         self
     }
-    pub fn x_api_key(mut self, x_api_key: impl Into<String>) -> Self {
+    pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.x_api_key = Some(x_api_key.into());
         self
     }
 }
-impl Default for TwoHrForecastInput {
+impl<S: satay_runtime::StringStorage> Default for TwoHrForecastInput<S> {
     fn default() -> Self {
         Self::new()
     }
@@ -69,15 +69,15 @@ impl Default for TwoHrForecastInput {
 ///
 /// - If `date` is not provided in query parameter, API will return the latest reading
 #[derive(Debug, Clone, PartialEq)]
-pub enum TwoHrForecastOperationResponse {
+pub enum TwoHrForecastOperationResponse<S: satay_runtime::StringStorage = String> {
     /// 2 Hour Weather Forecast
-    Ok(TwoHrForecastResponse),
+    Ok(TwoHrForecastResponse<S>),
     /// Invalid request (bad date format or pagination token)
-    BadRequest(InvalidParamsError),
+    BadRequest(InvalidParamsError<S>),
     /// Weather data not found
-    NotFound(DataNotFoundError),
+    NotFound(DataNotFoundError<S>),
     /// Rate limit exceeded (429). Wait and retry, or use an x-api-key.
-    Status429(RateLimitError),
+    Status429(RateLimitError<S>),
     UnexpectedStatus(http::StatusCode, Vec<u8>),
 }
 /// <https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast>
@@ -91,8 +91,8 @@ pub enum TwoHrForecastOperationResponse {
 /// - Forecasts are valid for two hours, for example, the validity period of the forecast at 1pm is 1pm to 3pm
 ///
 /// - If `date` is not provided in query parameter, API will return the latest reading
-pub fn two_hr_forecast_parts(
-    input: TwoHrForecastInput,
+pub fn two_hr_forecast_parts<S: satay_runtime::StringStorage>(
+    input: TwoHrForecastInput<S>,
 ) -> Result<satay_runtime::RequestParts<()>, satay_runtime::Error> {
     let mut uri = String::with_capacity(16);
     uri.push_str("/two-hr-forecast");
@@ -110,12 +110,12 @@ pub fn two_hr_forecast_parts(
             &mut uri,
             &mut first_query,
             "paginationToken",
-            value.as_str(),
+            AsRef::<str>::as_ref(&value),
         );
     }
     let mut headers = http::HeaderMap::new();
     if let Some(value) = &input.x_api_key {
-        satay_runtime::insert_header(&mut headers, "x-api-key", value.as_str())?;
+        satay_runtime::insert_header(&mut headers, "x-api-key", AsRef::<str>::as_ref(&value))?;
     }
     Ok(satay_runtime::RequestParts {
         method: http::Method::GET,

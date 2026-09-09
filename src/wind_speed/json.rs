@@ -12,6 +12,7 @@ use super::super::types::{
     DataNotFoundError, InvalidParamsError, RateLimitError, WindSpeedResponse,
 };
 use super::parts::{WindSpeedInput, WindSpeedOperationResponse, wind_speed_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/wind-speed>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -21,42 +22,46 @@ use super::parts::{WindSpeedInput, WindSpeedOperationResponse, wind_speed_parts}
 /// - If `date` is not provided in query parameter, API will return the latest reading
 ///
 /// - Unit of measure for readings is `Knots`
-pub fn encode_wind_speed(
-    input: WindSpeedInput,
+pub fn encode_wind_speed<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    input: WindSpeedInput<S>,
 ) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = wind_speed_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_wind_speed_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<WindSpeedOperationResponse, satay_runtime::Error> {
+pub fn decode_wind_speed_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<WindSpeedOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<WindSpeedResponse>(body.as_ref())?;
-            Ok(WindSpeedOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<WindSpeedResponse<S>>(body)?;
+            Ok(WindSpeedOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(WindSpeedOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(WindSpeedOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(WindSpeedOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(WindSpeedOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(WindSpeedOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(WindSpeedOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(WindSpeedOperationResponse::UnexpectedStatus(
+            Ok(WindSpeedOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

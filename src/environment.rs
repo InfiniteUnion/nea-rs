@@ -9,12 +9,13 @@
 )]
 
 use super::{Api as RootApi, NeaWeatherSubApi, UvAction, WeatherSubApiAction};
+use serde::de;
 /// UV index, lightning, and heat stress (WBGT) data.
 #[derive(Debug, Clone, Copy)]
-pub struct Api<'a> {
-    pub(crate) api: &'a RootApi,
+pub struct Api<'a, S: satay_runtime::StringStorage = String> {
+    pub(crate) api: &'a RootApi<S>,
 }
-impl<'a> Api<'a> {
+impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned> Api<'a, S> {
     /// <https://api-open.data.gov.sg/v2/real-time/api/uv>
     ///
     /// - Updated between 7 AM and 7 PM everyday
@@ -44,8 +45,8 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn uv(&self) -> UvAction<'a> {
-        UvAction::new(self.api)
+    pub fn uv(&self) -> UvAction<'a, S> {
+        UvAction::<S>::new(self.api)
     }
     /// Unified weather sub-API endpoint.
     ///
@@ -82,7 +83,7 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn weather_sub_api(&self, api: NeaWeatherSubApi) -> WeatherSubApiAction<'a> {
-        WeatherSubApiAction::new(self.api, api)
+    pub fn weather_sub_api(&self, api: NeaWeatherSubApi) -> WeatherSubApiAction<'a, S> {
+        WeatherSubApiAction::<S>::new(self.api, api)
     }
 }

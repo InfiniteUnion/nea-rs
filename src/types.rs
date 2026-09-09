@@ -17,118 +17,202 @@ use satay_runtime::serde_string::as_f64::option as as_f64_option;
 use std::fmt;
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PsiResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct PsiResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: PsiData,
+    pub error_msg: S,
+    pub data: PsiData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct Pm25Response {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct Pm25Response<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: Pm25Data,
+    pub error_msg: S,
+    pub data: Pm25Data<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct AirTemperatureResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct AirTemperatureResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: AirTemperatureData,
+    pub error_msg: S,
+    pub data: AirTemperatureData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RelativeHumidityResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct RelativeHumidityResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: RelativeHumidityData,
+    pub error_msg: S,
+    pub data: RelativeHumidityData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WindSpeedResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WindSpeedResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: WindSpeedData,
+    pub error_msg: S,
+    pub data: WindSpeedData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WindDirectionResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WindDirectionResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: WindDirectionData,
+    pub error_msg: S,
+    pub data: WindDirectionData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RainfallResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct RainfallResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: RainfallData,
+    pub error_msg: S,
+    pub data: RainfallData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwoHrForecastResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwoHrForecastResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: TwoHrForecastData,
+    pub error_msg: S,
+    pub data: TwoHrForecastData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwentyFourHrForecastResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwentyFourHrForecastResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: TwentyFourHrForecastData,
+    pub error_msg: S,
+    pub data: TwentyFourHrForecastData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FourDayOutlookResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct FourDayOutlookResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
+    pub error_msg: S,
     /// Chronologically ordered forecasts for the next 4 days
-    pub data: FourDayOutlookData,
+    pub data: FourDayOutlookData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct UvResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct UvResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     pub code: NeaSuccessCode,
     /// Error message (empty string for success)
     #[cfg_attr(feature = "serde", serde(rename = "errorMsg"))]
-    pub error_msg: String,
-    pub data: UvData,
+    pub error_msg: S,
+    pub data: UvData<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WeatherSubApiResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WeatherSubApiResponse<S: satay_runtime::StringStorage = String> {
     /// Response status code (0 for success)
     #[cfg_attr(
         feature = "serde",
@@ -140,16 +224,23 @@ pub struct WeatherSubApiResponse {
         feature = "serde",
         serde(rename = "errorMsg", default, skip_serializing_if = "Option::is_none")
     )]
-    pub error_msg: Option<String>,
+    pub error_msg: Option<S>,
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub data: Option<WeatherSubApiData>,
+    pub data: Option<WeatherSubApiData<S>>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InvalidParamsError {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct InvalidParamsError<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
@@ -159,7 +250,7 @@ pub struct InvalidParamsError {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub name: Option<String>,
+    pub name: Option<S>,
     /// Bad-request error message for invalid date or pagination token
     #[cfg_attr(
         feature = "serde",
@@ -169,7 +260,14 @@ pub struct InvalidParamsError {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InvalidParamsError22 {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct InvalidParamsError22<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
@@ -179,16 +277,23 @@ pub struct InvalidParamsError22 {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub name: Option<String>,
+    pub name: Option<S>,
     #[cfg_attr(
         feature = "serde",
         serde(rename = "errorMsg", default, skip_serializing_if = "Option::is_none")
     )]
-    pub error_msg: Option<String>,
+    pub error_msg: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct DataNotFoundError {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct DataNotFoundError<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
@@ -198,16 +303,23 @@ pub struct DataNotFoundError {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub name: Option<String>,
+    pub name: Option<S>,
     #[cfg_attr(
         feature = "serde",
         serde(rename = "errorMsg", default, skip_serializing_if = "Option::is_none")
     )]
-    pub error_msg: Option<String>,
+    pub error_msg: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RateLimitError {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct RateLimitError<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
@@ -217,21 +329,28 @@ pub struct RateLimitError {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub name: Option<String>,
+    pub name: Option<S>,
     #[cfg_attr(
         feature = "serde",
         serde(rename = "errorMsg", default, skip_serializing_if = "Option::is_none")
     )]
-    pub error_msg: Option<String>,
+    pub error_msg: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MissingAuthResponse {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct MissingAuthResponse<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub message: Option<String>,
+    pub message: Option<S>,
 }
 /// Response status code (0 for success)
 #[nutype::nutype(
@@ -706,14 +825,21 @@ pub type NeaStringLatitude = f64;
 pub type NeaStringLongitude = f64;
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NeaWeatherStation {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct NeaWeatherStation<S: satay_runtime::StringStorage = String> {
     /// NEA weather station identifier (S + 2–3 digits)
     pub id: NeaStationId,
     /// NEA weather station identifier (S + 2–3 digits)
     #[cfg_attr(feature = "serde", serde(rename = "deviceId"))]
     pub device_id: NeaStationId,
     /// Station's name
-    pub name: String,
+    pub name: S,
     /// WGS84 coordinates for a weather station
     pub location: NeaStationLocation,
 }
@@ -790,12 +916,19 @@ pub struct NeaGeoPoint {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct AirTemperatureData {
-    pub stations: Vec<NeaWeatherStation>,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct AirTemperatureData<S: satay_runtime::StringStorage = String> {
+    pub stations: Vec<NeaWeatherStation<S>>,
     pub readings: Vec<NeaReadingSnapshot>,
     /// Information about the reading
     #[cfg_attr(feature = "serde", serde(rename = "readingType"))]
-    pub reading_type: String,
+    pub reading_type: S,
     /// Unit of measure for NEA station readings and outlook ranges
     #[cfg_attr(feature = "serde", serde(rename = "readingUnit"))]
     pub reading_unit: NeaMeasurementUnit,
@@ -808,16 +941,23 @@ pub struct AirTemperatureData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RelativeHumidityData {
-    pub stations: Vec<NeaWeatherStation>,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct RelativeHumidityData<S: satay_runtime::StringStorage = String> {
+    pub stations: Vec<NeaWeatherStation<S>>,
     pub readings: Vec<NeaReadingSnapshot>,
     /// Information about the reading
     #[cfg_attr(feature = "serde", serde(rename = "readingType"))]
-    pub reading_type: String,
+    pub reading_type: S,
     /// Unit of measure for NEA station readings and outlook ranges
     #[cfg_attr(feature = "serde", serde(rename = "readingUnit"))]
     pub reading_unit: NeaMeasurementUnit,
@@ -830,16 +970,23 @@ pub struct RelativeHumidityData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WindSpeedData {
-    pub stations: Vec<NeaWeatherStation>,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WindSpeedData<S: satay_runtime::StringStorage = String> {
+    pub stations: Vec<NeaWeatherStation<S>>,
     pub readings: Vec<NeaReadingSnapshot>,
     /// Information about the reading
     #[cfg_attr(feature = "serde", serde(rename = "readingType"))]
-    pub reading_type: String,
+    pub reading_type: S,
     /// Unit of measure for NEA station readings and outlook ranges
     #[cfg_attr(feature = "serde", serde(rename = "readingUnit"))]
     pub reading_unit: NeaMeasurementUnit,
@@ -852,16 +999,23 @@ pub struct WindSpeedData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WindDirectionData {
-    pub stations: Vec<NeaWeatherStation>,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WindDirectionData<S: satay_runtime::StringStorage = String> {
+    pub stations: Vec<NeaWeatherStation<S>>,
     pub readings: Vec<NeaReadingSnapshot>,
     /// Information about the reading
     #[cfg_attr(feature = "serde", serde(rename = "readingType"))]
-    pub reading_type: String,
+    pub reading_type: S,
     /// Unit of measure for NEA station readings and outlook ranges
     #[cfg_attr(feature = "serde", serde(rename = "readingUnit"))]
     pub reading_unit: NeaMeasurementUnit,
@@ -874,16 +1028,23 @@ pub struct WindDirectionData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RainfallData {
-    pub stations: Vec<NeaWeatherStation>,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct RainfallData<S: satay_runtime::StringStorage = String> {
+    pub stations: Vec<NeaWeatherStation<S>>,
     pub readings: Vec<NeaReadingSnapshot>,
     /// Information about the reading
     #[cfg_attr(feature = "serde", serde(rename = "readingType"))]
-    pub reading_type: String,
+    pub reading_type: S,
     /// Unit of measure for NEA station readings and outlook ranges
     #[cfg_attr(feature = "serde", serde(rename = "readingUnit"))]
     pub reading_unit: NeaMeasurementUnit,
@@ -896,17 +1057,31 @@ pub struct RainfallData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 /// Chronologically ordered forecasts for the next 4 days
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FourDayOutlookData {
-    pub records: Vec<FourDayOutlookDay>,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct FourDayOutlookData<S: satay_runtime::StringStorage = String> {
+    pub records: Vec<FourDayOutlookDay<S>>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FourDayOutlookDay {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct FourDayOutlookDay<S: satay_runtime::StringStorage = String> {
     /// SGT calendar date (YYYY-MM-DD)
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_date"))]
     pub date: satay_runtime::Date,
@@ -920,11 +1095,18 @@ pub struct FourDayOutlookDay {
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// Forecast summary for the day
-    pub forecasts: Vec<FourDayOutlookPeriod>,
+    pub forecasts: Vec<FourDayOutlookPeriod<S>>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FourDayOutlookPeriod {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct FourDayOutlookPeriod<S: satay_runtime::StringStorage = String> {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
@@ -933,15 +1115,22 @@ pub struct FourDayOutlookPeriod {
     /// Unit of measure - Percentage
     #[cfg_attr(feature = "serde", serde(rename = "relativeHumidity"))]
     pub relative_humidity: NeaHumidityRange,
-    pub forecast: NeaOutlookForecastDetail,
+    pub forecast: NeaOutlookForecastDetail<S>,
     /// Day of week for multi-day outlook forecasts
     pub day: NeaDayOfWeek,
     pub wind: NeaOutlookWind,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NeaOutlookForecastDetail {
-    pub summary: String,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct NeaOutlookForecastDetail<S: satay_runtime::StringStorage = String> {
+    pub summary: S,
     /// NEA MSS short weather forecast code
     pub code: NeaForecastCode,
     /// NEA MSS human-readable weather forecast text
@@ -949,13 +1138,20 @@ pub struct NeaOutlookForecastDetail {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwentyFourHrForecastData {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwentyFourHrForecastData<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub area_metadata: Option<Vec<NeaForecastArea>>,
-    pub records: Vec<TwentyFourHrForecastDay>,
+    pub area_metadata: Option<Vec<NeaForecastArea<S>>>,
+    pub records: Vec<TwentyFourHrForecastDay<S>>,
     /// Token to retrieve next page if exists
     #[cfg_attr(
         feature = "serde",
@@ -965,11 +1161,18 @@ pub struct TwentyFourHrForecastData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwentyFourHrForecastDay {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwentyFourHrForecastDay<S: satay_runtime::StringStorage = String> {
     /// SGT calendar date (YYYY-MM-DD)
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_date"))]
     pub date: satay_runtime::Date,
@@ -983,17 +1186,24 @@ pub struct TwentyFourHrForecastDay {
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// A general weather forecast for the 24 hour period
-    pub general: TwentyFourHrForecastGeneral,
+    pub general: TwentyFourHrForecastGeneral<S>,
     /// Forecasts for various areas in Singapore
-    pub periods: Vec<TwentyFourHrForecastPeriod>,
+    pub periods: Vec<TwentyFourHrForecastPeriod<S>>,
 }
 /// A general weather forecast for the 24 hour period
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwentyFourHrForecastGeneral {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwentyFourHrForecastGeneral<S: satay_runtime::StringStorage = String> {
     /// Period of time the forecast is valid for
     #[cfg_attr(feature = "serde", serde(rename = "validPeriod"))]
-    pub valid_period: NeaValidPeriod,
+    pub valid_period: NeaValidPeriod<S>,
     /// Unit of measure - Degrees Celsius
     pub temperature: NeaTemperatureRange,
     /// Unit of measure - Percentage
@@ -1004,10 +1214,17 @@ pub struct TwentyFourHrForecastGeneral {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwentyFourHrForecastPeriod {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwentyFourHrForecastPeriod<S: satay_runtime::StringStorage = String> {
     /// Period of time the forecast is valid for
     #[cfg_attr(feature = "serde", serde(rename = "timePeriod"))]
-    pub time_period: NeaValidPeriod,
+    pub time_period: NeaValidPeriod<S>,
     pub regions: TwentyFourHrRegionalForecast,
 }
 #[derive(Debug, Clone, PartialEq)]
@@ -1021,9 +1238,16 @@ pub struct TwentyFourHrRegionalForecast {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwoHrForecastData {
-    pub area_metadata: Vec<NeaForecastArea>,
-    pub items: Vec<TwoHrForecastSnapshot>,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwoHrForecastData<S: satay_runtime::StringStorage = String> {
+    pub area_metadata: Vec<NeaForecastArea<S>>,
+    pub items: Vec<TwoHrForecastSnapshot<S>>,
     /// Token to retrieve next page if exists
     #[cfg_attr(
         feature = "serde",
@@ -1033,18 +1257,32 @@ pub struct TwoHrForecastData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NeaForecastArea {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct NeaForecastArea<S: satay_runtime::StringStorage = String> {
     /// Name of the area
-    pub name: String,
+    pub name: S,
     pub label_location: NeaGeoPoint,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwoHrForecastSnapshot {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwoHrForecastSnapshot<S: satay_runtime::StringStorage = String> {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub update_timestamp: satay_runtime::OffsetDateTime,
@@ -1052,32 +1290,53 @@ pub struct TwoHrForecastSnapshot {
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
     /// Period of time the forecast is valid for
-    pub valid_period: NeaValidPeriod,
+    pub valid_period: NeaValidPeriod<S>,
     /// Forecasts for various areas in Singapore
-    pub forecasts: Vec<TwoHrAreaForecast>,
+    pub forecasts: Vec<TwoHrAreaForecast<S>>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TwoHrAreaForecast {
-    pub area: String,
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct TwoHrAreaForecast<S: satay_runtime::StringStorage = String> {
+    pub area: S,
     /// NEA MSS human-readable weather forecast text
     pub forecast: NeaForecastText,
 }
 /// Period of time the forecast is valid for
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NeaValidPeriod {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct NeaValidPeriod<S: satay_runtime::StringStorage = String> {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub start: satay_runtime::OffsetDateTime,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub end: satay_runtime::OffsetDateTime,
-    pub text: String,
+    pub text: S,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PsiData {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct PsiData<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(feature = "serde", serde(rename = "regionMetadata"))]
     pub region_metadata: Vec<NeaRegionMetadata>,
     pub items: Vec<PsiSnapshot>,
@@ -1090,7 +1349,7 @@ pub struct PsiData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1370,7 +1629,14 @@ pub struct PsiSo2TwentyFourHourRegional {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct Pm25Data {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct Pm25Data<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(feature = "serde", serde(rename = "regionMetadata"))]
     pub region_metadata: Vec<NeaRegionMetadata>,
     pub items: Vec<Pm25Snapshot>,
@@ -1383,7 +1649,7 @@ pub struct Pm25Data {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1425,7 +1691,14 @@ pub struct Pm25OneHourRegional {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct UvData {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct UvData<S: satay_runtime::StringStorage = String> {
     pub records: Vec<UvDayRecord>,
     /// Token to retrieve next page if exists
     #[cfg_attr(
@@ -1436,7 +1709,7 @@ pub struct UvData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1467,12 +1740,19 @@ pub struct UvHourlyIndex {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WeatherSubApiData {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WeatherSubApiData<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub records: Option<Vec<WeatherSubApiDayRecord>>,
+    pub records: Option<Vec<WeatherSubApiDayRecord<S>>>,
     /// Token to retrieve next page if exists
     #[cfg_attr(
         feature = "serde",
@@ -1482,11 +1762,18 @@ pub struct WeatherSubApiData {
             skip_serializing_if = "Option::is_none"
         )
     )]
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WeatherSubApiDayRecord {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WeatherSubApiDayRecord<S: satay_runtime::StringStorage = String> {
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
@@ -1502,7 +1789,7 @@ pub struct WeatherSubApiDayRecord {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub item: Option<WeatherSubApiObservation>,
+    pub item: Option<WeatherSubApiObservation<S>>,
     /// ISO 8601 date or date-time in Singapore Time (SGT)
     #[cfg_attr(
         feature = "serde",
@@ -1518,13 +1805,20 @@ pub struct WeatherSubApiDayRecord {
 /// Weather sub-API observation (lightning strikes or WBGT station readings)
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WeatherSubApiObservation {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WeatherSubApiObservation<S: satay_runtime::StringStorage = String> {
     /// Type of the weather information (`observation` or `forecast`). Lightning is always `observation.
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub r#type: Option<String>,
+    pub r#type: Option<S>,
     /// Indicates whether the weather information includes station information.
     #[cfg_attr(
         feature = "serde",
@@ -1539,11 +1833,18 @@ pub struct WeatherSubApiObservation {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub readings: Option<Vec<WeatherSubApiLightningReading>>,
+    pub readings: Option<Vec<WeatherSubApiLightningReading<S>>>,
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WeatherSubApiLightningReading {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WeatherSubApiLightningReading<S: satay_runtime::StringStorage = String> {
     /// WGS84 coordinates (API returns lat/long as decimal strings)
     #[cfg_attr(
         feature = "serde",
@@ -1565,7 +1866,7 @@ pub struct WeatherSubApiLightningReading {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub text: Option<String>,
+    pub text: Option<S>,
     /// Lightning event type (C = cloud-to-cloud, G = cloud-to-ground)
     #[cfg_attr(
         feature = "serde",
@@ -1577,13 +1878,13 @@ pub struct WeatherSubApiLightningReading {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub station: Option<NeaWbgtStation>,
+    pub station: Option<NeaWbgtStation<S>>,
     /// 15-minute average WBGT (°C), or `NA` when unavailable
     #[cfg_attr(
         feature = "serde",
         serde(
-            deserialize_with = "WeatherSubApiLightningReading::__satay_deserialize_wbgt_none_if",
-            serialize_with = "WeatherSubApiLightningReading::__satay_serialize_wbgt_none_if",
+            deserialize_with = "WeatherSubApiLightningReading::<S>::__satay_deserialize_wbgt_none_if",
+            serialize_with = "WeatherSubApiLightningReading::<S>::__satay_serialize_wbgt_none_if",
             default,
             skip_serializing_if = "Option::is_none"
         )
@@ -1601,7 +1902,7 @@ pub struct WeatherSubApiLightningReading {
     pub heat_stress: Option<NeaHeatStressLevel>,
 }
 #[cfg(feature = "serde")]
-impl WeatherSubApiLightningReading {
+impl<S: satay_runtime::StringStorage> WeatherSubApiLightningReading<S> {
     fn __satay_deserialize_wbgt_none_if<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error>
     where
         D: serde::Deserializer<'de>,
@@ -1613,19 +1914,26 @@ impl WeatherSubApiLightningReading {
         clippy::trivially_copy_pass_by_ref,
         reason = "Serde `serialize_with` receives a reference to the field type"
     )]
-    fn __satay_serialize_wbgt_none_if<S>(
+    fn __satay_serialize_wbgt_none_if<Serializer>(
         value: &Option<f64>,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error>
+        serializer: Serializer,
+    ) -> Result<Serializer::Ok, Serializer::Error>
     where
-        S: serde::Serializer,
+        Serializer: serde::Serializer,
     {
         as_f64::serialize_none_if(value, "NA", serializer)
     }
 }
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WeatherSubApiInvalidParamsError {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct WeatherSubApiInvalidParamsError<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
@@ -1635,12 +1943,12 @@ pub struct WeatherSubApiInvalidParamsError {
         feature = "serde",
         serde(default, skip_serializing_if = "Option::is_none")
     )]
-    pub name: Option<String>,
+    pub name: Option<S>,
     #[cfg_attr(
         feature = "serde",
         serde(rename = "errorMsg", default, skip_serializing_if = "Option::is_none")
     )]
-    pub error_msg: Option<String>,
+    pub error_msg: Option<S>,
 }
 /// Unit of measure for NEA station readings and outlook ranges
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -1697,14 +2005,21 @@ pub struct NeaLightningGeoPoint {
 /// WBGT monitoring station metadata
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NeaWbgtStation {
+#[cfg_attr(
+    feature = "serde",
+    serde(bound(
+        serialize = "S: serde::Serialize",
+        deserialize = "S: serde::Deserialize<'de>"
+    ))
+)]
+pub struct NeaWbgtStation<S: satay_runtime::StringStorage = String> {
     /// NEA weather station identifier (S + 2–3 digits)
     pub id: NeaStationId,
     /// Station name
-    pub name: String,
+    pub name: S,
     /// Town centre or site label for the station
     #[cfg_attr(feature = "serde", serde(rename = "townCenter"))]
-    pub town_center: String,
+    pub town_center: S,
 }
 /// Heat stress advisory level from WBGT (`NA` when unavailable)
 #[derive(Debug, Clone, PartialEq, Eq)]

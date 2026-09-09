@@ -10,6 +10,7 @@
 
 use super::super::types::{DataNotFoundError, InvalidParamsError, PsiResponse, RateLimitError};
 use super::parts::{PsiInput, PsiOperationResponse, psi_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/psi>
 ///
 /// - Readings are provided for each major region in Singapore
@@ -23,40 +24,44 @@ use super::parts::{PsiInput, PsiOperationResponse, psi_parts};
 /// - The `region_metadata` field in the response provides longitude/latitude information for the regions. You can use that to place the readings on a map.
 ///
 /// - Unit of measure for readings is `PSI Value`
-pub fn encode_psi(input: PsiInput) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
+pub fn encode_psi<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>(
+    input: PsiInput<S>,
+) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = psi_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_psi_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<PsiOperationResponse, satay_runtime::Error> {
+pub fn decode_psi_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<PsiOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<PsiResponse>(body.as_ref())?;
-            Ok(PsiOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<PsiResponse<S>>(body)?;
+            Ok(PsiOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(PsiOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(PsiOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(PsiOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(PsiOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(PsiOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(PsiOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(PsiOperationResponse::UnexpectedStatus(
+            Ok(PsiOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

@@ -12,6 +12,7 @@ use super::super::types::{
     DataNotFoundError, InvalidParamsError, RainfallResponse, RateLimitError,
 };
 use super::parts::{RainfallInput, RainfallOperationResponse, rainfall_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/rainfall>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -21,42 +22,46 @@ use super::parts::{RainfallInput, RainfallOperationResponse, rainfall_parts};
 /// - If `date` is not provided in query parameter, API will return the latest reading
 ///
 /// - Unit of measure for readings is `mm`
-pub fn encode_rainfall(
-    input: RainfallInput,
+pub fn encode_rainfall<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    input: RainfallInput<S>,
 ) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = rainfall_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_rainfall_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<RainfallOperationResponse, satay_runtime::Error> {
+pub fn decode_rainfall_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<RainfallOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RainfallResponse>(body.as_ref())?;
-            Ok(RainfallOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<RainfallResponse<S>>(body)?;
+            Ok(RainfallOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(RainfallOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(RainfallOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(RainfallOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(RainfallOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(RainfallOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(RainfallOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(RainfallOperationResponse::UnexpectedStatus(
+            Ok(RainfallOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }
