@@ -27,11 +27,11 @@ use nea_rs::{
     },
 };
 
-fn ok_response(body: &[u8]) -> satay_runtime::ResponseParts<Vec<u8>> {
+fn ok_response(body: &[u8]) -> satay_runtime::ResponseParts<&[u8]> {
     satay_runtime::ResponseParts {
         status: StatusCode::OK,
         headers: HeaderMap::new(),
-        body: body.to_vec(),
+        body,
     }
 }
 
@@ -124,73 +124,83 @@ macro_rules! sample_deserializes {
     };
 }
 
-sample_deserializes!(psi, "psi", decode_psi_response, PsiOperationResponse::Ok(_));
+sample_deserializes!(
+    psi,
+    "psi",
+    decode_psi_response,
+    PsiOperationResponse::<Box<_>>::Ok(_)
+);
 sample_deserializes!(
     pm25,
     "pm25",
     decode_pm25_response,
-    Pm25OperationResponse::Ok(_)
+    Pm25OperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     air_temperature,
     "air-temperature",
     decode_air_temperature_response,
-    AirTemperatureOperationResponse::Ok(_)
+    AirTemperatureOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     relative_humidity,
     "relative-humidity",
     decode_relative_humidity_response,
-    RelativeHumidityOperationResponse::Ok(_)
+    RelativeHumidityOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     wind_speed,
     "wind-speed",
     decode_wind_speed_response,
-    WindSpeedOperationResponse::Ok(_)
+    WindSpeedOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     wind_direction,
     "wind-direction",
     decode_wind_direction_response,
-    WindDirectionOperationResponse::Ok(_)
+    WindDirectionOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     rainfall,
     "rainfall",
     decode_rainfall_response,
-    RainfallOperationResponse::Ok(_)
+    RainfallOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     two_hr_forecast,
     "two-hr-forecast",
     decode_two_hr_forecast_response,
-    TwoHrForecastOperationResponse::Ok(_)
+    TwoHrForecastOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     twenty_four_hr_forecast,
     "twenty-four-hr-forecast",
     decode_twenty_four_hr_forecast_response,
-    TwentyFourHrForecastOperationResponse::Ok(_)
+    TwentyFourHrForecastOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     four_day_outlook,
     "four-day-outlook",
     decode_four_day_outlook_response,
-    FourDayOutlookOperationResponse::Ok(_)
+    FourDayOutlookOperationResponse::<Box<_>>::Ok(_)
 );
-sample_deserializes!(uv, "uv", decode_uv_response, UvOperationResponse::Ok(_));
+sample_deserializes!(
+    uv,
+    "uv",
+    decode_uv_response,
+    UvOperationResponse::<Box<_>>::Ok(_)
+);
 sample_deserializes!(
     weather_lightning,
     "weather-lightning",
     decode_weather_sub_api_response,
-    WeatherSubApiOperationResponse::Ok(_)
+    WeatherSubApiOperationResponse::<Box<_>>::Ok(_)
 );
 sample_deserializes!(
     weather_wbgt,
     "weather-wbgt",
     decode_weather_sub_api_response,
-    WeatherSubApiOperationResponse::Ok(_)
+    WeatherSubApiOperationResponse::<Box<_>>::Ok(_)
 );
 
 #[test]
@@ -209,11 +219,13 @@ fn weather_wbgt_not_available_sentinels_deserialize() {
         }
     }"#;
 
-    let decoded = decode_weather_sub_api_response(ok_response(body))
+    let decoded = decode_weather_sub_api_response::<Box<_>>(ok_response(body))
         .expect("WBGT response with NA sentinels should decode");
+
     let WeatherSubApiOperationResponse::Ok(response) = decoded else {
         panic!("expected Ok variant");
     };
+
     let readings = response
         .data
         .and_then(|data| data.records)

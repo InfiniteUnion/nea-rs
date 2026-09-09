@@ -11,12 +11,13 @@
 use super::{
     Api as RootApi, FourDayOutlookAction, TwentyFourHrForecastAction, TwoHrForecastAction,
 };
+use serde::de;
 /// Area and regional weather forecasts from NEA MSS.
 #[derive(Debug, Clone, Copy)]
-pub struct Api<'a> {
-    pub(crate) api: &'a RootApi,
+pub struct Api<'a, S: satay_runtime::StringStorage = String> {
+    pub(crate) api: &'a RootApi<S>,
 }
-impl<'a> Api<'a> {
+impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned> Api<'a, S> {
     /// <https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast>
     ///
     /// - Forecasts are given for multiple areas in Singapore
@@ -44,8 +45,8 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn two_hr_forecast(&self) -> TwoHrForecastAction<'a> {
-        TwoHrForecastAction::new(self.api)
+    pub fn two_hr_forecast(&self) -> TwoHrForecastAction<'a, S> {
+        TwoHrForecastAction::<S>::new(self.api)
     }
     /// <https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast>
     ///
@@ -74,8 +75,8 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn twenty_four_hr_forecast(&self) -> TwentyFourHrForecastAction<'a> {
-        TwentyFourHrForecastAction::new(self.api)
+    pub fn twenty_four_hr_forecast(&self) -> TwentyFourHrForecastAction<'a, S> {
+        TwentyFourHrForecastAction::<S>::new(self.api)
     }
     /// <https://api-open.data.gov.sg/v2/real-time/api/four-day-outlook>
     ///
@@ -104,7 +105,7 @@ impl<'a> Api<'a> {
     ///     .date(date)
     ///     .request()?;
     /// ```
-    pub fn four_day_outlook(&self) -> FourDayOutlookAction<'a> {
-        FourDayOutlookAction::new(self.api)
+    pub fn four_day_outlook(&self) -> FourDayOutlookAction<'a, S> {
+        FourDayOutlookAction::<S>::new(self.api)
     }
 }

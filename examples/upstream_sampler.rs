@@ -200,8 +200,8 @@ async fn collect_task_results(mut tasks: JoinSet<ProbeTaskResult>) -> Vec<ProbeT
 }
 
 fn finish_run(results: Vec<ProbeTaskResult>) -> ExitCode {
-    let mut client_failures = Vec::new();
-    let mut transport_failures = Vec::new();
+    let mut client_failures = vec![];
+    let mut transport_failures = vec![];
     let mut success_count = 0_usize;
 
     for result in results {
@@ -309,10 +309,11 @@ fn api_from_optional_key(key: Option<String>) -> Api {
     }
 }
 
-async fn probe_action<A>(endpoint: &'static str, action: A, client: &Client) -> ProbeOutcome
+async fn probe_action<'de, A>(endpoint: &'static str, action: A, client: &Client) -> ProbeOutcome
 where
     A: Action + Send,
-    A::Response: Debug,
+    A::RequestBody: Into<reqwest::Body>,
+    A::Response<'de>: Debug,
 {
     let http_request = match action.request() {
         Ok(request) => request,
@@ -328,6 +329,7 @@ where
 
     let method = http_request.method().to_string();
     let uri = http_request.uri().to_string();
+
     let reqwest_request: Request = match http_request.try_into() {
         Ok(request) => request,
         Err(error) => {
@@ -366,26 +368,26 @@ where
         }
     };
 
-    classify_decode::<A>(endpoint, method, uri, status, headers, body.to_vec())
+    classify_decode::<A>(endpoint, method, uri, status, headers, body.as_ref())
 }
 
-fn classify_decode<A>(
+fn classify_decode<'de, A>(
     endpoint: &'static str,
     method: String,
     uri: String,
     status: StatusCode,
     headers: HeaderMap,
-    body: Vec<u8>,
+    body: &[u8],
 ) -> ProbeOutcome
 where
     A: Action,
-    A::Response: Debug,
+    A::Response<'de>: Debug,
 {
     let result = panic::catch_unwind(panic::AssertUnwindSafe(|| {
         A::decode(ResponseParts {
             status,
             headers,
-            body: body.as_slice(),
+            body,
         })
     }));
 
@@ -401,7 +403,7 @@ where
             status,
             failure_kind: "decode error",
             error: error.to_string(),
-            body,
+            body: body.to_owned(),
         }),
         Err(payload) => ProbeOutcome::ClientFailure(ProbeFailure {
             endpoint,
@@ -410,7 +412,7 @@ where
             status,
             failure_kind: "panic",
             error: panic_message(payload.as_ref()),
-            body,
+            body: body.to_owned(),
         }),
     }
 }
@@ -513,12 +515,14 @@ mod tests {
     #[test]
     fn empty_api_key_is_not_sent() {
         let request = api_from_optional_key(Some(String::new()))
+            .weather_readings()
             .air_temperature()
             .request()
             .expect("air temperature request should build");
         assert!(request.headers().get("x-api-key").is_none());
 
         let request = api_from_optional_key(Some("test-key".to_owned()))
+            .weather_readings()
             .air_temperature()
             .request()
             .expect("air temperature request should build");
@@ -594,15 +598,16 @@ mod tests {
         struct PanicAction;
 
         impl Action for PanicAction {
-            type Response = ();
+            type RequestBody = Vec<u8>;
+            type Response<'de> = ();
 
             fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
                 unreachable!("request is not used by decode classification test")
             }
 
-            fn decode<B: AsRef<[u8]>>(
-                _: ResponseParts<B>,
-            ) -> Result<Self::Response, satay_runtime::Error> {
+            fn decode<'de>(
+                _: ResponseParts<&'de [u8]>,
+            ) -> Result<Self::Response<'de>, satay_runtime::Error> {
                 panic!("decode exploded")
             }
         }

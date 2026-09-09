@@ -12,6 +12,7 @@ use super::super::types::{
     AirTemperatureResponse, DataNotFoundError, InvalidParamsError, RateLimitError,
 };
 use super::parts::{AirTemperatureInput, AirTemperatureOperationResponse, air_temperature_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/air-temperature>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -21,42 +22,46 @@ use super::parts::{AirTemperatureInput, AirTemperatureOperationResponse, air_tem
 /// - If `date` is not provided in query parameter, API will return the latest reading
 ///
 /// - Unit of measure for readings is `°C`
-pub fn encode_air_temperature(
-    input: AirTemperatureInput,
+pub fn encode_air_temperature<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    input: AirTemperatureInput<S>,
 ) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = air_temperature_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_air_temperature_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<AirTemperatureOperationResponse, satay_runtime::Error> {
+pub fn decode_air_temperature_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<AirTemperatureOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<AirTemperatureResponse>(body.as_ref())?;
-            Ok(AirTemperatureOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<AirTemperatureResponse<S>>(body)?;
+            Ok(AirTemperatureOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(AirTemperatureOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(AirTemperatureOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(AirTemperatureOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(AirTemperatureOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(AirTemperatureOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(AirTemperatureOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(AirTemperatureOperationResponse::UnexpectedStatus(
+            Ok(AirTemperatureOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

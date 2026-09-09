@@ -23,15 +23,15 @@ use super::super::types::{DataNotFoundError, InvalidParamsError, PsiResponse, Ra
 ///
 /// - Unit of measure for readings is `PSI Value`
 #[derive(Debug, Clone, PartialEq)]
-pub struct PsiInput {
+pub struct PsiInput<S: satay_runtime::StringStorage = String> {
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     pub date: Option<satay_runtime::Date>,
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
-    pub pagination_token: Option<String>,
+    pub pagination_token: Option<S>,
     /// Optional API key for higher rate limits.
-    pub x_api_key: Option<String>,
+    pub x_api_key: Option<S>,
 }
-impl PsiInput {
+impl<S: satay_runtime::StringStorage> PsiInput<S> {
     pub fn new() -> Self {
         Self {
             date: None,
@@ -43,16 +43,16 @@ impl PsiInput {
         self.date = Some(date);
         self
     }
-    pub fn pagination_token(mut self, pagination_token: impl Into<String>) -> Self {
+    pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.pagination_token = Some(pagination_token.into());
         self
     }
-    pub fn x_api_key(mut self, x_api_key: impl Into<String>) -> Self {
+    pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.x_api_key = Some(x_api_key.into());
         self
     }
 }
-impl Default for PsiInput {
+impl<S: satay_runtime::StringStorage> Default for PsiInput<S> {
     fn default() -> Self {
         Self::new()
     }
@@ -71,15 +71,15 @@ impl Default for PsiInput {
 ///
 /// - Unit of measure for readings is `PSI Value`
 #[derive(Debug, Clone, PartialEq)]
-pub enum PsiOperationResponse {
+pub enum PsiOperationResponse<S: satay_runtime::StringStorage = String> {
     /// PSI Information
-    Ok(PsiResponse),
+    Ok(PsiResponse<S>),
     /// Invalid request (bad date format or pagination token)
-    BadRequest(InvalidParamsError),
+    BadRequest(InvalidParamsError<S>),
     /// Weather data not found
-    NotFound(DataNotFoundError),
+    NotFound(DataNotFoundError<S>),
     /// Rate limit exceeded (429). Wait and retry, or use an x-api-key.
-    Status429(RateLimitError),
+    Status429(RateLimitError<S>),
     UnexpectedStatus(http::StatusCode, Vec<u8>),
 }
 /// <https://api-open.data.gov.sg/v2/real-time/api/psi>
@@ -95,7 +95,9 @@ pub enum PsiOperationResponse {
 /// - The `region_metadata` field in the response provides longitude/latitude information for the regions. You can use that to place the readings on a map.
 ///
 /// - Unit of measure for readings is `PSI Value`
-pub fn psi_parts(input: PsiInput) -> Result<satay_runtime::RequestParts<()>, satay_runtime::Error> {
+pub fn psi_parts<S: satay_runtime::StringStorage>(
+    input: PsiInput<S>,
+) -> Result<satay_runtime::RequestParts<()>, satay_runtime::Error> {
     let mut uri = String::with_capacity(4);
     uri.push_str("/psi");
     let mut first_query = true;
@@ -112,12 +114,12 @@ pub fn psi_parts(input: PsiInput) -> Result<satay_runtime::RequestParts<()>, sat
             &mut uri,
             &mut first_query,
             "paginationToken",
-            value.as_str(),
+            AsRef::<str>::as_ref(&value),
         );
     }
     let mut headers = http::HeaderMap::new();
     if let Some(value) = &input.x_api_key {
-        satay_runtime::insert_header(&mut headers, "x-api-key", value.as_str())?;
+        satay_runtime::insert_header(&mut headers, "x-api-key", AsRef::<str>::as_ref(&value))?;
     }
     Ok(satay_runtime::RequestParts {
         method: http::Method::GET,

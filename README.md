@@ -44,7 +44,7 @@ use std::{env, error::Error};
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let client = reqwest::Client::new();
-    let mut api = Api::new();
+    let mut api = Api::default();
 
     if let Ok(key) = env::var("X_API_KEY") {
         api = api.x_api_key(key);
@@ -89,7 +89,7 @@ use std::env;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut api = Api::new();
+    let mut api = Api::default();
     if let Ok(key) = env::var("X_API_KEY") {
         api = api.x_api_key(key);
     }
@@ -129,7 +129,7 @@ use std::env;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut api = Api::new();
+    let mut api = Api::default();
 
     if let Ok(key) = env::var("X_API_KEY") {
         api = api.x_api_key(key);

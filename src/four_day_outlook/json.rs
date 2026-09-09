@@ -12,6 +12,7 @@ use super::super::types::{
     DataNotFoundError, FourDayOutlookResponse, InvalidParamsError, RateLimitError,
 };
 use super::parts::{FourDayOutlookInput, FourDayOutlookOperationResponse, four_day_outlook_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/four-day-outlook>
 ///
 /// - The forecast is for the next 4 days.
@@ -23,42 +24,46 @@ use super::parts::{FourDayOutlookInput, FourDayOutlookOperationResponse, four_da
 /// - Forecasts are valid for four days, for example, the validity period of the forecast at 1st Jan 1pm is from 1st Jan 1pm to 5th Jan 1pm
 ///
 /// - If `date` is not provided in query parameter, API will return the latest reading
-pub fn encode_four_day_outlook(
-    input: FourDayOutlookInput,
+pub fn encode_four_day_outlook<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    input: FourDayOutlookInput<S>,
 ) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = four_day_outlook_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_four_day_outlook_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<FourDayOutlookOperationResponse, satay_runtime::Error> {
+pub fn decode_four_day_outlook_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<FourDayOutlookOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<FourDayOutlookResponse>(body.as_ref())?;
-            Ok(FourDayOutlookOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<FourDayOutlookResponse<S>>(body)?;
+            Ok(FourDayOutlookOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(FourDayOutlookOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(FourDayOutlookOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(FourDayOutlookOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(FourDayOutlookOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(FourDayOutlookOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(FourDayOutlookOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(FourDayOutlookOperationResponse::UnexpectedStatus(
+            Ok(FourDayOutlookOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

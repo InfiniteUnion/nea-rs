@@ -10,6 +10,7 @@
 
 use super::super::types::{DataNotFoundError, InvalidParamsError, Pm25Response, RateLimitError};
 use super::parts::{Pm25Input, Pm25OperationResponse, pm25_parts};
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/pm25>
 ///
 /// - Readings are provided for each major region in Singapore
@@ -23,40 +24,44 @@ use super::parts::{Pm25Input, Pm25OperationResponse, pm25_parts};
 /// - The `region_metadata` field in the response provides longitude/latitude information for the regions. You can use that to place the readings on a map.
 ///
 /// - Unit of measure for readings is `µg/m3`.
-pub fn encode_pm25(input: Pm25Input) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
+pub fn encode_pm25<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>(
+    input: Pm25Input<S>,
+) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = pm25_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_pm25_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<Pm25OperationResponse, satay_runtime::Error> {
+pub fn decode_pm25_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<Pm25OperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<Pm25Response>(body.as_ref())?;
-            Ok(Pm25OperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<Pm25Response<S>>(body)?;
+            Ok(Pm25OperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(Pm25OperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(Pm25OperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(Pm25OperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(Pm25OperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(Pm25OperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(Pm25OperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(Pm25OperationResponse::UnexpectedStatus(
+            Ok(Pm25OperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }

@@ -14,6 +14,7 @@ use super::super::types::{
 use super::parts::{
     RelativeHumidityInput, RelativeHumidityOperationResponse, relative_humidity_parts,
 };
+use serde::de;
 /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -23,42 +24,46 @@ use super::parts::{
 /// - If `date` is not provided in query parameter, API will return the latest reading
 ///
 /// - Unit of measure for readings is `%`
-pub fn encode_relative_humidity(
-    input: RelativeHumidityInput,
+pub fn encode_relative_humidity<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    input: RelativeHumidityInput<S>,
 ) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
     let parts = relative_humidity_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
-pub fn decode_relative_humidity_response<B: AsRef<[u8]>>(
-    response: satay_runtime::ResponseParts<B>,
-) -> Result<RelativeHumidityOperationResponse, satay_runtime::Error> {
+pub fn decode_relative_humidity_response<
+    S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
+>(
+    response: satay_runtime::ResponseParts<&[u8]>,
+) -> Result<RelativeHumidityOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
     match status.as_u16() {
         200 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RelativeHumidityResponse>(body.as_ref())?;
-            Ok(RelativeHumidityOperationResponse::Ok(value))
+            let value = satay_runtime::from_json_slice::<RelativeHumidityResponse<S>>(body)?;
+            Ok(RelativeHumidityOperationResponse::<S>::Ok(value))
         }
         400 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<InvalidParamsError>(body.as_ref())?;
-            Ok(RelativeHumidityOperationResponse::BadRequest(value))
+            let value = satay_runtime::from_json_slice::<InvalidParamsError<S>>(body)?;
+            Ok(RelativeHumidityOperationResponse::<S>::BadRequest(value))
         }
         404 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<DataNotFoundError>(body.as_ref())?;
-            Ok(RelativeHumidityOperationResponse::NotFound(value))
+            let value = satay_runtime::from_json_slice::<DataNotFoundError<S>>(body)?;
+            Ok(RelativeHumidityOperationResponse::<S>::NotFound(value))
         }
         429 => {
             let body = response.body;
-            let value = satay_runtime::from_json_slice::<RateLimitError>(body.as_ref())?;
-            Ok(RelativeHumidityOperationResponse::Status429(value))
+            let value = satay_runtime::from_json_slice::<RateLimitError<S>>(body)?;
+            Ok(RelativeHumidityOperationResponse::<S>::Status429(value))
         }
         _ => {
             let body = response.body;
-            Ok(RelativeHumidityOperationResponse::UnexpectedStatus(
+            Ok(RelativeHumidityOperationResponse::<S>::UnexpectedStatus(
                 status,
-                body.as_ref().to_vec(),
+                body.to_vec(),
             ))
         }
     }
