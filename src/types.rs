@@ -786,6 +786,8 @@ pub enum NeaWindDirection16 {
     Nw,
     #[cfg_attr(feature = "serde", serde(rename = "NNW"))]
     Nnw,
+    #[cfg_attr(feature = "serde", serde(rename = "VARIABLE"))]
+    Variable,
 }
 impl NeaWindDirection16 {
     pub const fn as_str(&self) -> &'static str {
@@ -806,6 +808,7 @@ impl NeaWindDirection16 {
             Self::Wnw => "WNW",
             Self::Nw => "NW",
             Self::Nnw => "NNW",
+            Self::Variable => "VARIABLE",
         }
     }
 }
