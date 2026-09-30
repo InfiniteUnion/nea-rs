@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0](https://github.com/InfiniteUnion/nea-rs/compare/v0.6.1...v0.7.0) - 2026-09-30
+
+### Fixed
+
+- add `VARIABLE` variant to wind direction
+
+### Other
+
+- capture NEA upstream decode failure
+
 ## [0.6.1](https://github.com/InfiniteUnion/nea-rs/compare/v0.6.0...v0.6.1) - 2026-09-30
 
 ### Fixed
