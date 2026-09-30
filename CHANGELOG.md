@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1](https://github.com/InfiniteUnion/nea-rs/compare/v0.6.0...v0.6.1) - 2026-09-30
+
+### Fixed
+
+- bump rustls to 0.23.45 for RustSec-2026-0285
+
+### Other
+
+- bump pinned action SHAs
+
 ## [0.6.0](https://github.com/InfiniteUnion/nea-rs/compare/v0.5.1...v0.6.0) - 2026-09-10
 
 ### Added
