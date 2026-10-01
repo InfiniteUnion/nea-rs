@@ -38,6 +38,7 @@ pub fn decode_two_hr_forecast_response<
     response: satay_runtime::ResponseParts<&[u8]>,
 ) -> Result<TwoHrForecastOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
+
     match status.as_u16() {
         200 => {
             let body = response.body;

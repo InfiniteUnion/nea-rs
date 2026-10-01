@@ -80,9 +80,11 @@ impl<S: satay_runtime::StringStorage> Api<S> {
         if let Some(value) = &self.x_api_key {
             satay_runtime::insert_header(&mut parts.headers, "x-api-key", value)?;
         }
+
         if self.base_url.is_empty() {
             return Ok(());
         }
+
         let path_and_query = parts.uri.as_str();
         let base_url = self.base_url.trim_end_matches('/');
         let separator = if path_and_query.starts_with('/') {

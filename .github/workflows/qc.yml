@@ -13,16 +13,34 @@ on:
 permissions:
   contents: read
 
+env:
+  RUSTFMT_VERSION: v1.12.1
+
 jobs:
   fmt:
     name: Format Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Install fork rustfmt
+        run: |
+          set -euo pipefail
+          url="https://github.com/zeon256/rustfmt/releases/download/${RUSTFMT_VERSION}/rustfmt_linux-x86_64_${RUSTFMT_VERSION}.tar.gz"
+          curl -fsSL -o /tmp/rustfmt-fork.tar.gz "$url"
+          echo "c9b5242d3e049d5b4fc45cb3ded12f715b25ca3b02edba91d43a63d9ed9e9ab4  /tmp/rustfmt-fork.tar.gz" | sha256sum -c -
+          mkdir -p /tmp/rustfmt-fork
+          tar -xzf /tmp/rustfmt-fork.tar.gz -C /tmp/rustfmt-fork --strip-components=1
       - name: Setup Rust
         uses: ./.github/actions/setup-rust
+        with:
+          toolchain: nightly-2026-09-23
       - name: Format Check
-        run: cargo fmt --all -- --check
+        run: |
+          set -euo pipefail
+          export RUSTFMT=/tmp/rustfmt-fork/rustfmt
+          export LD_LIBRARY_PATH="${HOME}/.rustup/toolchains/nightly-2026-09-23-x86_64-unknown-linux-gnu/lib"
+          cargo fmt --version
+          cargo fmt --all -- --check
 
   clippy:
     name: Clippy
