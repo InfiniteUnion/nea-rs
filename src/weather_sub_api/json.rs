@@ -42,6 +42,7 @@ pub fn decode_weather_sub_api_response<
     response: satay_runtime::ResponseParts<&[u8]>,
 ) -> Result<WeatherSubApiOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
+
     match status.as_u16() {
         200 => {
             let body = response.body;

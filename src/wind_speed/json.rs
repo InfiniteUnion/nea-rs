@@ -36,6 +36,7 @@ pub fn decode_wind_speed_response<
     response: satay_runtime::ResponseParts<&[u8]>,
 ) -> Result<WindSpeedOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
+
     match status.as_u16() {
         200 => {
             let body = response.body;

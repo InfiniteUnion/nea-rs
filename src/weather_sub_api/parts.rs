@@ -109,6 +109,7 @@ pub fn weather_sub_api_parts<S: satay_runtime::StringStorage>(
     uri.push_str("/weather");
     let mut first_query = true;
     satay_runtime::append_query_pair(&mut uri, &mut first_query, "api", input.api.as_ref());
+
     if let Some(value) = &input.date {
         satay_runtime::append_query_pair(
             &mut uri,
@@ -117,6 +118,7 @@ pub fn weather_sub_api_parts<S: satay_runtime::StringStorage>(
             &satay_runtime::format_date(value),
         );
     }
+
     if let Some(value) = &input.pagination_token {
         satay_runtime::append_query_pair(
             &mut uri,
@@ -125,10 +127,13 @@ pub fn weather_sub_api_parts<S: satay_runtime::StringStorage>(
             AsRef::<str>::as_ref(&value),
         );
     }
+
     let mut headers = http::HeaderMap::new();
+
     if let Some(value) = &input.x_api_key {
         satay_runtime::insert_header(&mut headers, "x-api-key", AsRef::<str>::as_ref(&value))?;
     }
+
     Ok(satay_runtime::RequestParts {
         method: http::Method::GET,
         uri,

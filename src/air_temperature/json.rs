@@ -36,6 +36,7 @@ pub fn decode_air_temperature_response<
     response: satay_runtime::ResponseParts<&[u8]>,
 ) -> Result<AirTemperatureOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
+
     match status.as_u16() {
         200 => {
             let body = response.body;

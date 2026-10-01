@@ -97,6 +97,7 @@ pub fn two_hr_forecast_parts<S: satay_runtime::StringStorage>(
     let mut uri = String::with_capacity(16);
     uri.push_str("/two-hr-forecast");
     let mut first_query = true;
+
     if let Some(value) = &input.date {
         satay_runtime::append_query_pair(
             &mut uri,
@@ -105,6 +106,7 @@ pub fn two_hr_forecast_parts<S: satay_runtime::StringStorage>(
             &satay_runtime::format_date(value),
         );
     }
+
     if let Some(value) = &input.pagination_token {
         satay_runtime::append_query_pair(
             &mut uri,
@@ -113,10 +115,13 @@ pub fn two_hr_forecast_parts<S: satay_runtime::StringStorage>(
             AsRef::<str>::as_ref(&value),
         );
     }
+
     let mut headers = http::HeaderMap::new();
+
     if let Some(value) = &input.x_api_key {
         satay_runtime::insert_header(&mut headers, "x-api-key", AsRef::<str>::as_ref(&value))?;
     }
+
     Ok(satay_runtime::RequestParts {
         method: http::Method::GET,
         uri,

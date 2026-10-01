@@ -182,6 +182,7 @@ async fn run_sampler() -> ExitCode {
 
 async fn collect_task_results(mut tasks: JoinSet<ProbeTaskResult>) -> Vec<ProbeTaskResult> {
     let mut results = vec![];
+
     while let Some(result) = tasks.join_next().await {
         match result {
             Ok(result) => results.push(result),
@@ -196,6 +197,7 @@ async fn collect_task_results(mut tasks: JoinSet<ProbeTaskResult>) -> Vec<ProbeT
             }),
         }
     }
+
     results
 }
 
@@ -252,11 +254,13 @@ fn remove_stale_artifacts() -> io::Result<()> {
         Err(error) if error.kind() == ErrorKind::NotFound => {}
         Err(error) => return Err(error),
     }
+
     match fs::remove_dir_all(FAILURE_SAMPLES_DIR) {
         Ok(()) => {}
         Err(error) if error.kind() == ErrorKind::NotFound => {}
         Err(error) => return Err(error),
     }
+
     Ok(())
 }
 
@@ -276,11 +280,13 @@ fn write_failure_samples(failures: &[ProbeFailure]) -> io::Result<usize> {
         .iter()
         .filter(|failure| is_failure_sample_candidate(failure))
         .collect::<Vec<_>>();
+
     if candidates.is_empty() {
         return Ok(0);
     }
 
     fs::create_dir_all(FAILURE_SAMPLES_DIR)?;
+
     for failure in &candidates {
         let file_name = format!("{}.json", failure.endpoint.replace('_', "-"));
         fs::write(
@@ -288,6 +294,7 @@ fn write_failure_samples(failures: &[ProbeFailure]) -> io::Result<usize> {
             &failure.body,
         )?;
     }
+
     Ok(candidates.len())
 }
 
@@ -302,6 +309,7 @@ fn api_from_env() -> Api {
 
 fn api_from_optional_key(key: Option<String>) -> Api {
     let api = Api::new();
+
     if let Some(key) = key.filter(|key| !key.trim().is_empty()) {
         api.x_api_key(key)
     } else {
@@ -448,10 +456,12 @@ fn render_issue_report(
 
     if !transport_failures.is_empty() {
         report.push_str("\n## Transport failures in same run\n\n");
+
         for failure in transport_failures {
             report.push_str("- `");
             report.push_str(failure.endpoint);
             report.push('`');
+
             if let (Some(method), Some(uri)) = (&failure.method, &failure.uri) {
                 report.push_str(": `");
                 report.push_str(method);
@@ -459,6 +469,7 @@ fn render_issue_report(
                 report.push_str(uri);
                 report.push('`');
             }
+
             report.push_str(": ");
             report.push_str(&failure.error);
             report.push('\n');
@@ -490,6 +501,7 @@ fn render_probe_failure(report: &mut String, failure: &ProbeFailure) {
     report.push_str("- response body (UTF-8 lossy, first 4000 bytes):\n\n````text\n");
     report.push_str(&body_excerpt(&failure.body));
     report.push_str("\n````\n");
+
     if failure.body.len() > RESPONSE_BODY_LIMIT {
         report.push_str("\n_response body truncated from ");
         report.push_str(&failure.body.len().to_string());

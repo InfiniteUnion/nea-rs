@@ -38,6 +38,7 @@ pub fn decode_four_day_outlook_response<
     response: satay_runtime::ResponseParts<&[u8]>,
 ) -> Result<FourDayOutlookOperationResponse<S>, satay_runtime::Error> {
     let status = response.status;
+
     match status.as_u16() {
         200 => {
             let body = response.body;
