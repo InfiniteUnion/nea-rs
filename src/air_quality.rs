@@ -10,11 +10,13 @@
 
 use super::{Api as RootApi, Pm25Action, PsiAction};
 use serde::de;
+
 /// PSI and PM2.5 readings by region. Updated every 15 minutes.
 #[derive(Debug, Clone, Copy)]
 pub struct Api<'a, S: satay_runtime::StringStorage = String> {
     pub(crate) api: &'a RootApi<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned> Api<'a, S> {
     /// <https://api-open.data.gov.sg/v2/real-time/api/psi>
     ///
@@ -48,6 +50,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn psi(&self) -> PsiAction<'a, S> {
         PsiAction::<S>::new(self.api)
     }
+
     /// <https://api-open.data.gov.sg/v2/real-time/api/pm25>
     ///
     /// - Readings are provided for each major region in Singapore

@@ -37,42 +37,51 @@ use crate::weather_forecast;
 use crate::weather_readings;
 use serde::de;
 use std::marker;
+
 #[derive(Debug, Clone)]
 pub struct Api<S: satay_runtime::StringStorage = String> {
     base_url: String,
     x_api_key: Option<String>,
     __satay_storage: marker::PhantomData<fn() -> S>,
 }
+
 impl<S: satay_runtime::StringStorage> Default for Api<S> {
     fn default() -> Self {
         Api::new().string_storage()
     }
 }
+
 impl<S: satay_runtime::StringStorage> Api<S> {
     pub fn base_url(mut self, base_url: impl Into<String>) -> Self {
         self.base_url = base_url.into();
         self
     }
+
     pub fn x_api_key(mut self, value: impl Into<String>) -> Self {
         self.x_api_key = Some(value.into());
         self
     }
+
     /// Access operations tagged `Air Quality`.
     pub fn air_quality(&self) -> air_quality::Api<'_, S> {
         air_quality::Api { api: self }
     }
+
     /// Access operations tagged `Weather Readings`.
     pub fn weather_readings(&self) -> weather_readings::Api<'_, S> {
         weather_readings::Api { api: self }
     }
+
     /// Access operations tagged `Weather Forecast`.
     pub fn weather_forecast(&self) -> weather_forecast::Api<'_, S> {
         weather_forecast::Api { api: self }
     }
+
     /// Access operations tagged `Environment`.
     pub fn environment(&self) -> environment::Api<'_, S> {
         environment::Api { api: self }
     }
+
     fn apply<B>(
         &self,
         parts: &mut satay_runtime::RequestParts<B>,
@@ -95,6 +104,7 @@ impl<S: satay_runtime::StringStorage> Api<S> {
         parts.uri = format!("{base_url}{separator}{path_and_query}");
         Ok(())
     }
+
     /// Selects dynamic string storage for generated models and actions.
     pub fn string_storage<T: satay_runtime::StringStorage>(self) -> Api<T> {
         Api {
@@ -104,6 +114,7 @@ impl<S: satay_runtime::StringStorage> Api<S> {
         }
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/psi>
 ///
 /// - Readings are provided for each major region in Singapore
@@ -125,6 +136,7 @@ pub struct PsiAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: PsiInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     PsiAction<'a, S>
 {
@@ -134,60 +146,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: PsiInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = psi_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<PsiOperationResponse<S>, satay_runtime::Error> {
         decode_psi_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for PsiAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = PsiOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for PsiAction<'_, S>
 {
     type OwnedResponse = PsiOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/pm25>
 ///
 /// - Readings are provided for each major region in Singapore
@@ -209,6 +233,7 @@ pub struct Pm25Action<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: Pm25Input<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     Pm25Action<'a, S>
 {
@@ -218,60 +243,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: Pm25Input::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = pm25_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Pm25OperationResponse<S>, satay_runtime::Error> {
         decode_pm25_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for Pm25Action<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = Pm25OperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for Pm25Action<'_, S>
 {
     type OwnedResponse = Pm25OperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/air-temperature>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -289,6 +326,7 @@ pub struct AirTemperatureAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: AirTemperatureInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     AirTemperatureAction<'a, S>
 {
@@ -298,60 +336,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: AirTemperatureInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = air_temperature_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<AirTemperatureOperationResponse<S>, satay_runtime::Error> {
         decode_air_temperature_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for AirTemperatureAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = AirTemperatureOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for AirTemperatureAction<'_, S>
 {
     type OwnedResponse = AirTemperatureOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -369,6 +419,7 @@ pub struct RelativeHumidityAction<'a, S: satay_runtime::StringStorage = String> 
     api: &'a Api<S>,
     input: RelativeHumidityInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     RelativeHumidityAction<'a, S>
 {
@@ -378,60 +429,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: RelativeHumidityInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = relative_humidity_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<RelativeHumidityOperationResponse<S>, satay_runtime::Error> {
         decode_relative_humidity_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for RelativeHumidityAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = RelativeHumidityOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for RelativeHumidityAction<'_, S>
 {
     type OwnedResponse = RelativeHumidityOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/wind-speed>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -449,6 +512,7 @@ pub struct WindSpeedAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: WindSpeedInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     WindSpeedAction<'a, S>
 {
@@ -458,60 +522,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: WindSpeedInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = wind_speed_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<WindSpeedOperationResponse<S>, satay_runtime::Error> {
         decode_wind_speed_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for WindSpeedAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = WindSpeedOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for WindSpeedAction<'_, S>
 {
     type OwnedResponse = WindSpeedOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/wind-direction>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -529,6 +605,7 @@ pub struct WindDirectionAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: WindDirectionInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     WindDirectionAction<'a, S>
 {
@@ -538,60 +615,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: WindDirectionInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = wind_direction_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<WindDirectionOperationResponse<S>, satay_runtime::Error> {
         decode_wind_direction_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for WindDirectionAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = WindDirectionOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for WindDirectionAction<'_, S>
 {
     type OwnedResponse = WindDirectionOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/rainfall>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -609,6 +698,7 @@ pub struct RainfallAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: RainfallInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     RainfallAction<'a, S>
 {
@@ -618,60 +708,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: RainfallInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = rainfall_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<RainfallOperationResponse<S>, satay_runtime::Error> {
         decode_rainfall_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for RainfallAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = RainfallOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for RainfallAction<'_, S>
 {
     type OwnedResponse = RainfallOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast>
 ///
 /// - Forecasts are given for multiple areas in Singapore
@@ -691,6 +793,7 @@ pub struct TwoHrForecastAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: TwoHrForecastInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     TwoHrForecastAction<'a, S>
 {
@@ -700,60 +803,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: TwoHrForecastInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = two_hr_forecast_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<TwoHrForecastOperationResponse<S>, satay_runtime::Error> {
         decode_two_hr_forecast_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for TwoHrForecastAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = TwoHrForecastOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for TwoHrForecastAction<'_, S>
 {
     type OwnedResponse = TwoHrForecastOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast>
 ///
 /// - Updated multiple times throughout the day
@@ -773,6 +888,7 @@ pub struct TwentyFourHrForecastAction<'a, S: satay_runtime::StringStorage = Stri
     api: &'a Api<S>,
     input: TwentyFourHrForecastInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     TwentyFourHrForecastAction<'a, S>
 {
@@ -782,60 +898,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: TwentyFourHrForecastInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = twenty_four_hr_forecast_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<TwentyFourHrForecastOperationResponse<S>, satay_runtime::Error> {
         decode_twenty_four_hr_forecast_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for TwentyFourHrForecastAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = TwentyFourHrForecastOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for TwentyFourHrForecastAction<'_, S>
 {
     type OwnedResponse = TwentyFourHrForecastOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/four-day-outlook>
 ///
 /// - The forecast is for the next 4 days.
@@ -855,6 +983,7 @@ pub struct FourDayOutlookAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: FourDayOutlookInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     FourDayOutlookAction<'a, S>
 {
@@ -864,60 +993,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: FourDayOutlookInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = four_day_outlook_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<FourDayOutlookOperationResponse<S>, satay_runtime::Error> {
         decode_four_day_outlook_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for FourDayOutlookAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = FourDayOutlookOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for FourDayOutlookAction<'_, S>
 {
     type OwnedResponse = FourDayOutlookOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/uv>
 ///
 /// - Updated between 7 AM and 7 PM everyday
@@ -939,6 +1080,7 @@ pub struct UvAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: UvInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     UvAction<'a, S>
 {
@@ -948,60 +1090,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: UvInput::<S>::new(),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = uv_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<UvOperationResponse<S>, satay_runtime::Error> {
         decode_uv_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for UvAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = UvOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for UvAction<'_, S>
 {
     type OwnedResponse = UvOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 /// Unified weather sub-API endpoint.
 ///
 /// - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.
@@ -1025,6 +1179,7 @@ pub struct WeatherSubApiAction<'a, S: satay_runtime::StringStorage = String> {
     api: &'a Api<S>,
     input: WeatherSubApiInput<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     WeatherSubApiAction<'a, S>
 {
@@ -1034,60 +1189,72 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
             input: WeatherSubApiInput::<S>::new(api),
         }
     }
+
     /// SGT date for which to retrieve data (YYYY-MM-DD). Omit for latest.
     #[must_use = "builder methods return the configured action"]
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.input = self.input.date(date);
         self
     }
+
     /// Pagination token for subsequent pages (only when date filter is used and more pages exist).
     #[must_use = "builder methods return the configured action"]
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.input = self.input.pagination_token(pagination_token);
         self
     }
+
     /// Optional API key for higher rate limits.
     #[must_use = "builder methods return the configured action"]
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.input = self.input.x_api_key(x_api_key);
         self
     }
+
     pub fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         let api = self.api;
         let mut parts = weather_sub_api_parts(self.input)?;
         api.apply(&mut parts)?;
         satay_runtime::into_empty_request(parts)
     }
+
     pub fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<WeatherSubApiOperationResponse<S>, satay_runtime::Error> {
         decode_weather_sub_api_response(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::Action for WeatherSubApiAction<'_, S>
 {
     type RequestBody = Vec<u8>;
+
     type Response<'de> = WeatherSubApiOperationResponse<S>;
+
     fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
         self.request()
     }
+
     fn decode(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::Response<'_>, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl<S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned>
     satay_runtime::OwnedAction for WeatherSubApiAction<'_, S>
 {
     type OwnedResponse = WeatherSubApiOperationResponse<S>;
+
     fn decode_owned(
         response: satay_runtime::ResponseParts<&[u8]>,
     ) -> Result<Self::OwnedResponse, satay_runtime::Error> {
         Self::decode(response)
     }
 }
+
 impl Api<String> {
     pub fn new() -> Self {
         Self {

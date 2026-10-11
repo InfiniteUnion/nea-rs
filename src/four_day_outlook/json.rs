@@ -13,6 +13,7 @@ use super::super::types::{
 };
 use super::parts::{FourDayOutlookInput, FourDayOutlookOperationResponse, four_day_outlook_parts};
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/four-day-outlook>
 ///
 /// - The forecast is for the next 4 days.
@@ -32,6 +33,7 @@ pub fn encode_four_day_outlook<
     let parts = four_day_outlook_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_four_day_outlook_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

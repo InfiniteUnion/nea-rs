@@ -12,6 +12,7 @@ use super::super::types::{
     DataNotFoundError, NeaWeatherSubApi, RateLimitError, WeatherSubApiInvalidParamsError,
     WeatherSubApiResponse,
 };
+
 /// Unified weather sub-API endpoint.
 ///
 /// - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.
@@ -38,6 +39,7 @@ pub struct WeatherSubApiInput<S: satay_runtime::StringStorage = String> {
     /// Optional API key for higher rate limits.
     pub x_api_key: Option<S>,
 }
+
 impl<S: satay_runtime::StringStorage> WeatherSubApiInput<S> {
     pub fn new(api: NeaWeatherSubApi) -> Self {
         Self {
@@ -47,19 +49,23 @@ impl<S: satay_runtime::StringStorage> WeatherSubApiInput<S> {
             x_api_key: None,
         }
     }
+
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.date = Some(date);
         self
     }
+
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.pagination_token = Some(pagination_token.into());
         self
     }
+
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.x_api_key = Some(x_api_key.into());
         self
     }
 }
+
 /// Unified weather sub-API endpoint.
 ///
 /// - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.
@@ -87,6 +93,7 @@ pub enum WeatherSubApiOperationResponse<S: satay_runtime::StringStorage = String
     Status429(RateLimitError<S>),
     UnexpectedStatus(http::StatusCode, Vec<u8>),
 }
+
 /// Unified weather sub-API endpoint.
 ///
 /// - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.

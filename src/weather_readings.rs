@@ -13,11 +13,13 @@ use super::{
     WindDirectionAction, WindSpeedAction,
 };
 use serde::de;
+
 /// Station-level weather observations (up to 1-minute intervals).
 #[derive(Debug, Clone, Copy)]
 pub struct Api<'a, S: satay_runtime::StringStorage = String> {
     pub(crate) api: &'a RootApi<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned> Api<'a, S> {
     /// <https://api-open.data.gov.sg/v2/real-time/api/air-temperature>
     ///
@@ -47,6 +49,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn air_temperature(&self) -> AirTemperatureAction<'a, S> {
         AirTemperatureAction::<S>::new(self.api)
     }
+
     /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
     ///
     /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -75,6 +78,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn relative_humidity(&self) -> RelativeHumidityAction<'a, S> {
         RelativeHumidityAction::<S>::new(self.api)
     }
+
     /// <https://api-open.data.gov.sg/v2/real-time/api/wind-speed>
     ///
     /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -103,6 +107,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn wind_speed(&self) -> WindSpeedAction<'a, S> {
         WindSpeedAction::<S>::new(self.api)
     }
+
     /// <https://api-open.data.gov.sg/v2/real-time/api/wind-direction>
     ///
     /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -131,6 +136,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn wind_direction(&self) -> WindDirectionAction<'a, S> {
         WindDirectionAction::<S>::new(self.api)
     }
+
     /// <https://api-open.data.gov.sg/v2/real-time/api/rainfall>
     ///
     /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).

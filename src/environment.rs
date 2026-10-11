@@ -10,11 +10,13 @@
 
 use super::{Api as RootApi, NeaWeatherSubApi, UvAction, WeatherSubApiAction};
 use serde::de;
+
 /// UV index, lightning, and heat stress (WBGT) data.
 #[derive(Debug, Clone, Copy)]
 pub struct Api<'a, S: satay_runtime::StringStorage = String> {
     pub(crate) api: &'a RootApi<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned> Api<'a, S> {
     /// <https://api-open.data.gov.sg/v2/real-time/api/uv>
     ///
@@ -48,6 +50,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn uv(&self) -> UvAction<'a, S> {
         UvAction::<S>::new(self.api)
     }
+
     /// Unified weather sub-API endpoint.
     ///
     /// - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.

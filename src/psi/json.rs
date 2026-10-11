@@ -11,6 +11,7 @@
 use super::super::types::{DataNotFoundError, InvalidParamsError, PsiResponse, RateLimitError};
 use super::parts::{PsiInput, PsiOperationResponse, psi_parts};
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/psi>
 ///
 /// - Readings are provided for each major region in Singapore
@@ -30,6 +31,7 @@ pub fn encode_psi<S: satay_runtime::StringStorage + serde::Serialize + de::Deser
     let parts = psi_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_psi_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

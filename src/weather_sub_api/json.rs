@@ -13,6 +13,7 @@ use super::super::types::{
 };
 use super::parts::{WeatherSubApiInput, WeatherSubApiOperationResponse, weather_sub_api_parts};
 use serde::de;
+
 /// Unified weather sub-API endpoint.
 ///
 /// - `?api=lightning` — Cloud-to-ground and cloud-to-cloud lightning strikes. Updated every ~2–3 minutes.
@@ -36,6 +37,7 @@ pub fn encode_weather_sub_api<
     let parts = weather_sub_api_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_weather_sub_api_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(
