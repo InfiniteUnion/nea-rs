@@ -13,6 +13,7 @@ use super::super::types::{
 };
 use super::parts::{TwoHrForecastInput, TwoHrForecastOperationResponse, two_hr_forecast_parts};
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast>
 ///
 /// - Forecasts are given for multiple areas in Singapore
@@ -32,6 +33,7 @@ pub fn encode_two_hr_forecast<
     let parts = two_hr_forecast_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_two_hr_forecast_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

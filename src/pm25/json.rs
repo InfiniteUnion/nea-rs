@@ -11,6 +11,7 @@
 use super::super::types::{DataNotFoundError, InvalidParamsError, Pm25Response, RateLimitError};
 use super::parts::{Pm25Input, Pm25OperationResponse, pm25_parts};
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/pm25>
 ///
 /// - Readings are provided for each major region in Singapore
@@ -30,6 +31,7 @@ pub fn encode_pm25<S: satay_runtime::StringStorage + serde::Serialize + de::Dese
     let parts = pm25_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_pm25_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

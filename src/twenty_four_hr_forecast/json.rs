@@ -15,6 +15,7 @@ use super::parts::{
     TwentyFourHrForecastInput, TwentyFourHrForecastOperationResponse, twenty_four_hr_forecast_parts,
 };
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast>
 ///
 /// - Updated multiple times throughout the day
@@ -34,6 +35,7 @@ pub fn encode_twenty_four_hr_forecast<
     let parts = twenty_four_hr_forecast_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_twenty_four_hr_forecast_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

@@ -13,6 +13,7 @@ use super::super::types::{
 };
 use super::parts::{AirTemperatureInput, AirTemperatureOperationResponse, air_temperature_parts};
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/air-temperature>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -30,6 +31,7 @@ pub fn encode_air_temperature<
     let parts = air_temperature_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_air_temperature_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

@@ -15,6 +15,7 @@ use super::parts::{
     RelativeHumidityInput, RelativeHumidityOperationResponse, relative_humidity_parts,
 };
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -32,6 +33,7 @@ pub fn encode_relative_humidity<
     let parts = relative_humidity_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_relative_humidity_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

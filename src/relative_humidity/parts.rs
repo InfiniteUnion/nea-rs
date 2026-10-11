@@ -11,6 +11,7 @@
 use super::super::types::{
     DataNotFoundError, InvalidParamsError, RateLimitError, RelativeHumidityResponse,
 };
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -29,6 +30,7 @@ pub struct RelativeHumidityInput<S: satay_runtime::StringStorage = String> {
     /// Optional API key for higher rate limits.
     pub x_api_key: Option<S>,
 }
+
 impl<S: satay_runtime::StringStorage> RelativeHumidityInput<S> {
     pub fn new() -> Self {
         Self {
@@ -37,24 +39,29 @@ impl<S: satay_runtime::StringStorage> RelativeHumidityInput<S> {
             x_api_key: None,
         }
     }
+
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.date = Some(date);
         self
     }
+
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.pagination_token = Some(pagination_token.into());
         self
     }
+
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.x_api_key = Some(x_api_key.into());
         self
     }
 }
+
 impl<S: satay_runtime::StringStorage> Default for RelativeHumidityInput<S> {
     fn default() -> Self {
         Self::new()
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -76,6 +83,7 @@ pub enum RelativeHumidityOperationResponse<S: satay_runtime::StringStorage = Str
     Status429(RateLimitError<S>),
     UnexpectedStatus(http::StatusCode, Vec<u8>),
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/relative-humidity>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).

@@ -13,6 +13,7 @@ use super::super::types::{
 };
 use super::parts::{WindSpeedInput, WindSpeedOperationResponse, wind_speed_parts};
 use serde::de;
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/wind-speed>
 ///
 /// - Filter for a specific date by providing `date` in query parameter (YYYY-MM-DD).
@@ -30,6 +31,7 @@ pub fn encode_wind_speed<
     let parts = wind_speed_parts(input)?;
     satay_runtime::into_empty_request(parts)
 }
+
 pub fn decode_wind_speed_response<
     S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned,
 >(

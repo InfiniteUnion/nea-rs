@@ -15,6 +15,7 @@ use satay_runtime::serde_string::as_f64;
 #[cfg(feature = "serde")]
 use satay_runtime::serde_string::as_f64::option as as_f64_option;
 use std::fmt;
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -32,6 +33,7 @@ pub struct PsiResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: PsiData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -49,6 +51,7 @@ pub struct Pm25Response<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: Pm25Data<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -66,6 +69,7 @@ pub struct AirTemperatureResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: AirTemperatureData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -83,6 +87,7 @@ pub struct RelativeHumidityResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: RelativeHumidityData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -100,6 +105,7 @@ pub struct WindSpeedResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: WindSpeedData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -117,6 +123,7 @@ pub struct WindDirectionResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: WindDirectionData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -134,6 +141,7 @@ pub struct RainfallResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: RainfallData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -151,6 +159,7 @@ pub struct TwoHrForecastResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: TwoHrForecastData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -168,6 +177,7 @@ pub struct TwentyFourHrForecastResponse<S: satay_runtime::StringStorage = String
     pub error_msg: S,
     pub data: TwentyFourHrForecastData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -186,6 +196,7 @@ pub struct FourDayOutlookResponse<S: satay_runtime::StringStorage = String> {
     /// Chronologically ordered forecasts for the next 4 days
     pub data: FourDayOutlookData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -203,6 +214,7 @@ pub struct UvResponse<S: satay_runtime::StringStorage = String> {
     pub error_msg: S,
     pub data: UvData<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -231,6 +243,7 @@ pub struct WeatherSubApiResponse<S: satay_runtime::StringStorage = String> {
     )]
     pub data: Option<WeatherSubApiData<S>>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -258,6 +271,7 @@ pub struct InvalidParamsError<S: satay_runtime::StringStorage = String> {
     )]
     pub error_msg: Option<NeaInvalidParamsErrorMsg>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -284,6 +298,7 @@ pub struct InvalidParamsError22<S: satay_runtime::StringStorage = String> {
     )]
     pub error_msg: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -310,6 +325,7 @@ pub struct DataNotFoundError<S: satay_runtime::StringStorage = String> {
     )]
     pub error_msg: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -336,6 +352,7 @@ pub struct RateLimitError<S: satay_runtime::StringStorage = String> {
     )]
     pub error_msg: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -352,6 +369,7 @@ pub struct MissingAuthResponse<S: satay_runtime::StringStorage = String> {
     )]
     pub message: Option<S>,
 }
+
 /// Response status code (0 for success)
 #[nutype::nutype(
     validate(less_or_equal = 0),
@@ -361,10 +379,13 @@ pub struct MissingAuthResponse<S: satay_runtime::StringStorage = String> {
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaSuccessCode(u8);
+
 /// ISO 8601 date or date-time in Singapore Time (SGT)
 pub type NeaOffsetDateTime = satay_runtime::OffsetDateTime;
+
 /// SGT calendar date (YYYY-MM-DD)
 pub type NeaDate = satay_runtime::Date;
+
 /// WGS84 latitude for Singapore
 #[nutype::nutype(
     validate(finite, greater_or_equal = 1.0, less_or_equal = 1.5),
@@ -374,6 +395,7 @@ pub type NeaDate = satay_runtime::Date;
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaLatitude(f64);
+
 /// WGS84 longitude for Singapore
 #[nutype::nutype(
     validate(finite, greater_or_equal = 103.5, less_or_equal = 104.2),
@@ -383,6 +405,7 @@ pub struct NeaLatitude(f64);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaLongitude(f64);
+
 /// Regional air-quality or index reading
 #[nutype::nutype(
     validate(less_or_equal = 500),
@@ -392,6 +415,7 @@ pub struct NeaLongitude(f64);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaRegionalReading(u16);
+
 /// Regional PM2.5 one-hour reading (µg/m³)
 #[nutype::nutype(
     validate(less_or_equal = 500),
@@ -401,6 +425,7 @@ pub struct NeaRegionalReading(u16);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaPm25HourlyReading(u16);
+
 /// Wind direction in degrees
 #[nutype::nutype(
     validate(less_or_equal = 360),
@@ -410,6 +435,7 @@ pub struct NeaPm25HourlyReading(u16);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaWindDirectionDegrees(u16);
+
 /// UV index for the hour
 #[nutype::nutype(
     validate(less_or_equal = 16),
@@ -419,6 +445,7 @@ pub struct NeaWindDirectionDegrees(u16);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaUvIndex(u8);
+
 /// Relative humidity percentage
 #[nutype::nutype(
     validate(finite, greater_or_equal = 0.0, less_or_equal = 100.0),
@@ -428,6 +455,7 @@ pub struct NeaUvIndex(u8);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaHumidityPercent(f64);
+
 /// Air temperature in degrees Celsius
 #[nutype::nutype(
     validate(finite, greater_or_equal = 15.0, less_or_equal = 45.0),
@@ -437,6 +465,7 @@ pub struct NeaHumidityPercent(f64);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaTemperatureCelsius(f64);
+
 /// Wind speed in km/h
 #[nutype::nutype(
     validate(finite, greater_or_equal = 0.0, less_or_equal = 120.0),
@@ -446,6 +475,7 @@ pub struct NeaTemperatureCelsius(f64);
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaWindSpeedKmh(f64);
+
 /// NEA MSS short weather forecast code
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -491,6 +521,7 @@ pub enum NeaForecastCode {
     #[cfg_attr(feature = "serde", serde(rename = "WD"))]
     Windy,
 }
+
 impl NeaForecastCode {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -517,16 +548,19 @@ impl NeaForecastCode {
         }
     }
 }
+
 impl AsRef<str> for NeaForecastCode {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaForecastCode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// Lightning event type (C = cloud-to-cloud, G = cloud-to-ground)
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -536,6 +570,7 @@ pub enum NeaLightningType {
     #[cfg_attr(feature = "serde", serde(rename = "G"))]
     CloudToGround,
 }
+
 impl NeaLightningType {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -544,16 +579,19 @@ impl NeaLightningType {
         }
     }
 }
+
 impl AsRef<str> for NeaLightningType {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaLightningType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// NEA MSS human-readable weather forecast text
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -601,6 +639,7 @@ pub enum NeaForecastText {
     )]
     HeavyThunderyShowersWithGustyWinds,
 }
+
 impl NeaForecastText {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -630,16 +669,19 @@ impl NeaForecastText {
         }
     }
 }
+
 impl AsRef<str> for NeaForecastText {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaForecastText {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// Day of week for multi-day outlook forecasts
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -652,6 +694,7 @@ pub enum NeaDayOfWeek {
     Saturday,
     Sunday,
 }
+
 impl NeaDayOfWeek {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -665,16 +708,19 @@ impl NeaDayOfWeek {
         }
     }
 }
+
 impl AsRef<str> for NeaDayOfWeek {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaDayOfWeek {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// Bad-request error message for invalid date or pagination token
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -689,6 +735,7 @@ pub enum NeaInvalidParamsErrorMsg {
     #[cfg_attr(feature = "serde", serde(rename = "Invalid pagination token."))]
     InvalidPaginationToken,
 }
+
 impl NeaInvalidParamsErrorMsg {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -699,16 +746,19 @@ impl NeaInvalidParamsErrorMsg {
         }
     }
 }
+
 impl AsRef<str> for NeaInvalidParamsErrorMsg {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaInvalidParamsErrorMsg {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// Weather sub-API selector (lightning or wbgt)
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -718,6 +768,7 @@ pub enum NeaWeatherSubApi {
     #[cfg_attr(feature = "serde", serde(rename = "wbgt"))]
     WetBulbGlobeTemperature,
 }
+
 impl NeaWeatherSubApi {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -726,16 +777,19 @@ impl NeaWeatherSubApi {
         }
     }
 }
+
 impl AsRef<str> for NeaWeatherSubApi {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaWeatherSubApi {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// NEA weather station identifier (S + 2–3 digits)
 #[nutype::nutype(
     validate(regex = "^S[0-9]{2,3}$", len_char_min = 3, len_char_max = 4),
@@ -745,6 +799,7 @@ impl fmt::Display for NeaWeatherSubApi {
     cfg_attr(feature = "serde", derive(Serialize, Deserialize))
 )]
 pub struct NeaStationId(String);
+
 /// WGS84 coordinates for a weather station
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -754,6 +809,7 @@ pub struct NeaStationLocation {
     /// WGS84 longitude for Singapore
     pub longitude: NeaLongitude,
 }
+
 /// 16-point compass wind direction for outlook forecasts
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -789,6 +845,7 @@ pub enum NeaWindDirection16 {
     #[cfg_attr(feature = "serde", serde(rename = "VARIABLE"))]
     Variable,
 }
+
 impl NeaWindDirection16 {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -812,20 +869,25 @@ impl NeaWindDirection16 {
         }
     }
 }
+
 impl AsRef<str> for NeaWindDirection16 {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaWindDirection16 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// WGS84 latitude as a decimal string
 pub type NeaStringLatitude = f64;
+
 /// WGS84 longitude as a decimal string
 pub type NeaStringLongitude = f64;
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -846,6 +908,7 @@ pub struct NeaWeatherStation<S: satay_runtime::StringStorage = String> {
     /// WGS84 coordinates for a weather station
     pub location: NeaStationLocation,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaReadingSnapshot {
@@ -854,6 +917,7 @@ pub struct NeaReadingSnapshot {
     pub timestamp: satay_runtime::OffsetDateTime,
     pub data: Vec<NeaStationReading>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaStationReading {
@@ -862,6 +926,7 @@ pub struct NeaStationReading {
     pub station_id: NeaStationId,
     pub value: f64,
 }
+
 /// Unit of measure - Percentage
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -873,6 +938,7 @@ pub struct NeaHumidityRange {
     /// Unit of measure for NEA station readings and outlook ranges
     pub unit: NeaMeasurementUnit,
 }
+
 /// Unit of measure - Degrees Celsius
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -884,6 +950,7 @@ pub struct NeaTemperatureRange {
     /// Unit of measure for NEA station readings and outlook ranges
     pub unit: NeaMeasurementUnit,
 }
+
 /// Unit of measure - Kilometeres per hour
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -893,6 +960,7 @@ pub struct NeaWindSpeedRange {
     /// Wind speed in km/h
     pub high: NeaWindSpeedKmh,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaOutlookWind {
@@ -901,6 +969,7 @@ pub struct NeaOutlookWind {
     /// 16-point compass wind direction for outlook forecasts
     pub direction: NeaWindDirection16,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaMssForecast {
@@ -909,6 +978,7 @@ pub struct NeaMssForecast {
     /// NEA MSS human-readable weather forecast text
     pub text: NeaForecastText,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaGeoPoint {
@@ -917,6 +987,7 @@ pub struct NeaGeoPoint {
     /// WGS84 longitude for Singapore
     pub longitude: NeaLongitude,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -946,6 +1017,7 @@ pub struct AirTemperatureData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -975,6 +1047,7 @@ pub struct RelativeHumidityData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1004,6 +1077,7 @@ pub struct WindSpeedData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1033,6 +1107,7 @@ pub struct WindDirectionData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1062,6 +1137,7 @@ pub struct RainfallData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 /// Chronologically ordered forecasts for the next 4 days
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1075,6 +1151,7 @@ pub struct RainfallData<S: satay_runtime::StringStorage = String> {
 pub struct FourDayOutlookData<S: satay_runtime::StringStorage = String> {
     pub records: Vec<FourDayOutlookDay<S>>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1100,6 +1177,7 @@ pub struct FourDayOutlookDay<S: satay_runtime::StringStorage = String> {
     /// Forecast summary for the day
     pub forecasts: Vec<FourDayOutlookPeriod<S>>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1123,6 +1201,7 @@ pub struct FourDayOutlookPeriod<S: satay_runtime::StringStorage = String> {
     pub day: NeaDayOfWeek,
     pub wind: NeaOutlookWind,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1139,6 +1218,7 @@ pub struct NeaOutlookForecastDetail<S: satay_runtime::StringStorage = String> {
     /// NEA MSS human-readable weather forecast text
     pub text: NeaForecastText,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1166,6 +1246,7 @@ pub struct TwentyFourHrForecastData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1193,6 +1274,7 @@ pub struct TwentyFourHrForecastDay<S: satay_runtime::StringStorage = String> {
     /// Forecasts for various areas in Singapore
     pub periods: Vec<TwentyFourHrForecastPeriod<S>>,
 }
+
 /// A general weather forecast for the 24 hour period
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1215,6 +1297,7 @@ pub struct TwentyFourHrForecastGeneral<S: satay_runtime::StringStorage = String>
     pub forecast: NeaMssForecast,
     pub wind: NeaOutlookWind,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1230,6 +1313,7 @@ pub struct TwentyFourHrForecastPeriod<S: satay_runtime::StringStorage = String> 
     pub time_period: NeaValidPeriod<S>,
     pub regions: TwentyFourHrRegionalForecast,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TwentyFourHrRegionalForecast {
@@ -1239,6 +1323,7 @@ pub struct TwentyFourHrRegionalForecast {
     pub north: NeaMssForecast,
     pub south: NeaMssForecast,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1262,6 +1347,7 @@ pub struct TwoHrForecastData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1276,6 +1362,7 @@ pub struct NeaForecastArea<S: satay_runtime::StringStorage = String> {
     pub name: S,
     pub label_location: NeaGeoPoint,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1297,6 +1384,7 @@ pub struct TwoHrForecastSnapshot<S: satay_runtime::StringStorage = String> {
     /// Forecasts for various areas in Singapore
     pub forecasts: Vec<TwoHrAreaForecast<S>>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1311,6 +1399,7 @@ pub struct TwoHrAreaForecast<S: satay_runtime::StringStorage = String> {
     /// NEA MSS human-readable weather forecast text
     pub forecast: NeaForecastText,
 }
+
 /// Period of time the forecast is valid for
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1330,6 +1419,7 @@ pub struct NeaValidPeriod<S: satay_runtime::StringStorage = String> {
     pub end: satay_runtime::OffsetDateTime,
     pub text: S,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1354,6 +1444,7 @@ pub struct PsiData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PsiSnapshot {
@@ -1372,6 +1463,7 @@ pub struct PsiSnapshot {
     /// Overall and regional PSI data including pollutant concentrations and sub-indices
     pub readings: PsiReadings,
 }
+
 /// Overall and regional PSI data including pollutant concentrations and sub-indices
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1407,6 +1499,7 @@ pub struct PsiReadings {
     /// Concentration is measured in micrograms per cubic metre
     pub pm10_twenty_four_hourly: PsiPm10TwentyFourHourRegional,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NeaRegionMetadata {
@@ -1415,6 +1508,7 @@ pub struct NeaRegionMetadata {
     #[cfg_attr(feature = "serde", serde(rename = "labelLocation"))]
     pub label_location: NeaGeoPoint,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1430,6 +1524,7 @@ pub struct PsiCoEightHourMaxRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1445,6 +1540,7 @@ pub struct PsiCoSubIndexRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1460,6 +1556,7 @@ pub struct PsiNo2OneHourMaxRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1475,6 +1572,7 @@ pub struct PsiO3EightHourMaxRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1490,6 +1588,7 @@ pub struct PsiO3SubIndexRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1505,6 +1604,7 @@ pub struct PsiPm10SubIndexRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1520,6 +1620,7 @@ pub struct PsiPm10TwentyFourHourRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1535,6 +1636,7 @@ pub struct PsiPm25SubIndexRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1550,6 +1652,7 @@ pub struct PsiPm25TwentyFourHourRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1585,6 +1688,7 @@ pub struct PsiThreeHourRegional {
     )]
     pub central: Option<NeaRegionalReading>,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1600,6 +1704,7 @@ pub struct PsiTwentyFourHourRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1615,6 +1720,7 @@ pub struct PsiSo2SubIndexRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 /// Concentration is measured in micrograms per cubic metre
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1630,6 +1736,7 @@ pub struct PsiSo2TwentyFourHourRegional {
     /// Regional air-quality or index reading
     pub central: NeaRegionalReading,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1654,6 +1761,7 @@ pub struct Pm25Data<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Pm25Snapshot {
@@ -1672,12 +1780,14 @@ pub struct Pm25Snapshot {
     /// Overall and regional PSI data including pollutant concentrations and sub-indices
     pub readings: Pm25Readings,
 }
+
 /// Overall and regional PSI data including pollutant concentrations and sub-indices
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Pm25Readings {
     pub pm25_one_hourly: Pm25OneHourRegional,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Pm25OneHourRegional {
@@ -1692,6 +1802,7 @@ pub struct Pm25OneHourRegional {
     /// Regional PM2.5 one-hour reading (µg/m³)
     pub central: NeaPm25HourlyReading,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1714,6 +1825,7 @@ pub struct UvData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UvDayRecord {
@@ -1731,6 +1843,7 @@ pub struct UvDayRecord {
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_offset_datetime"))]
     pub timestamp: satay_runtime::OffsetDateTime,
 }
+
 /// Reverse-chronologically ordered indexes
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1741,6 +1854,7 @@ pub struct UvHourlyIndex {
     /// UV index for the hour
     pub value: NeaUvIndex,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1767,6 +1881,7 @@ pub struct WeatherSubApiData<S: satay_runtime::StringStorage = String> {
     )]
     pub pagination_token: Option<S>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1805,6 +1920,7 @@ pub struct WeatherSubApiDayRecord<S: satay_runtime::StringStorage = String> {
     )]
     pub updated_timestamp: Option<satay_runtime::OffsetDateTime>,
 }
+
 /// Weather sub-API observation (lightning strikes or WBGT station readings)
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1838,6 +1954,7 @@ pub struct WeatherSubApiObservation<S: satay_runtime::StringStorage = String> {
     )]
     pub readings: Option<Vec<WeatherSubApiLightningReading<S>>>,
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1904,6 +2021,7 @@ pub struct WeatherSubApiLightningReading<S: satay_runtime::StringStorage = Strin
     )]
     pub heat_stress: Option<NeaHeatStressLevel>,
 }
+
 #[cfg(feature = "serde")]
 impl<S: satay_runtime::StringStorage> WeatherSubApiLightningReading<S> {
     fn __satay_deserialize_wbgt_none_if<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error>
@@ -1912,6 +2030,7 @@ impl<S: satay_runtime::StringStorage> WeatherSubApiLightningReading<S> {
     {
         as_f64_option::deserialize_none_if(deserializer, &["NA"])
     }
+
     #[allow(
         clippy::ref_option,
         clippy::trivially_copy_pass_by_ref,
@@ -1927,6 +2046,7 @@ impl<S: satay_runtime::StringStorage> WeatherSubApiLightningReading<S> {
         as_f64::serialize_none_if(value, "NA", serializer)
     }
 }
+
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -1953,6 +2073,7 @@ pub struct WeatherSubApiInvalidParamsError<S: satay_runtime::StringStorage = Str
     )]
     pub error_msg: Option<S>,
 }
+
 /// Unit of measure for NEA station readings and outlook ranges
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1971,6 +2092,7 @@ pub enum NeaMeasurementUnit {
     #[cfg_attr(feature = "serde", serde(rename = "mm"))]
     Millimeters,
 }
+
 impl NeaMeasurementUnit {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -1984,16 +2106,19 @@ impl NeaMeasurementUnit {
         }
     }
 }
+
 impl AsRef<str> for NeaMeasurementUnit {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaMeasurementUnit {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// WGS84 coordinates (API returns lat/long as decimal strings)
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -2005,6 +2130,7 @@ pub struct NeaLightningGeoPoint {
     #[cfg_attr(feature = "serde", serde(with = "serde_string::as_f64"))]
     pub longitude: f64,
 }
+
 /// WBGT monitoring station metadata
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -2024,6 +2150,7 @@ pub struct NeaWbgtStation<S: satay_runtime::StringStorage = String> {
     #[cfg_attr(feature = "serde", serde(rename = "townCenter"))]
     pub town_center: S,
 }
+
 /// Heat stress advisory level from WBGT (`NA` when unavailable)
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -2034,6 +2161,7 @@ pub enum NeaHeatStressLevel {
     #[cfg_attr(feature = "serde", serde(rename = "NA"))]
     NotAvailable,
 }
+
 impl NeaHeatStressLevel {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -2044,16 +2172,19 @@ impl NeaHeatStressLevel {
         }
     }
 }
+
 impl AsRef<str> for NeaHeatStressLevel {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaHeatStressLevel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
+
 /// Region name
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -2069,6 +2200,7 @@ pub enum NeaRegionMetadataName {
     #[cfg_attr(feature = "serde", serde(rename = "central"))]
     Central,
 }
+
 impl NeaRegionMetadataName {
     pub const fn as_str(&self) -> &'static str {
         match self {
@@ -2080,11 +2212,13 @@ impl NeaRegionMetadataName {
         }
     }
 }
+
 impl AsRef<str> for NeaRegionMetadataName {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
+
 impl fmt::Display for NeaRegionMetadataName {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())

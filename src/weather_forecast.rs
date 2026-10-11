@@ -12,11 +12,13 @@ use super::{
     Api as RootApi, FourDayOutlookAction, TwentyFourHrForecastAction, TwoHrForecastAction,
 };
 use serde::de;
+
 /// Area and regional weather forecasts from NEA MSS.
 #[derive(Debug, Clone, Copy)]
 pub struct Api<'a, S: satay_runtime::StringStorage = String> {
     pub(crate) api: &'a RootApi<S>,
 }
+
 impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwned> Api<'a, S> {
     /// <https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast>
     ///
@@ -48,6 +50,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn two_hr_forecast(&self) -> TwoHrForecastAction<'a, S> {
         TwoHrForecastAction::<S>::new(self.api)
     }
+
     /// <https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast>
     ///
     /// - Updated multiple times throughout the day
@@ -78,6 +81,7 @@ impl<'a, S: satay_runtime::StringStorage + serde::Serialize + de::DeserializeOwn
     pub fn twenty_four_hr_forecast(&self) -> TwentyFourHrForecastAction<'a, S> {
         TwentyFourHrForecastAction::<S>::new(self.api)
     }
+
     /// <https://api-open.data.gov.sg/v2/real-time/api/four-day-outlook>
     ///
     /// - The forecast is for the next 4 days.

@@ -611,6 +611,7 @@ mod tests {
 
         impl Action for PanicAction {
             type RequestBody = Vec<u8>;
+
             type Response<'de> = ();
 
             fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {

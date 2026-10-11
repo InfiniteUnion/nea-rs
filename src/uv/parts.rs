@@ -9,6 +9,7 @@
 )]
 
 use super::super::types::{DataNotFoundError, InvalidParamsError, RateLimitError, UvResponse};
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/uv>
 ///
 /// - Updated between 7 AM and 7 PM everyday
@@ -31,6 +32,7 @@ pub struct UvInput<S: satay_runtime::StringStorage = String> {
     /// Optional API key for higher rate limits.
     pub x_api_key: Option<S>,
 }
+
 impl<S: satay_runtime::StringStorage> UvInput<S> {
     pub fn new() -> Self {
         Self {
@@ -39,24 +41,29 @@ impl<S: satay_runtime::StringStorage> UvInput<S> {
             x_api_key: None,
         }
     }
+
     pub fn date(mut self, date: satay_runtime::Date) -> Self {
         self.date = Some(date);
         self
     }
+
     pub fn pagination_token(mut self, pagination_token: impl Into<S>) -> Self {
         self.pagination_token = Some(pagination_token.into());
         self
     }
+
     pub fn x_api_key(mut self, x_api_key: impl Into<S>) -> Self {
         self.x_api_key = Some(x_api_key.into());
         self
     }
 }
+
 impl<S: satay_runtime::StringStorage> Default for UvInput<S> {
     fn default() -> Self {
         Self::new()
     }
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/uv>
 ///
 /// - Updated between 7 AM and 7 PM everyday
@@ -82,6 +89,7 @@ pub enum UvOperationResponse<S: satay_runtime::StringStorage = String> {
     Status429(RateLimitError<S>),
     UnexpectedStatus(http::StatusCode, Vec<u8>),
 }
+
 /// <https://api-open.data.gov.sg/v2/real-time/api/uv>
 ///
 /// - Updated between 7 AM and 7 PM everyday
