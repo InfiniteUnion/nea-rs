@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.2](https://github.com/InfiniteUnion/nea-rs/compare/v0.7.1...v0.7.2) - 2026-10-22
+
+### Fixed
+
+- *(deps)* update audited certificate dependencies
+- *(sampler)* retry transient GET transport failures
+
+### Other
+
+- *(sampler)* run retry regressions and document policy
+- *(sampler)* isolate fallible transport attempts
+- bump pinned action SHAs
+
 ### Fixed
 
 - Retry transient upstream sampler GET transport failures with a bounded three-attempt budget,
