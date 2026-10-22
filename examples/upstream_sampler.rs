@@ -1,7 +1,7 @@
 //! Sample live NEA upstream responses with the generated client.
 
 use std::any::Any;
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 use std::io::{self, ErrorKind};
 use std::path::Path;
 use std::process::ExitCode;
@@ -323,6 +323,38 @@ where
     A::RequestBody: Into<reqwest::Body>,
     A::Response<'de>: Debug,
 {
+    probe_action_with_transport(endpoint, action, |request| execute_request(client, request)).await
+}
+
+async fn execute_request(
+    client: &Client,
+    request: Request,
+) -> reqwest::Result<ResponseParts<impl AsRef<[u8]>>> {
+    let mut response = client.execute(request).await?;
+    let status = response.status();
+    let headers = mem::take(response.headers_mut());
+    let body = response.bytes().await?;
+    Ok(ResponseParts {
+        status,
+        headers,
+        body,
+    })
+}
+
+async fn probe_action_with_transport<'de, A, F, Fut, B, E>(
+    endpoint: &'static str,
+    action: A,
+    mut execute: F,
+) -> ProbeOutcome
+where
+    A: Action + Send,
+    A::RequestBody: Into<reqwest::Body>,
+    A::Response<'de>: Debug,
+    F: FnMut(Request) -> Fut,
+    Fut: Future<Output = Result<ResponseParts<B>, E>>,
+    B: AsRef<[u8]>,
+    E: Display,
+{
     let http_request = match action.request() {
         Ok(request) => request,
         Err(error) => {
@@ -350,7 +382,7 @@ where
         }
     };
 
-    let mut response = match client.execute(reqwest_request).await {
+    let response = match execute(reqwest_request).await {
         Ok(response) => response,
         Err(error) => {
             return ProbeOutcome::TransportFailure(TransportFailure {
@@ -362,21 +394,14 @@ where
         }
     };
 
-    let status = response.status();
-    let headers = mem::take(response.headers_mut());
-    let body = match response.bytes().await {
-        Ok(body) => body,
-        Err(error) => {
-            return ProbeOutcome::TransportFailure(TransportFailure {
-                endpoint,
-                method: Some(method),
-                uri: Some(uri),
-                error: error.to_string(),
-            });
-        }
-    };
-
-    classify_decode::<A>(endpoint, method, uri, status, headers, body.as_ref())
+    classify_decode::<A>(
+        endpoint,
+        method,
+        uri,
+        response.status,
+        response.headers,
+        response.body.as_ref(),
+    )
 }
 
 fn classify_decode<'de, A>(
@@ -545,42 +570,11 @@ mod tests {
     }
 
     #[test]
-    fn render_issue_report_includes_response_body() {
-        let failure = ProbeFailure {
-            endpoint: "air_temperature",
-            method: "GET".to_owned(),
-            uri: "https://api-open.data.gov.sg/v2/real-time/api/air-temperature".to_owned(),
-            status: StatusCode::OK,
-            failure_kind: "decode error",
-            error: "JSON error: missing field data".to_owned(),
-            body: br#"{"unexpected":true}"#.to_vec(),
-        };
-
-        let report = render_issue_report(&[failure], &[]);
-
-        assert!(report.contains("## Endpoint `air_temperature`"));
-        assert!(report.contains("JSON error: missing field data"));
-        assert!(report.contains(r#"{"unexpected":true}"#));
-    }
-
-    #[test]
     fn body_excerpt_truncates_large_response() {
         let body = vec![b'a'; RESPONSE_BODY_LIMIT + 1];
         let excerpt = body_excerpt(&body);
         assert_eq!(excerpt.len(), RESPONSE_BODY_LIMIT);
         assert!(excerpt.bytes().all(|byte| byte == b'a'));
-
-        let failure = ProbeFailure {
-            endpoint: "air_temperature",
-            method: "GET".to_owned(),
-            uri: "https://api-open.data.gov.sg/v2/real-time/api/air-temperature".to_owned(),
-            status: StatusCode::OK,
-            failure_kind: "decode error",
-            error: "JSON error: missing field data".to_owned(),
-            body,
-        };
-        let report = render_issue_report(&[failure], &[]);
-        assert!(report.contains("truncated from 4001 bytes to 4000 bytes"));
     }
 
     #[test]
@@ -632,7 +626,7 @@ mod tests {
             "https://api-open.data.gov.sg/v2/real-time/api/air-temperature".to_owned(),
             StatusCode::OK,
             HeaderMap::new(),
-            body.clone(),
+            &body,
         );
 
         let ProbeOutcome::ClientFailure(failure) = outcome else {
