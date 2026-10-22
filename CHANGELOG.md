@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Retry transient upstream sampler GET transport failures with a bounded three-attempt budget,
   full error-chain diagnostics, and offline regression coverage in CI.
+- Update locked certificate dependencies to fix RUSTSEC-2026-0382 and RUSTSEC-2026-0383:
+  `rustls-webpki` 0.103.16 and `webpki-root-certs` 1.0.10.
 
 ## [0.7.1](https://github.com/InfiniteUnion/nea-rs/compare/v0.7.0...v0.7.1) - 2026-10-11
 
