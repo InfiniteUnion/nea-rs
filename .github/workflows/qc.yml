@@ -9,6 +9,7 @@ on:
       - "**/build.rs"
       - "tests/**"
       - ".github/actions/setup-rust/**"
+      - ".github/workflows/qc.yml"
 
 permissions:
   contents: read
@@ -73,3 +74,5 @@ jobs:
         uses: ./.github/actions/setup-rust
       - name: Test
         run: cargo test
+      - name: Test upstream sampler
+        run: cargo test --example upstream_sampler

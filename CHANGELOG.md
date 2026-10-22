@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Retry transient upstream sampler GET transport failures with a bounded three-attempt budget,
+  full error-chain diagnostics, and offline regression coverage in CI.
+
 ## [0.7.1](https://github.com/InfiniteUnion/nea-rs/compare/v0.7.0...v0.7.1) - 2026-10-11
 
 ### Other
