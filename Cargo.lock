@@ -708,6 +708,7 @@ name = "nea-rs"
 version = "0.7.1"
 dependencies = [
  "http",
+ "hyper",
  "nutype",
  "regex",
  "reqwest",

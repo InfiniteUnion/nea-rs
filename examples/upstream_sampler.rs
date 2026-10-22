@@ -1,24 +1,29 @@
 //! Sample live NEA upstream responses with the generated client.
 
 use std::any::Any;
-use std::fmt::{Debug, Display};
+use std::error::Error;
+use std::fmt::Debug;
 use std::io::{self, ErrorKind};
 use std::path::Path;
 use std::process::ExitCode;
 use std::time::Duration;
 use std::{env, fs, mem, panic};
 
-use http::{HeaderMap, StatusCode};
+use http::{HeaderMap, Method, StatusCode};
 use nea_rs::Api;
 use nea_rs::NeaWeatherSubApi::{Lightning, WetBulbGlobeTemperature};
-use reqwest::{Client, Request};
+use reqwest::{Client, Request, retry};
 use satay_runtime::{Action, ResponseParts};
-use tokio::{task::JoinSet, time::sleep};
+use tokio::{
+    task::JoinSet,
+    time::{Instant, sleep},
+};
 
 const ISSUE_REPORT_PATH: &str = "target/nea-upstream-sampler-issue.md";
 const FAILURE_SAMPLES_DIR: &str = "target/nea-upstream-samples";
 const RESPONSE_BODY_LIMIT: usize = 4_000;
 const PROBE_STAGGER: Duration = Duration::from_secs(3);
+const RETRY_DELAYS: [Duration; 2] = [Duration::from_secs(1), Duration::from_secs(2)];
 
 #[derive(Debug)]
 enum ProbeOutcome {
@@ -50,6 +55,12 @@ struct TransportFailure {
     method: Option<String>,
     uri: Option<String>,
     error: String,
+}
+
+#[derive(Debug)]
+struct AttemptError<E> {
+    error: E,
+    retryable: bool,
 }
 
 fn spawn_probe<const SLOT: u32, F, Fut>(
@@ -84,7 +95,8 @@ async fn run_sampler() -> ExitCode {
         return ExitCode::from(1);
     }
 
-    let client = match Client::builder().timeout(Duration::from_secs(30)).build() {
+    let builder = Client::builder().timeout(Duration::from_secs(30));
+    let client = match builder.retry(retry::never()).build() {
         Ok(client) => client,
         Err(error) => {
             eprintln!("failed to build HTTP client: {error}");
@@ -329,11 +341,14 @@ where
 async fn execute_request(
     client: &Client,
     request: Request,
-) -> reqwest::Result<ResponseParts<impl AsRef<[u8]>>> {
-    let mut response = client.execute(request).await?;
+) -> Result<ResponseParts<impl AsRef<[u8]>>, AttemptError<reqwest::Error>> {
+    let mut response = client
+        .execute(request)
+        .await
+        .map_err(classify_transport_error)?;
     let status = response.status();
     let headers = mem::take(response.headers_mut());
-    let body = response.bytes().await?;
+    let body = response.bytes().await.map_err(classify_transport_error)?;
     Ok(ResponseParts {
         status,
         headers,
@@ -341,19 +356,113 @@ async fn execute_request(
     })
 }
 
+fn classify_transport_error(error: reqwest::Error) -> AttemptError<reqwest::Error> {
+    let retryable = !error.is_builder()
+        && !error.is_redirect()
+        && !error.is_status()
+        && (error.is_timeout() || error.is_connect() || has_transient_source(&error));
+    AttemptError { error, retryable }
+}
+
+fn has_transient_source(mut error: &(dyn Error + 'static)) -> bool {
+    loop {
+        if let Some(error) = error.downcast_ref::<io::Error>()
+            && matches!(
+                error.kind(),
+                ErrorKind::TimedOut
+                    | ErrorKind::ConnectionReset
+                    | ErrorKind::ConnectionAborted
+                    | ErrorKind::BrokenPipe
+                    | ErrorKind::UnexpectedEof
+            )
+        {
+            return true;
+        }
+
+        if let Some(error) = error.downcast_ref::<hyper::Error>()
+            && (error.is_incomplete_message() || error.is_closed())
+        {
+            return true;
+        }
+
+        match error.source() {
+            Some(source) => error = source,
+            None => return false,
+        }
+    }
+}
+
+async fn execute_with_retry<F, Fut, B, E>(
+    endpoint: &'static str,
+    mut request: Request,
+    mut execute: F,
+) -> Result<ResponseParts<B>, AttemptError<E>>
+where
+    F: FnMut(Request) -> Fut,
+    Fut: Future<Output = Result<ResponseParts<B>, AttemptError<E>>>,
+    E: Debug,
+{
+    let started = Instant::now();
+    let mut attempt = 0;
+
+    loop {
+        // Sending consumes the request; retain a replay only while another GET attempt is possible.
+        let replay = if request.method() == Method::GET && attempt < RETRY_DELAYS.len() {
+            request.try_clone()
+        } else {
+            None
+        };
+        let attempt_started = Instant::now();
+
+        match execute(request).await {
+            Ok(response) => {
+                if attempt > 0 {
+                    eprintln!(
+                        "transport recovered: {endpoint}: {} attempts in {:?}",
+                        attempt + 1,
+                        started.elapsed(),
+                    );
+                }
+
+                return Ok(response);
+            }
+            Err(error) => {
+                let replay = replay.filter(|_| error.retryable);
+                eprintln!(
+                    "transport attempt failed: {endpoint}: attempt {}/{} after {:?}: \
+                     retry={}: {:?}",
+                    attempt + 1,
+                    RETRY_DELAYS.len() + 1,
+                    attempt_started.elapsed(),
+                    replay.is_some(),
+                    error.error,
+                );
+
+                let Some(next_request) = replay else {
+                    return Err(error);
+                };
+
+                sleep(RETRY_DELAYS[attempt]).await;
+                attempt += 1;
+                request = next_request;
+            }
+        }
+    }
+}
+
 async fn probe_action_with_transport<'de, A, F, Fut, B, E>(
     endpoint: &'static str,
     action: A,
-    mut execute: F,
+    execute: F,
 ) -> ProbeOutcome
 where
     A: Action + Send,
     A::RequestBody: Into<reqwest::Body>,
     A::Response<'de>: Debug,
     F: FnMut(Request) -> Fut,
-    Fut: Future<Output = Result<ResponseParts<B>, E>>,
+    Fut: Future<Output = Result<ResponseParts<B>, AttemptError<E>>>,
     B: AsRef<[u8]>,
-    E: Display,
+    E: Debug,
 {
     let http_request = match action.request() {
         Ok(request) => request,
@@ -382,14 +491,14 @@ where
         }
     };
 
-    let response = match execute(reqwest_request).await {
+    let response = match execute_with_retry(endpoint, reqwest_request, execute).await {
         Ok(response) => response,
         Err(error) => {
             return ProbeOutcome::TransportFailure(TransportFailure {
                 endpoint,
                 method: Some(method),
                 uri: Some(uri),
-                error: error.to_string(),
+                error: format!("{:?}", error.error),
             });
         }
     };
@@ -546,94 +655,5 @@ fn github_run_url() -> Option<String> {
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn empty_api_key_is_not_sent() {
-        let request = api_from_optional_key(Some(String::new()))
-            .weather_readings()
-            .air_temperature()
-            .request()
-            .expect("air temperature request should build");
-        assert!(request.headers().get("x-api-key").is_none());
-
-        let request = api_from_optional_key(Some("test-key".to_owned()))
-            .weather_readings()
-            .air_temperature()
-            .request()
-            .expect("air temperature request should build");
-        assert_eq!(
-            request.headers().get("x-api-key"),
-            Some(&"test-key".parse().unwrap())
-        );
-    }
-
-    #[test]
-    fn body_excerpt_truncates_large_response() {
-        let body = vec![b'a'; RESPONSE_BODY_LIMIT + 1];
-        let excerpt = body_excerpt(&body);
-        assert_eq!(excerpt.len(), RESPONSE_BODY_LIMIT);
-        assert!(excerpt.bytes().all(|byte| byte == b'a'));
-    }
-
-    #[test]
-    fn regression_samples_require_successful_json_responses() {
-        let mut failure = ProbeFailure {
-            endpoint: "air_temperature",
-            method: "GET".to_owned(),
-            uri: "https://api-open.data.gov.sg/v2/real-time/api/air-temperature".to_owned(),
-            status: StatusCode::OK,
-            failure_kind: "decode error",
-            error: "JSON error: missing field data".to_owned(),
-            body: br#"{"unexpected":true}"#.to_vec(),
-        };
-
-        assert!(is_failure_sample_candidate(&failure));
-
-        failure.status = StatusCode::BAD_GATEWAY;
-        assert!(!is_failure_sample_candidate(&failure));
-
-        failure.status = StatusCode::OK;
-        failure.body = b"upstream maintenance".to_vec();
-        assert!(!is_failure_sample_candidate(&failure));
-    }
-
-    #[test]
-    fn decode_panic_becomes_client_failure() {
-        struct PanicAction;
-
-        impl Action for PanicAction {
-            type RequestBody = Vec<u8>;
-
-            type Response<'de> = ();
-
-            fn request(self) -> Result<http::Request<Vec<u8>>, satay_runtime::Error> {
-                unreachable!("request is not used by decode classification test")
-            }
-
-            fn decode<'de>(
-                _: ResponseParts<&'de [u8]>,
-            ) -> Result<Self::Response<'de>, satay_runtime::Error> {
-                panic!("decode exploded")
-            }
-        }
-
-        let body = br#"{"panic":true}"#.to_vec();
-        let outcome = classify_decode::<PanicAction>(
-            "air_temperature",
-            "GET".to_owned(),
-            "https://api-open.data.gov.sg/v2/real-time/api/air-temperature".to_owned(),
-            StatusCode::OK,
-            HeaderMap::new(),
-            &body,
-        );
-
-        let ProbeOutcome::ClientFailure(failure) = outcome else {
-            panic!("panic should be classified as a generated-client failure");
-        };
-        assert_eq!(failure.failure_kind, "panic");
-        assert_eq!(failure.error, "decode exploded");
-        assert_eq!(failure.body, body);
-    }
-}
+#[path = "upstream_sampler/tests.rs"]
+mod tests;
