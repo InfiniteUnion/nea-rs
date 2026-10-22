@@ -1,4 +1,19 @@
 //! Sample live NEA upstream responses with the generated client.
+//!
+//! GET probes retry transient transport failures up to three attempts, with one- and two-second
+//! backoffs. Each attempt retains the 30-second request timeout; probes remain staggered by three
+//! seconds. Reqwest's internal retries are disabled so there is only one retry budget.
+//!
+//! Transport attempts include reading the complete body. Timeouts, connection failures, and
+//! recognizable connection-reset/incomplete-read causes are retryable; unknown errors are terminal.
+//! Request construction, HTTP status responses, and generated-client decode failures are not retried.
+//! Failed attempts log their endpoint, attempt number, elapsed time, retry decision, and error chain
+//! without logging request headers. Recovered transports are also logged.
+//!
+//! Exit codes: 0 when all probes succeed, 1 for transport/infrastructure failures, and 2 when
+//! generated-client failures are captured for reporting. Decode failures keep their issue-report and
+//! regression-sample handling. Run the offline scripted-transport tests with
+//! `cargo test --example upstream_sampler`.
 
 use std::any::Any;
 use std::error::Error;
