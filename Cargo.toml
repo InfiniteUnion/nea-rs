@@ -25,9 +25,10 @@ serde = ["dep:serde", "satay-runtime/serde"]
 json = ["serde", "dep:serde_json", "satay-runtime/json"]
 
 [dev-dependencies]
+hyper = { version = "1", default-features = false }
 reqwest = "0.13.3"
 satay-reqwest = { version = "0.17.0" }
-tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time", "test-util"] }
 
 [workspace.metadata.dylint]
 libraries = [{ git = "https://github.com/zeon256/style-rust-aku", branch = "main" }]
