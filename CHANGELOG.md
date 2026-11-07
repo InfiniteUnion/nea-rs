@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.3](https://github.com/InfiniteUnion/nea-rs/compare/v0.7.2...v0.7.3) - 2026-11-07
+
+### Fixed
+
+- remediate cargo audit findings
+
+### Other
+
+- bump pinned action SHAs
+
 ## [0.7.2](https://github.com/InfiniteUnion/nea-rs/compare/v0.7.1...v0.7.2) - 2026-10-22
 
 ### Fixed
