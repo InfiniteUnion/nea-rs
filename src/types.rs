@@ -504,6 +504,8 @@ pub enum NeaForecastCode {
     LightRain,
     #[cfg_attr(feature = "serde", serde(rename = "MR"))]
     ModerateRain,
+    #[cfg_attr(feature = "serde", serde(rename = "RA"))]
+    Rain,
     #[cfg_attr(feature = "serde", serde(rename = "HR"))]
     HeavyRain,
     #[cfg_attr(feature = "serde", serde(rename = "PS"))]
@@ -537,6 +539,7 @@ impl NeaForecastCode {
             Self::Fog => "FG",
             Self::LightRain => "LR",
             Self::ModerateRain => "MR",
+            Self::Rain => "RA",
             Self::HeavyRain => "HR",
             Self::PassingShowers => "PS",
             Self::LightShowers => "LS",
