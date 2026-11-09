@@ -868,6 +868,7 @@ components:
       - FG
       - LR
       - MR
+      - RA
       - HR
       - PS
       - LS
@@ -891,6 +892,7 @@ components:
           FG: Fog
           LR: LightRain
           MR: ModerateRain
+          RA: Rain
           HR: HeavyRain
           PS: PassingShowers
           LS: LightShowers
